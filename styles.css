@@ -1,0 +1,66 @@
+/* styles.css */
+
+/* Reset and basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #ffffff; /* White background */
+}
+
+/* Header and Nav Styling */
+header {
+    background-color: #ffffff; /* White background for nav */
+    box-shadow: 0px 4px 2px -2px gray; /* Subtle shadow under the nav bar */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 24px; /* Height for 1.5 cm equivalent */
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: #333; /* Dark color for contrast */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #0073e6; /* Hover color */
+}
+
+/* Main content styling */
+main {
+    margin-top: 50px; /* To prevent content from hiding behind the nav bar */
+    padding: 20px;
+}
+
+section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 1rem auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
