@@ -15,43 +15,49 @@ body {
 
 /* Header and Nav Styling */
 header {
-    background-color: #ffffff; /* White background for nav */
-    box-shadow: 0px 4px 2px -2px gray; /* Subtle shadow under the nav bar */
+    background-color: #ffffff;
+    box-shadow: 0px 4px 2px -2px gray;
     position: fixed;
     width: 100%;
     top: 0;
-    height: 24px; /* Height for 1.5 cm equivalent */
+    height: 72px;
     display: flex;
+    justify-content: flex-start; /* Align items to the left */
     align-items: center;
+    padding-left: 10cm; /* Shift content 10 cm to the left */
 }
 
 nav ul {
     list-style: none;
     display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin: 0;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
     display: inline;
+    margin-right: 20px; /* Space between items */
+}
+
+/* Extra spacing after your name */
+nav ul li:first-child {
+    margin-right: 60px; /* Adds extra spacing after your name */
 }
 
 nav ul li a {
-    color: #333; /* Dark color for contrast */
+    color: #333;
     text-decoration: none;
-    padding: 0.5rem 1rem;
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
 nav ul li a:hover {
-    color: #0073e6; /* Hover color */
+    color: #0073e6;
 }
 
-/* Main content styling */
+/* Main content offset to prevent overlapping with navbar */
 main {
-    margin-top: 50px; /* To prevent content from hiding behind the nav bar */
+    margin-top: 90px;
     padding: 20px;
 }
 

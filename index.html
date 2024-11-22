@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name's Personal Site</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>George Paschalidis</title>
+    <!-- Font Awesome for general icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Academicons for Google Scholar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles_test.css">
 </head>
 <body>
     <!-- Header with Navigation Bar -->
     <header>
         <nav>
             <ul>
+                <li><a href="#home">Georgios Paschalidis</a></li>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#publications">Publications</a></li>
                 <li><a href="#hobbies">Hobbies</a></li>
@@ -18,6 +23,103 @@
             </ul>
         </nav>
     </header>
+
+<!-- Image below the navbar -->
+
+<!-- Personal information section -->
+<div class="profile-container">
+    
+    <div class="image-links-container">
+        <img src="george.jpg" alt="Your Image" class="profile-image">
+    
+        <div class="social-links">
+            <a href="g.paschalidis@uva.nl" target="_blank"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
+            <a href="https://github.com/gpaschalidis" target="_blank"><i class="fa-brands fa-github fa-2x" aria-hidden="true"></i></a>
+            <a href="https://x.com/gkpaschalidis" target="_blank"><i class="fa-brands fa-twitter fa-2x" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/george-paschalidis-59bb06264/" target="_blank"><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a>
+            <a href="https://scholar.google.com/citations?user=dYhRJjwAAAAJ&hl=en" target="_blank"><i class="ai ai-google-scholar ai-2x" aria-hidden="true"></i></a>
+        </div>
+    <!-- You can add more links here if you want -->
+    </div>
+
+    <div class="biography-note" style="z-index: 10;">
+    <p>I am a PhD student in the <a href="https://ivi.fnwi.uva.nl/cv" target="_blank">Computer Vision Lab</a> at 
+       the <a href="https://www.uva.nl" target="_blank">University of Amsterdam</a>,
+       advised by <a href="https://dtzionas.com" target="_blank">Dimitris Tzionas</a>. My research focus on 3D Human 
+       Object Interaction (HOI) synthesis, while I am also interested in reconstructing 4D HOIs from videos. Before 
+       joining UvA I spent 4 months as a research intern at <a href="https://www.sfu.ca/" target="_blank">Simon Fraser University</a> 
+       working together with <a href="https://msavva.github.io/" target="_blank">Manolis Savva</a>. Prior to that
+       I completed my Master at the <a href="https://www.upatras.gr/en/" target="_blank">University of Patras</a> 
+       collaborating with Prof. Emmanouil Psarakis, while also working as a Lead Quality Assurance Enginner 
+       at <a href="https://www.haf.gr/en/" target="_blank">Hellenic Air Force</a>. I am also a passionate 
+       windsurfer, but when the sea and wind are not there I like to spend time snowboarding, running or going to the gym. You can check       a small collection of images from my free time here.</p>
+    </div>
+</div>
+
+<section class="publications-section">
+    <div class="publications-content">
+        <h2>Publications</h2>
+        <ul>
+            <div class="publication">
+                <div class="image">
+                    <img src="teasers/teaser_cwgrasp.png" alt="3D Whole-body Grasp Synthesis with Directional Controllability" />
+                </div>
+                <div class="content">
+                    <div class="paper-title">
+                        <a href="http://gpaschalidis.github.io/cwgrasp">3D Whole-body Grasp Synthesis with Directional Controllability</a>
+                    </div>
+                    <div class="conference">
+                        International Conference on 3D Vision (3DV), 2025
+                    </div>
+                    <div class="authors">
+                        <strong class="author">Georgios Paschalidis</strong>, 
+                        <a href="https://www.linkedin.com/in/romana-wilschut-766381197/" class="author">Romana Wilschut</a>, 
+                        <a href="https://anticdimi.github.io/" class="author">Dimitrije Antić</a>, 
+                        <a href="https://otaheri.github.io/" class="author">Omid Taheri</a>, 
+                        <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
+                    </div>
+                    <div class="links">
+                        <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
+                        <a href="https://arxiv.org/abs/2408.16770" data-type="Project page">Project page</a> 
+                        <a href="" data-type="Paper">Paper</a> 
+                        <a href="" data-type="Code">Code</a> 
+                        <a href="" data-type="Video">Video</a> 
+                        <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
+                        <div class="link-content" data-index="0">
+                            Synthesizing 3D whole-bodies that realistically grasp objects is useful for animation, mixed reality, 
+                            and robotics. This is challenging, because the hands and body need to look natural w.r.t. each other, 
+                            the grasped object, as well as the local scene (i.e., a receptacle supporting the object). Only recent 
+                            work tackles this, with a divide-and-conquer approach; it first generates a "guiding" right-hand grasp, 
+                            and then searches for bodies that match this. However, the guiding-hand synthesis lacks controllability 
+                            and receptacle awareness, so it likely has an implausible direction (i.e., a body can't match this without 
+                            penetrating the receptacle) and needs corrections through major post-processing. Moreover, the body search 
+                            needs exhaustive sampling and is expensive. These are strong limitations. We tackle these with a novel 
+                            method called CWGrasp. Our key idea is that performing geometry-based reasoning "early on," instead of 
+                            "too late," provides rich "control" signals for inference. To this end, CWGrasp first samples a plausible 
+                            reaching-direction vector (used later for both the arm and hand) from a probabilistic model built via 
+                            raycasting from the object and collision checking. Then, it generates a reaching body with a desired arm 
+                            direction, as well as a "guiding" grasping hand with a desired palm direction that complies with the arm's 
+                            one. Eventually, CWGrasp refines the body to match the "guiding" hand, while plausibly contacting the scene.                            Notably, generating already-compatible "parts" greatly simplifies the "whole." Moreover, CWGrasp uniquely 
+                            tackles both right- and left-hand grasps. We evaluate on the GRAB and ReplicaGrasp datasets. CWGrasp 
+                            outperforms baselines, at lower runtime and budget, while all components help performance. 
+                        </div>
+                        <div class="link-content" data-index="5">
+                            <pre>@InProceedings{paschalidis20243d,
+                                title={3D Whole-body Grasp Synthesis with Directional Controllability},
+                                author={Paschalidis, Georgios and Wilschut, Romana and Anti{\'c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
+                                booktitle = {International Conference on 3D Vision (3DV)},
+                                year={2025}
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ul>
+    </div>
+</section>
+
+    
     
 </body>
 </html>
