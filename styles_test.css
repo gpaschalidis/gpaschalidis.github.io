@@ -1,0 +1,320 @@
+/* styles.css */
+
+/* Reset and basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #ffffff; /* White background */
+}
+
+/* Header and Nav Styling */
+header {
+    background-color: #ffffff;
+    box-shadow: 0px 4px 2px -2px gray;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 72px;
+    display: flex;
+    justify-content: flex-start; /* Align items to the left initially */
+    align-items: center;
+    padding-left: 35%; /* Move everything 5 cm to the right */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px; /* Space between items */
+}
+
+/* Keep your name bold and spaced out */
+nav ul li:first-child {
+    margin-right: 60px; /* Adds extra spacing after your name */
+}
+
+/* Styling for all links */
+nav ul li a {
+    color: #333;
+    text-decoration: none;
+    font-weight: normal; /* Unbold other links */
+    font-size: 0.8rem;
+}
+ 
+/* Keep your name bold */
+nav ul li:first-child a {
+    font-weight: bold; /* Keep the first link (your name) bold */
+    font-size: 1.1rem;
+}
+
+nav ul li a:hover {
+    color: #0073e6;
+}
+
+/* Profile container ensures the image+links and bio are side by side */
+.profile-container {
+    display: flex; /* Horizontal layout */
+    flex-direction: row; /* Arrange items side by side */
+    align-items: flex-start; /* Align items to the top */
+    justify-content: center; /* Center the whole content horizontally */
+    margin-top: 4cm; /* Adjust space from navbar */
+    padding: 0 10%; /* Add padding to the sides */
+    margin-bottom: 3cm; /* Adjust space from navbar */
+}
+
+
+/* Group image and social links */
+.image-links-container {
+    display: flex;
+    flex-direction: column; /* Stack the image and social links vertically */
+    align-items: center; /* Center-align the content */
+    margin-right: 20px; /* Space between image-links group and biography */
+}
+
+/* Image styling */
+.profile-image {
+    width: 270px;
+    height: 270px;
+    border-radius: 15px; /* Slight rounding of corners */
+    object-fit: cover; /* Ensures the image scales properly */
+    margin-bottom: 15px; /* Space between image and social links */
+}
+
+/* Social links styling */
+.social-links {
+    display: flex;
+    flex-direction: row; /* Stack icons vertically */
+    gap: 10px; /* Space between icons */
+}
+
+.social-links a {
+    font-size: 2rem; /* Increase icon size */
+    color: #4682B4; /* Light green color */
+    text-decoration: none; /* Remove underline */
+}
+
+.social-links a:hover {
+    color: #4169E1; /* Slightly darker green on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Biography note styling */
+.biography-note {
+    max-width: 600px; /* Restrict the width of the biography text */
+    font-family: Arial, sans-serif;
+    color: #333; /* Neutral text color */
+    line-height: 1.6; /* Improve readability */
+}
+
+.biography-note h2 {
+    font-size: 2rem; /* Size of the name heading */
+    margin-bottom: 10px; /* Spacing between the name and the paragraph */
+}
+
+.biography-note p {
+    text-align: justify; /* Justifies text to align both left and right */
+    font-size: 1rem; /* Standard text size for the bio */
+    margin: 0; /* Ensure no extra margin around the paragraph */
+}
+
+
+/* Ensure default link styles for biography links */
+.biography-note a {
+    color: #0073e6; /* Default link color */
+    text-decoration: none; /* No underline */
+    cursor: pointer;
+}
+
+.biography-note a:hover {
+    color: #005bb5; /* Darker blue on hover */
+}
+
+/* Ensure the body or any parent container stretches full width */
+body, html {
+    width: 100%;
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+/* Publications Section */
+.publications-section {
+    width: 100vw; /* Full width of the viewport */
+    background-color: #F1F3FB; /* Light gray background */
+    padding: 30px 0; /* Padding inside the section */
+    margin: 0; /* Remove margin */
+    position: relative; /* Ensure it behaves as a block element */
+    left: 0; /* Align the background to the left edge */
+    right: 0; /* Align the background to the right edge */
+    box-sizing: border-box; /* Make sure padding doesn't affect width calculation */
+    height: 100vh; /* Set the height to fill the viewport */
+    overflow: auto; /* Allow scrolling if the content exceeds the height */
+}
+
+
+/* Publication Title */
+.publications-section h2 {
+    font-size: 4rem; /* Section title size */
+    color: #333; /* Neutral title color */
+    margin-top: 40px; /* Space below the title */
+    margin-left: 750px;
+    margin-bottom: 40px;
+}
+
+/* Flexbox layout for publication */
+.publication {
+    display: flex; /* Use flexbox to align items side by side */
+    justify-content: flex-start; /* Align the items to the left */
+    align-items: center; /* Vertically align the items */
+    margin-bottom: 20px; /* Space between each publication */
+}
+
+/* Image Container */
+.image {
+    flex: 0 0 auto; /* Prevent image from stretching */
+    margin-right: 20px; /* Space between image and publication info */
+    margin-left: 750px; /* Add spacing for image on the left */
+}
+
+.image img {
+    width: 40%; /* Set image width to 40% of the container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional: rounded corners for the image */
+}
+
+/* Information about the Publication */
+.publication-info {
+    flex: 1; /* Allow this to take the remaining space */
+    max-width: 100%; /* Prevent it from exceeding available width */
+}
+
+/* Publication Title (inside publication) */
+.paper-title {
+    font-size: 1.5rem; /* Title font size */
+    font-weight: bold; /* Bold title */
+    margin-bottom: 15px; /* Space below the title */
+}
+
+.paper-title a {
+    color: #000; /* Title color */
+    text-decoration: none; /* Remove underline */
+}
+
+.paper-title a:hover {
+    color: #777; /* Change color on hover */
+    text-decoration: underline; /* Optional: add underline on hover */
+}
+
+/* Authors Section */
+.authors {
+    font-size: 1rem; /* Font size for the authors */
+    margin-bottom: 10px; /* Space below authors section */
+}
+
+.authors .author {
+    padding-left: 7px; /* Space between authors */
+}
+
+.authors a {
+    color: #555; /* Link color */
+}
+
+.authors a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Conference Section */
+.conference {
+    font-size: 1rem; /* Font size for conference */
+    margin-bottom: 15px; /* Space below the conference name */
+}
+
+.conference .special {
+    font-weight: bold; /* Make the special text bold */
+    color: #ff0000; /* Special color (red) */
+    font-size: 1.1rem; /* Slightly larger font size */
+}
+
+/* Links Section (for Abstract, Paper, Code, etc.) */
+.links {
+    display: flex;
+    flex-wrap: wrap; /* Allow links to wrap */
+    gap: 10px; /* Add spacing between the links */
+}
+
+.links a {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #0081af; /* Default link color */
+    color: white; /* White text */
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+}
+
+.links a:hover {
+    color: #1A2B7E; /* Hover color */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+.links a[data-type="Abstract"] {
+    background-color: #f0ad4e; /* Yellow color for Abstract */
+}
+
+.links a[data-type="Project page"] {
+    background-color: #daa6f7; /* Purple color for Project page */
+    width: 140px; /* Slightly wider */
+}
+
+.links a[data-type="Paper"] {
+    background-color: #4a5759; /* Darker gray for Paper */
+}
+
+.links a[data-type="Code"] {
+    background-color: #edafb8; /* Light pink for Code */
+}
+
+.links a[data-type="Video"] {
+    background-color: #c3423f; /* Red color for Video */
+}
+
+.links a[data-type="Bibtex"] {
+    background-color: #0081af; /* Default color for Bibtex */
+}
+
+.links .link-content {
+    display: none;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.links .link-content > pre {
+    font-style: normal;
+    line-height: 1.5em;
+}
+
+
+main {
+    margin-top: 90px;
+    padding: 20px;
+}
+
+section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 100vw;
+    margin: 1rem auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
