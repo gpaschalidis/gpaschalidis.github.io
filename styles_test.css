@@ -333,3 +333,42 @@ section {
     margin: 1rem auto;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+
+@media (max-width: 500px) {
+    .row > div {
+        float: none;
+    }
+    .section .content {
+        width: 90%;
+        margin: 0 auto 4em auto;
+    }
+    .section .image {
+        width: 80%;
+        padding: 0;
+        margin: 0 auto;
+    }
+    #profile-photo { padding-top: 20px; }
+    .myname {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .menu {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+}
+@media (min-width: 500px) {
+    .row > div {
+        float: left;
+    }
+    .section .content {
+        width: 70%;
+    }
+    .section .image {
+        width: 25%;
+        padding: 2.5%;
+    }
+}
