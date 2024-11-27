@@ -10,25 +10,27 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles_test.css">
 </head>
-<body>i
+<body>
     <div class="main-container">
         <!-- Header with Navigation Bar -->
         <header>
             <nav aria-label="Main Navigation">
                 <ul>
-                    <li><a href="#home">Georgios Paschalidis</a></li>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#publications">Publications</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="https://gpaschalidis.github.io/">Georgios Paschalidis</a></li>
+                    <li><a href="#home" id="home-nav-button" class="active">Home</a></li>
+                    <li><a href="#publications" id="publications-nav-button">Publications</a></li>
+                    <li><a href="#contact" id="contact-nav-button">Contact</a></li>
                 </ul>
             </nav>
         </header>
 
+
+        <section id="home">
         <!-- Personal information section -->
         <div class="profile-container">
             
             <div class="image-links-container">
-                <img src="george.jpg" alt="Profile Image of Georgios Paschalidis" class="profile-image" width="270" height="270">
+                <img src="george.jpg" alt="Profile Image of Georgios Paschalidis" class="profile-image">
             
                 <div class="social-links">
                     <a href="mailto:g.paschalidis@uva.nl" target="_blank" aria-label="Send email to g.paschalidis@uva.nl"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
@@ -41,7 +43,7 @@
             </div>
 
             <div class="biography-note">
-            <p>I am a PhD student in the <a href="https://ivi.fnwi.uva.nl/cv" target="_blank">Computer Vision Lab</a> at 
+            <p>I am an ELLIS PhD student in the <a href="https://ivi.fnwi.uva.nl/cv" target="_blank">Computer Vision Lab</a> at 
                the <a href="https://www.uva.nl" target="_blank">University of Amsterdam</a>,
                advised by <a href="https://dtzionas.com" target="_blank">Dimitris Tzionas</a>. My research focus on 3D Human 
                Object Interaction (HOI) synthesis, while I am also interested in reconstructing 4D HOIs from videos. Before 
@@ -53,8 +55,9 @@
                windsurfer, but when the sea and wind are not there I like to spend time snowboarding, running or going to the gym.</p>
             </div>
         </div>
-
-        <section class="publications-section">
+        </section>
+        
+        <section id="publications" class="publications-section">
             <div class="publications-content">
                 <h2>Publications</h2>
                     <div class="publication">
@@ -116,12 +119,47 @@ year={2025}
                             </div>
                         </div>
                     </div>
-            </div>
+        
+        <section id="contact" class="contact-section">
+            <h2>Contact</h2>
+                <div class="contact-info">
+                    <!-- Envelope Icon using Font Awesome -->
+                    <div class="envelope-icon">
+                        <a target="_blank"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <!-- Mail Link -->
+                    <a href="mailto:g.paschalidis@uva.nl" class="mail-link">g.paschalidis@uva.nl</a>
+                </div>
         </section>
-    </div>
     
-    <!-- Include JavaScript -->
     <script type="text/javascript">
+        document.querySelectorAll(".links").forEach(function (p) {
+            p.addEventListener("click", function (ev) {
+                if (ev.target.nodeName != "A") {
+                    return;
+                }
+                var i = ev.target.dataset["index"];
+                if (i == undefined) {
+                    return;
+                }
+                Array.prototype.forEach.call(ev.target.parentNode.children, function (sibling) {
+                    if (sibling.nodeName != "DIV") {
+                        return;
+                    }
+                    if (sibling.dataset["index"] != i) {
+                        sibling.style.display = "none";
+                    } else {
+                        sibling.style.display = sibling.style.display != "block" ? "block" : "none";
+                    }
+                });
+                ev.preventDefault();
+            });
+        });
+    </script>
+
+    <!-- Include JavaScript -->
+    <!--<script type="text/javascript">
         document.querySelectorAll(".links").forEach(function (p) {
             p.addEventListener("click", function (ev) {
                 // Make sure that the click is coming from a link
@@ -163,7 +201,84 @@ year={2025}
                 ev.preventDefault();
             });
         });
+    </script>-->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent the default anchor behavior
+
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+
+        // Calculate the header height
+        const headerHeight = document.querySelector('header').offsetHeight;
+
+        // Scroll to the target section, offset by header height
+        window.scrollTo({
+            top: targetElement.offsetTop - headerHeight,
+            behavior: 'smooth' // Smooth scrolling
+        });
+    });
+});
     </script>
 
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const links = document.querySelectorAll('nav ul li a');
+
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            // Scroll to the target section, adjusted for header height
+            const headerHeight = document.querySelector('header').offsetHeight;
+            window.scrollTo({
+                top: targetElement.offsetTop - headerHeight,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Function to set the active class based on the section in view
+    function setActiveLink() {
+        const sections = document.querySelectorAll('section');
+        let currentSection = null;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const scrollPosition = window.scrollY;
+
+            // If section is in the view
+            if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionTop + sectionHeight - 100) {
+                currentSection = section;
+            }
+        });
+
+        // Update the active link based on the section in view
+        links.forEach(link => {
+            const targetSection = document.querySelector(link.getAttribute('href'));
+
+            if (targetSection === currentSection) {
+                link.classList.add('active'); // Add active class to the link
+            } else {
+                link.classList.remove('active'); // Remove active class from other links
+            }
+        });
+    }
+
+    // Listen to scroll events to change active link
+    window.addEventListener('scroll', setActiveLink);
+
+    // Initial active link check on page load
+    setActiveLink();
+});
+
+    </script>
 </body>
 </html>

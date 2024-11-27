@@ -7,12 +7,18 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+
 body {
     font-family: "Arial", sans-serif;
     line-height: 1.6;
     background-color: #ffffff; /* White background */
     padding-top: 72px;
 }
+
 
 /* Header and Nav Styling */
 header {
@@ -24,11 +30,12 @@ header {
     height: 100px;
     display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     padding: 0 16rem 0 0;
-   
+    z-index: 2;
 }
 
+/* Navigation List Styling */
 nav ul {
     list-style: none;
     display: flex;
@@ -46,23 +53,28 @@ nav ul li:first-child {
     margin-right: 5rem; /* Adds extra spacing after your name */
 }
 
-/* Styling for all links */
+/* Basic Link Styling */
 nav ul li a {
-    color: #333;
-    text-decoration: none;
-    font-weight: normal; /* Unbold other links */
-    font-size: 1.5rem;
-}
- 
-/* Keep your name bold */
-nav ul li:first-child a {
-    font-weight: bold; /* Keep the first link (your name) bold */
-    font-size: 2rem;
-    white-space: nowrap;
+    color: black; /* Default color for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth transition */
 }
 
-nav ul li a:hover {
-    color: #0073e6;
+/* Hover effect for the first child */
+nav ul li:first-child a:hover {
+    color: blue; /* Change color to blue on hover */
+}
+
+/* Disable hover and active state color changes for other links */
+nav ul li a:hover,
+nav ul li a:active {
+    color: black; /* Keep the color black even on hover and click */
+    text-decoration: none; /* Ensure no underline on hover or active */
+}
+
+/* Active link styling */
+nav ul li a.active {
+    color: blue; /* Active link color */
 }
 
 /* Profile container ensures the image+links and bio are side by side */
@@ -155,13 +167,13 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw; /* Full width of the viewport */
+    width: 100%; /* Full width of the viewport */
     background-color: #D3D3D3; /* Light gray background */
     /*background-color: #ffffff; /* Light gray background */
     margin: 0; /* Remove margin */
     box-sizing: border-box; /* Make sure padding doesn't affect width calculation */
-    height: 100vh; /* Set the height to fill the viewport */
-    overflow: auto; /* Allow scrolling if the content exceeds the height */
+    height: auto; /* Set the height to fill the viewport */
+    z-index: 1;
 }
 
 
@@ -191,7 +203,7 @@ body, html {
     justify-content: center;
     align-items: center;
     flex: 0 0 30%; /* Prevent stretching, set fixed width */
-    margin-left: 17rem; /* Space between image and content */
+    margin-left: 45rem; /* Space between image and content */
 }
 
 .image img {
@@ -206,7 +218,7 @@ body, html {
     flex-direction: column; /* Stack content vertically */
     flex: 1; /* Take up the remaining space */
     max-width: 70%; /* Set width for the content container */
-    margin-left: 5rem; /* Space between image and content */
+    margin-left: 0rem; /* Space between image and content */
 }
 
 
@@ -318,6 +330,53 @@ body, html {
     line-height: 1.2em;
 }
 
+/* Contact Section */
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw; /* Full width */
+    margin: 0;
+    box-sizing: border-box;
+    padding: 5rem 0;
+}
+
+/* Contact Section Header */
+.contact-section h2 {
+    font-size: 4rem;
+    color: #333;
+    text-align: center; /* Ensure title is centered */
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    margin-right: 50rem;
+
+}
+
+/* Container for the envelope icon and mail link */
+.contact-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; /* Space between the icon and the mail link */
+}
+
+/* Envelope Icon */
+.envelope-icon i {
+    font-size: 50px; /* Size of the envelope icon */
+    color: #4682B4; /* Set color for the icon */
+}
+
+/* Mail Link */
+.mail-link {
+    font-size: 2rem;
+    color: #4169E1; /* Color for the mail link */
+    text-decoration: none; /* Remove underline */
+}
+
+.mail-link:hover {
+    color: #000; /* Darker color when hovered */
+}
+
 
 
 main {
@@ -334,41 +393,290 @@ section {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-@media (max-width: 500px) {
-    .row > div {
-        float: none;
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column; /* Stack header content vertically */
+        height: auto; /* Adjust height for stacked content */
+        padding: 1rem; /* Adjust padding for smaller screens */
     }
-    .section .content {
-        width: 90%;
-        margin: 0 auto 4em auto;
+
+    nav ul {
+        flex-direction: column; /* Stack navigation links */
+        gap: 10px; /* Reduce spacing between links */
+        align-items: center;
     }
-    .section .image {
-        width: 80%;
-        padding: 0;
-        margin: 0 auto;
+
+    nav ul li:first-child {
+        margin-right: 0; /* Remove extra spacing on smaller screens */
     }
-    #profile-photo { padding-top: 20px; }
-    .myname {
-        display: block;
-        width: 100%;
+
+    nav ul li a {
+        font-size: 1.2rem; /* Reduce link size for readability */
+    }
+
+    nav ul li:first-child a {
+        font-size: 1.5rem; /* Adjust size of the first link (name) */
+    }
+    .profile-container {
+        display: flex; /* Use flexbox for layout */
+        flex-direction: column; /* Stack image-links and biography vertically */
+        justify-content: center; /* Center content vertically */
+        align-items: center; /* Center content horizontally */
+        padding: 0 1rem; /* Reduce padding for mobile */
+        margin-top: 15rem; /* Adjust margin for mobile screens */
+        margin-bottom: 5rem; /* Adjust bottom margin for mobile */
+    }
+
+    .image-links-container {
+        margin-right: 0; /* Remove spacing on the right */
+        margin-bottom: 20px; /* Add space below the image-links section */
+        text-align: center; /* Center-align the image-links content */
+    }
+
+    .profile-image {
+        width: 200px; /* Resize image for smaller screens */
+        height: 200px; /* Keep proportional height */
+    }
+
+    .social-links {
+        flex-direction: row; /* Icons remain in a row */
+        justify-content: center; /* Center-align the social links */
+        gap: 15px; /* Adjust spacing between icons for mobile */
+    }
+
+    .biography-note {
+        display: flex; /* Use flexbox for internal centering */
+        flex-direction: column; /* Stack title and paragraph vertically */
+        justify-content: center; /* Center vertically within its container */
+        align-items: center; /* Center horizontally */
+        margin: 0 auto; /* Center the entire biography horizontally */
+        max-width: 90%; /* Allow text to shrink for smaller screens */
+        text-align: center; /* Center-align the text */
+    }
+
+    .biography-note h2 {
+        font-size: 1.8rem; /* Slightly smaller header */
+        margin-bottom: 1rem; /* Adjust spacing below the header */
+    }
+
+    .biography-note p {
+        font-size: 0.9rem; /* Slightly smaller text for readability on mobile */
+        margin: 0; /* Remove extra margins */
+    }
+    /* Publications Section */
+    .publications-section {
+        width: 100%; /* Ensure section is full width */
+        height: auto; /* Adjust height based on content */
+        align-items: center;
+        padding: 0 1rem; /* Adjust padding */
+    }
+
+    /* Section title adjustments for mobile */
+    .publications-section h2 {
+        font-size: 2rem; /* Smaller font size */
+        margin-right: 0; /* Remove large right margin */
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        text-align: center; /* Center the section title */
+    }
+
+    /* Publication Layout */
+    .publication {
+        flex-direction: column; /* Stack image and content vertically */
+        margin-bottom: 4rem; /* Space between publications */
+        align-items: center; /* Center content */
+        width: 100%; /* Ensure publication takes full width */
+    }
+
+    /* Image adjustments for mobile */
+    .image {
+        width: 100%; /* Image takes full width on mobile */
+        max-width: 300px; /* Limit max width */
+        margin-left: 0; /* Remove left margin */
+        margin-bottom: 2rem; /* Space below image */
+        display: flex;
+        justify-content: center; /* Center image */
+    }
+
+    .image img {
+        width: 100%; /* Ensure image fits inside container */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 8px;
+    }
+
+    /* Publication content */
+    .publication-info {
+        margin-left: 0;
+        max-width: 100%; /* Take full width */
+        align-items: center;
+        text-align: center; /* Center the text */
+    }
+    .paper-title {
+        font-size: 1.2rem; /* Adjust title font size */
+        margin-bottom: 10px; /* Adjust space below the title */
+        text-align: left; /* Ensure title is centered */
+        white-space: normal; /* Allow title to wrap to multiple lines if needed */
+        word-wrap: break-word; /* Ensure long words break to the next line */
+        hyphens: auto; /* Allow automatic word-breaking when necessary */
+        line-height: 1.4; /* Adjust line height for better readability */
+    }
+
+    .paper-title a {
+        color: #000; /* Title link color */
+        text-decoration: none;
+        word-wrap: break-word; /* Ensure long links within titles also break */
+    }
+
+    .paper-title a:hover {
+        color: #4169E1; /* Hover color */
+    }
+    
+
+    /* Authors Section */
+    .authors {
+        font-size: 1.2rem; /* Adjust font size for mobile */
+        margin-bottom: 10px; /* Space below authors section */
+        white-space: normal; /* Allow wrapping for authors' names */
+        text-align: left; /* Align text to the left */
+    }
+
+    .authors .author {
+        padding-left: 0; /* Remove padding on the left for mobile */
+        margin-left: 0; /* Remove margin for better alignment */
+    }
+
+    .authors a {
+        color: #555; /* Link color */
+        text-decoration: none;
+        font-size: 1.1rem; /* Slightly smaller font size for mobile */
+    }
+
+    .authors a:hover {
+        color:  #4169E1; /* Change color on hover */
+    }
+
+    /* Conference Section */
+    .conference {
+        font-size: 1.3rem; /* Adjust font size for mobile */
+        margin-bottom: 15px; /* Space below the conference name */
+        white-space: normal; /* Allow wrapping for conference text */
+        text-align: left; /* Align text to the left */
+    }
+
+    .conference .special {
+        font-weight: bold; /* Make the special text bold */
+        color: #ff0000; /* Special color (red) */
+        font-size: 1.1rem; /* Slightly larger font size */
+    }
+
+    /* Links Section */
+    .links {
+        display: flex;
+        flex-wrap: wrap; /* Allow links to wrap to the next line */
+        justify-content: flex-start; /* Align links to the left */
+        gap: 10px; /* Add space between the links */
+    }
+
+    .links a {
+        padding: 8px 16px;
+        border-radius: 5px;
+        background-color: #0081af; /* Default link color */
+        color: white; /* White text */
+        font-weight: bold;
         text-align: center;
-        margin-bottom: 10px;
+        text-decoration: none;
+        margin-right: 0.5rem; /* Add space between links */
+        font-size: 1rem; /* Adjust font size for mobile */
     }
-    .menu {
-        display: block;
-        width: 100%;
+
+    .links a:hover {
+        color: #1A2B7E; /* Hover color */
+        cursor: pointer; /* Change cursor on hover */
+    }
+
+    /* Individual Link Types */
+    .links a[data-type="Abstract"],
+    .links a[data-type="Project page"],
+    .links a[data-type="Paper"],
+    .links a[data-type="Code"],
+    .links a[data-type="Video"],
+    .links a[data-type="Bibtex"] {
+        background-color: var(--link-background-color); /* Apply background color */
+    }
+
+    /* For links content such as Abstract, Bibtex, etc. */
+    .links .link-content {
+        display: none; /* Initially hidden */
+        text-align: left; /* Aligns the content to the left */
+        background-color: transparent; /* Remove background color (no box) */
+        padding: 0; /* Remove any internal padding */
+        margin-top: 10px; /* Optional: Adds space between the links and the content */
+        border: none; /* Ensure no border is around the content */
+        width: 100%; /* Make the content take up full width */
+    }
+
+    .links .link-content pre {
+        font-style: normal;
+        line-height: 1.5em; /* Adjust line height for readability */
+        font-size: 0.9rem; /* Adjust font size for code or text blocks */
+        white-space: pre-wrap; /* Allow the text to wrap and avoid overflow */
+    }
+    
+    /* When the content is visible, make sure it adjusts on mobile */
+    .links .link-content.show {
+        display: block; /* Show content when triggered */
+        width: 100%; /* Ensure it takes the full width */
+        font-size: 1rem; /* Adjust font size for readability */
+    }
+
+    /* Ensure links still work properly and are responsive */
+    .links a {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 5px;
+        background-color: #0081af;
+        color: white;
+        font-weight: bold;
         text-align: center;
+        text-decoration: none;
+        margin-right: 0.5rem;
+        font-size: 1rem;
+        margin-bottom: 0.5rem; /* Space between links when stacked */
     }
-}
-@media (min-width: 500px) {
-    .row > div {
-        float: left;
+
+    /* Contact Section */
+    .contact-section {
+        padding: 3rem 1rem; /* Reduce padding */
     }
-    .section .content {
-        width: 70%;
+
+    /* Contact Section Header */
+    .contact-section h2 {
+        font-size: 2.5rem; /* Smaller header size */
+        margin-right: 0; /* Remove extra margin on the right */
     }
-    .section .image {
-        width: 25%;
-        padding: 2.5%;
+
+    /* Container for the envelope icon and mail link */
+    .contact-info {
+        flex-direction: column; /* Stack the icon and mail link vertically */
+        gap: 0.5rem; /* Smaller gap between icon and mail link */
     }
-}
+
+    /* Envelope Icon */
+    .envelope-icon i {
+        font-size: 30px; /* Smaller icon size for mobile */
+    }
+
+    /* Mail Link */
+    .mail-link {
+        font-size: 1.5rem; /* Smaller mail link font size for mobile */
+    }
+
+
+
+
+
+
+
