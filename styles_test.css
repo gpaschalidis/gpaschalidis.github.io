@@ -48,34 +48,34 @@ nav ul li {
     display: inline-block;
 }
 
-/* Keep your name bold and spaced out */
-nav ul li:first-child {
-    margin-right: 5rem; /* Adds extra spacing after your name */
+/* Name link styling (excluded from scrolling logic) */
+.site-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    margin-right: 170px; /* Adds spacing after the name */
 }
 
-/* Basic Link Styling */
-nav ul li a {
-    color: black; /* Default color for links */
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s ease; /* Smooth transition */
+/* Hover state for navigation links */
+.site-name:hover {
+    color: darkblue; /* Optional hover color */
 }
 
-/* Hover effect for the first child */
-nav ul li:first-child a:hover {
-    color: blue; /* Change color to blue on hover */
+/* Styling for navigation links */
+.nav-link {
+    color: gray; /* Default color for links */
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0 10px;
 }
 
-/* Disable hover and active state color changes for other links */
-nav ul li a:hover,
-nav ul li a:active {
-    color: black; /* Keep the color black even on hover and click */
-    text-decoration: none; /* Ensure no underline on hover or active */
+/* Highlight active link */
+.nav-link.active {
+    color: blue; /* Highlighted color for the active link */
+    font-weight: bold;
 }
 
-/* Active link styling */
-nav ul li a.active {
-    color: blue; /* Active link color */
-}
 
 /* Profile container ensures the image+links and bio are side by side */
 .profile-container {
@@ -203,7 +203,7 @@ body, html {
     justify-content: center;
     align-items: center;
     flex: 0 0 30%; /* Prevent stretching, set fixed width */
-    margin-left: 45rem; /* Space between image and content */
+    margin-left: 15rem; /* Space between image and content */
 }
 
 .image img {
@@ -218,7 +218,7 @@ body, html {
     flex-direction: column; /* Stack content vertically */
     flex: 1; /* Take up the remaining space */
     max-width: 70%; /* Set width for the content container */
-    margin-left: 0rem; /* Space between image and content */
+    margin-left: 5rem; /* Space between image and content */
 }
 
 
