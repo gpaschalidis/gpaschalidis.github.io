@@ -16,10 +16,10 @@
         <header>
             <nav aria-label="Main Navigation">
                 <ul>
-                    <li><a href="https://gpaschalidis.github.io/">Georgios Paschalidis</a></li>
-                    <li><a href="#home" id="home-nav-button" class="active">Home</a></li>
-                    <li><a href="#publications" id="publications-nav-button">Publications</a></li>
-                    <li><a href="#contact" id="contact-nav-button">Contact</a></li>
+                    <li><a href="https://gpaschalidis.github.io/" class="site-name">Georgios Paschalidis</a></li>
+                    <li><a href="#home" id="home-nav-button" class="nav-link">Home</a></li>
+                    <li><a href="#publications" id="publications-nav-button" class="nav-link">Publications</a></li>
+                    <li><a href="#contact" id="contact-nav-button" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
         </header>
@@ -120,6 +120,10 @@ year={2025}
                         </div>
                     </div>
         
+
+            </div>
+        </section>
+
         <section id="contact" class="contact-section">
             <h2>Contact</h2>
                 <div class="contact-info">
@@ -132,7 +136,9 @@ year={2025}
                     <a href="mailto:g.paschalidis@uva.nl" class="mail-link">g.paschalidis@uva.nl</a>
                 </div>
         </section>
-    
+   
+
+<!--Java script for handling the contents of the Links Abstract and BibTex --> 
     <script type="text/javascript">
         document.querySelectorAll(".links").forEach(function (p) {
             p.addEventListener("click", function (ev) {
@@ -158,125 +164,81 @@ year={2025}
         });
     </script>
 
-    <!-- Include JavaScript -->
-    <!--<script type="text/javascript">
-        document.querySelectorAll(".links").forEach(function (p) {
-            p.addEventListener("click", function (ev) {
-                // Make sure that the click is coming from a link
-                if (ev.target.nodeName != "A") {
-                    return;
-                }
 
-                // Find the index of the div to toggle or return
-                var i = ev.target.dataset["index"];
-                if (i == undefined) {
-                    return;
-                }
-
-                // Make sure to remove something else that was displayed
-                // and toggle the current one
-                Array.prototype.forEach.call(
-                    ev.target.parentNode.children,
-                    function (sibling) {
-                        // We don't care about links etc
-                        if (sibling.nodeName != "DIV") {
-                            return;
-                        }
-
-                        // Hide others
-                        if (sibling.dataset["index"] != i) {
-                            sibling.style.display = "none";
-                        }
-
-                        // toggle the correct one
-                        else {
-                            if (sibling.style.display != "block") {
-                                sibling.style.display = "block";
-                            } else {
-                                sibling.style.display = "none";
-                            }
-                        }
-                    }
-                );
-                ev.preventDefault();
-            });
-        });
-    </script>-->
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent the default anchor behavior
-
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-
-        // Calculate the header height
-        const headerHeight = document.querySelector('header').offsetHeight;
-
-        // Scroll to the target section, offset by header height
-        window.scrollTo({
-            top: targetElement.offsetTop - headerHeight,
-            behavior: 'smooth' // Smooth scrolling
-        });
-    });
-});
-    </script>
 
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const links = document.querySelectorAll('nav ul li a');
+document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll(".nav-link");
 
+    let currentSection = "home"; // Default to the Home section
+    let isScrolling = false; // Flag to prevent conflicts during smooth scrolling
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+    // Initialize the active link
+    navLinks.forEach((link) => link.classList.remove("active"));
+    document.querySelector('.nav-link[href="#home"]').classList.add("active");
 
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            // Scroll to the target section, adjusted for header height
-            const headerHeight = document.querySelector('header').offsetHeight;
-            window.scrollTo({
-                top: targetElement.offsetTop - headerHeight,
-                behavior: 'smooth'
-            });
+    // Smooth scrolling and updating the active link logic
+    navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent default anchor jump
+
+            const targetId = link.getAttribute("href").substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+                // Prevent scroll conflict
+                isScrolling = true;
+
+                // Smooth scroll to the section
+                targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                // Temporarily set active link manually
+                navLinks.forEach((l) => l.classList.remove("active"));
+                link.classList.add("active");
+
+                // Allow scroll event to take over after a delay
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 500); // Match smooth scroll duration
+            }
         });
     });
 
-    // Function to set the active class based on the section in view
-    function setActiveLink() {
-        const sections = document.querySelectorAll('section');
-        let currentSection = null;
+    window.addEventListener("scroll", () => {
+        if (isScrolling) return; // Prevent conflicts during smooth scrolling
 
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            const scrollPosition = window.scrollY;
+        let newSection = "";
 
-            // If section is in the view
-            if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionTop + sectionHeight - 100) {
-                currentSection = section;
+        // Handle scroll to top explicitly
+        if (window.scrollY === 0) {
+            newSection = "home";
+        } else {
+            // Iterate through sections to determine the active section
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+
+                if (window.scrollY >= sectionTop - sectionHeight / 3) {
+                    newSection = section.getAttribute("id");
+                }
+            });
+
+            // Special handling for the last section
+            const lastSection = sections[sections.length - 1];
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+                newSection = lastSection.getAttribute("id");
             }
-        });
+        }
 
-        // Update the active link based on the section in view
-        links.forEach(link => {
-            const targetSection = document.querySelector(link.getAttribute('href'));
-
-            if (targetSection === currentSection) {
-                link.classList.add('active'); // Add active class to the link
-            } else {
-                link.classList.remove('active'); // Remove active class from other links
-            }
-        });
-    }
-
-    // Listen to scroll events to change active link
-    window.addEventListener('scroll', setActiveLink);
-
-    // Initial active link check on page load
-    setActiveLink();
+        // Update active link if the section changes
+        if (newSection !== currentSection && newSection !== "") {
+            navLinks.forEach((link) => link.classList.remove("active"));
+            const newLink = document.querySelector(`.nav-link[href="#${newSection}"]`);
+            if (newLink) newLink.classList.add("active");
+            currentSection = newSection;
+        }
+    });
 });
 
     </script>
