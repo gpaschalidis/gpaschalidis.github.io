@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Academicons for Google Scholar -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles_test.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="main-container">
@@ -167,49 +167,58 @@ year={2025}
 
 
     <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
-
     let currentSection = "home"; // Default to the Home section
     let isScrolling = false; // Flag to prevent conflicts during smooth scrolling
+    let scrollTimeout; // Timeout to handle scroll completion
+
+    // Get the header height once
+    const headerHeight = document.querySelector('header').offsetHeight;
 
     // Initialize the active link
     navLinks.forEach((link) => link.classList.remove("active"));
     document.querySelector('.nav-link[href="#home"]').classList.add("active");
-
     // Smooth scrolling and updating the active link logic
     navLinks.forEach((link) => {
         link.addEventListener("click", (e) => {
-            e.preventDefault(); // Prevent default anchor jump
-
+            e.preventDefault(); // Prevent default anchor behavior
             const targetId = link.getAttribute("href").substring(1);
             const targetSection = document.getElementById(targetId);
 
-            if (targetSection) {
-                // Prevent scroll conflict
-                isScrolling = true;
 
-                // Smooth scroll to the section
-                targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            if (targetSection) { 
+                // Prevent scroll conflict 
+                isScrolling = true; 
 
-                // Temporarily set active link manually
-                navLinks.forEach((l) => l.classList.remove("active"));
-                link.classList.add("active");
+                // Calculate the position considering the header offset
+                const targetPosition = targetSection.offsetTop - headerHeight; 
 
-                // Allow scroll event to take over after a delay
-                setTimeout(() => {
-                    isScrolling = false;
-                }, 500); // Match smooth scroll duration
-            }
-        });
+                // Smooth scroll to the section (adjusted by headerHeight)
+                window.scrollTo({ 
+                    top: targetPosition, 
+                    behavior: "smooth", 
+                }); 
+
+                // Temporarily set active link manually 
+
+                navLinks.forEach((l) => l.classList.remove("active")); 
+                link.classList.add("active"); 
+
+                // Allow the scroll event to resume after a delay
+                clearTimeout(scrollTimeout); 
+                scrollTimeout = setTimeout(() => { 
+                    isScrolling = false; 
+                }, 800); // Ensure this matches or exceeds the smooth scroll duration 
+            } 
+        }); 
     });
 
+
     window.addEventListener("scroll", () => {
-        if (isScrolling) return; // Prevent conflicts during smooth scrolling
-
+        if (isScrolling) return; // Prevent updates during smooth scrolling
         let newSection = "";
-
         // Handle scroll to top explicitly
         if (window.scrollY === 0) {
             newSection = "home";
@@ -218,19 +227,17 @@ document.addEventListener("DOMContentLoaded", function () {
             sections.forEach((section) => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.offsetHeight;
-
-                if (window.scrollY >= sectionTop - sectionHeight / 3) {
+                if (window.scrollY >= sectionTop - sectionHeight / 3 &&
+                    window.scrollY < sectionTop + sectionHeight - sectionHeight / 3) {
                     newSection = section.getAttribute("id");
                 }
             });
-
             // Special handling for the last section
             const lastSection = sections[sections.length - 1];
             if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
                 newSection = lastSection.getAttribute("id");
             }
         }
-
         // Update active link if the section changes
         if (newSection !== currentSection && newSection !== "") {
             navLinks.forEach((link) => link.classList.remove("active"));
@@ -240,7 +247,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
     </script>
 </body>
 </html>
