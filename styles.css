@@ -326,6 +326,7 @@ body, html {
     margin-top: 10px;
 }
 .links .link-content > pre {
+    Text-align: left;
     font-style: normal;
     line-height: 1.2em;
 }

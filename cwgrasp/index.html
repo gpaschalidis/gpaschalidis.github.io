@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CWGrasp</title>
+    <!-- Font Awesome for general icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Academicons for Google Scholar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <div class="Project_page">
+        <!-- Title of the Project -->
+        <h1>3D Whole-body Grasp Synthesis with <br> Directional Controllability</h1>
+
+        <!-- Authors' Names with Links -->
+        <p>
+            <span class="author">
+                <a href="https://gpaschalidis.github.io" class="author-link">Georgios Paschalidis</a>
+                <sub class="institution-sub">1</sub>
+            </span>,
+            <span class="author">
+                <a href="https://www.linkedin.com/in/romana-wilschut-766381197/" class="author-link">Romana Wilschut</a>
+                <sub class="institution-sub">1</sub>
+            </span>,
+            <span class="author">
+                <a href="https://anticdimi.github.io/" class="author-link">Dimitrije Antić</a>
+                <sub class="institution-sub">1</sub>
+            </span>,
+            <span class="author">
+                <a href="https://otaheri.github.io/" class="author-link">Omid Taheri</a>
+                <sub class="institution-sub">2</sub>
+            </span>,
+            <span class="author">
+                <a href="https://dtzionas.com/" class="author-link">Dimitrios Tzionas</a>
+                <sub class="institution-sub">1</sub>
+            </span>
+        </p>
+
+        <!-- Involved Institutions -->
+        <p class="institutions">
+            <span class="institution">
+                University of Amsterdam, the Netherlands
+                <sub class="institution-sub">1</sub>
+            </span>,
+            <span class="institution">
+                Max Planck Institute for Intelligent Systems, Tubingen, Germany
+                <sub class="institution-sub">2</sub>
+            </span>
+        </p>
+
+        <section class="external-links">
+            <!-- ArXiv Link -->
+            <div class="link-container">
+                <a href="https://arxiv.org/abs/2312.03913" class="special-link">
+                    <img src="arxiv.png" alt="arXiv" class="arxiv-logo">
+                </a>
+            </div>
+
+            <!-- YouTube Link -->
+            <div class="link-container">
+                <a href="https://youtube.com" class="special-link">
+                    <i class="fab fa-youtube"></i> Video
+                </a>
+            </div>
+
+            <!-- GitHub Link -->
+            <div class="link-container">
+                <a href="https://github.com" class="special-link">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+
+            <!-- License Link -->
+            <div class="link-container">
+                <a href="license.html" class="special-link">
+                    <i class="fas fa-book"></i> License
+                </a>
+            </div>
+        </section>
+
+
+        <!-- Conference -->
+        <p class="conference">
+            3DV (2025)
+        </p>
+        
+        <!-- Teaser -->
+        <p class="teaser">
+            <img src="teaser.png" alt="Teaser Image" class="teaser-image"> 
+        </p>
+        
+
+        <!-- Abstract -->
+        <section class="abstract-section">
+            <h2 class="abstract-title">Abstract</h2>
+            <div class="abstract-container">
+                Synthesizing 3D whole-bodies that realistically grasp objects is useful for animation, mixed reality,
+                and robotics. This is challenging, because the hands and body need to look natural w.r.t. each other,
+                the grasped object, as well as the local scene (i.e., a receptacle supporting the object). Only recent
+                work tackles this, with a divide-and-conquer approach; it first generates a "guiding" right-hand grasp,
+                and then searches for bodies that match this. However, the guiding-hand synthesis lacks controllability
+                and receptacle awareness, so it likely has an implausible direction (i.e., a body can't match this without
+                penetrating the receptacle) and needs corrections through major post-processing. Moreover, the body search
+                needs exhaustive sampling and is expensive. These are strong limitations. We tackle these with a novel
+                method called CWGrasp. Our key idea is that performing geometry-based reasoning "early on," instead of
+                "too late," provides rich "control" signals for inference. To this end, CWGrasp first samples a plausible
+                reaching-direction vector (used later for both the arm and hand) from a probabilistic model built via
+                raycasting from the object and collision checking. Then, it generates a reaching body with a desired arm
+                direction, as well as a "guiding" grasping hand with a desired palm direction that complies with the arm's
+                one. Eventually, CWGrasp refines the body to match the "guiding" hand, while plausibly contacting the scene.
+                Notably, generating already-compatible "parts" greatly simplifies the "whole." Moreover, CWGrasp uniquely
+                tackles both right- and left-hand grasps. We evaluate on the GRAB and ReplicaGrasp datasets. CWGrasp
+                outperforms baselines, at lower runtime and budget, while all components help performance.
+
+            </div>
+        </section>
+        
+        <!-- BibTex -->
+        <section class="bibtex-section">
+            <h2 class="bibtex-title">BibTex</h2>
+                <div class="bibtex-container">
+                    <pre>
+@InProceedings{paschalidis20243d,
+title={3D Whole-body Grasp Synthesis with Directional Controllability},
+author={Paschalidis, Georgios and Wilschut, Romana and Anti{\'c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
+booktitle = {International Conference on 3D Vision (3DV)},
+year={2025}}
+                    </pre>
+                </div>
+        </section>
+        <!-- Abstract -->
+        <section class="contact-section">
+            <h2 class="contact-title">Contact</h2>
+                <div class="contact-content">
+                    <p>For more questions, please contact <a href="mailto:gpaschalidis@uva.nl">gpaschalidis@uva.nl</a></p>
+                    <p>For commercial licensing, please contact <a href="">ps-licensing@uva.nl</a></p>
+                </div>
+        </section>
+    </div>
+</body>
+</html>
+

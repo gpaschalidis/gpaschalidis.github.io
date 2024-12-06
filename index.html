@@ -62,7 +62,7 @@
                 <h2>Publications</h2>
                     <div class="publication">
                         <div class="image">
-                            <img src="teasers/teaser_cwgrasp.png" alt="3D Whole-body Grasp Synthesis with Directional Controllability" />
+                            <img src="cwgrasp/teaser.png" alt="3D Whole-body Grasp Synthesis with Directional Controllability" />
                         </div>
                         <div class="publication-info">
                             <div class="paper-title">
@@ -80,40 +80,40 @@
                             </div>
                             <div class="links">
                                 <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
-                                <a href="https://arxiv.org/abs/2408.16770" data-type="Project page">Project page</a> 
+                                <a href="https://gpaschalidis.github.io/cwgrasp" data-type="Project page">Project page</a> 
                                 <a href="https://arxiv.org/abs/2408.16770" data-type="Paper">Paper</a> 
                                 <a href="" data-type="Code">Code</a> 
                                 <a href="" data-type="Video">Video</a> 
                                 <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
                                 <div class="link-content" data-index="0">
                                     <pre>
-Synthesizing 3D whole-bodies that realistically grasp objects is useful for animation, mixed reality, 
-and robotics. This is challenging, because the hands and body need to look natural w.r.t. each other, 
-the grasped object, as well as the local scene (i.e., a receptacle supporting the object). Only recent 
-work tackles this, with a divide-and-conquer approach; it first generates a "guiding" right-hand grasp, 
-and then searches for bodies that match this. However, the guiding-hand synthesis lacks controllability 
-and receptacle awareness, so it likely has an implausible direction (i.e., a body can't match this without 
-penetrating the receptacle) and needs corrections through major post-processing. Moreover, the body search 
-needs exhaustive sampling and is expensive. These are strong limitations. We tackle these with a novel 
-method called CWGrasp. Our key idea is that performing geometry-based reasoning "early on," instead of 
-"too late," provides rich "control" signals for inference. To this end, CWGrasp first samples a plausible 
-reaching-direction vector (used later for both the arm and hand) from a probabilistic model built via 
-raycasting from the object and collision checking. Then, it generates a reaching body with a desired arm 
-direction, as well as a "guiding" grasping hand with a desired palm direction that complies with the arm's 
-one. Eventually, CWGrasp refines the body to match the "guiding" hand, while plausibly contacting the scene.
-Notably, generating already-compatible "parts" greatly simplifies the "whole." Moreover, CWGrasp uniquely 
-tackles both right- and left-hand grasps. We evaluate on the GRAB and ReplicaGrasp datasets. CWGrasp 
-outperforms baselines, at lower runtime and budget, while all components help performance.
+                                        Synthesizing 3D whole-bodies that realistically grasp objects is useful for animation, mixed reality, 
+                                        and robotics. This is challenging, because the hands and body need to look natural w.r.t. each other, 
+                                        the grasped object, as well as the local scene (i.e., a receptacle supporting the object). Only recent 
+                                        work tackles this, with a divide-and-conquer approach; it first generates a "guiding" right-hand grasp, 
+                                        and then searches for bodies that match this. However, the guiding-hand synthesis lacks controllability 
+                                        and receptacle awareness, so it likely has an implausible direction (i.e., a body can't match this without 
+                                        penetrating the receptacle) and needs corrections through major post-processing. Moreover, the body search 
+                                        needs exhaustive sampling and is expensive. These are strong limitations. We tackle these with a novel 
+                                        method called CWGrasp. Our key idea is that performing geometry-based reasoning "early on," instead of 
+                                        "too late," provides rich "control" signals for inference. To this end, CWGrasp first samples a plausible 
+                                        reaching-direction vector (used later for both the arm and hand) from a probabilistic model built via 
+                                        raycasting from the object and collision checking. Then, it generates a reaching body with a desired arm 
+                                        direction, as well as a "guiding" grasping hand with a desired palm direction that complies with the arm's 
+                                        one. Eventually, CWGrasp refines the body to match the "guiding" hand, while plausibly contacting the scene.
+                                        Notably, generating already-compatible "parts" greatly simplifies the "whole." Moreover, CWGrasp uniquely 
+                                        tackles both right- and left-hand grasps. We evaluate on the GRAB and ReplicaGrasp datasets. CWGrasp 
+                                        outperforms baselines, at lower runtime and budget, while all components help performance.
                                     </pre>
                                 </div>
                                 <div class="link-content" data-index="5">
                                     <pre>
-@InProceedings{paschalidis20243d,
-title={3D Whole-body Grasp Synthesis with Directional Controllability},
-author={Paschalidis, Georgios and Wilschut, Romana and Anti{\'c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
-booktitle = {International Conference on 3D Vision (3DV)},
-year={2025}
-}
+                                        @InProceedings{paschalidis20243d,
+                                        title={3D Whole-body Grasp Synthesis with Directional Controllability},
+                                        author={Paschalidis, Georgios and Wilschut, Romana and Anti{\'c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
+                                        booktitle = {International Conference on 3D Vision (3DV)},
+                                        year={2025}
+                                        }
                                     </pre>
                                 </div>
                             </div>
@@ -136,7 +136,16 @@ year={2025}
                     <a href="mailto:g.paschalidis@uva.nl" class="mail-link">g.paschalidis@uva.nl</a>
                 </div>
         </section>
-   
+    
+<!--Java script for removing leading spaces and Tabs inside <pre> --> 
+    <script> 
+        document.querySelectorAll('.link-content pre').forEach(function(pre) {
+            // Remove leading whitespace from each line of the <pre> content
+            pre.innerHTML = pre.innerHTML
+                .replace(/^\s+/g, '') // Remove leading whitespace on each line
+                .replace(/\n\s+/g, '\n'); // Remove spaces after line breaks (if any)
+        });
+    </script>
 
 <!--Java script for handling the contents of the Links Abstract and BibTex --> 
     <script type="text/javascript">
