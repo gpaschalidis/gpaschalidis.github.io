@@ -62,10 +62,10 @@ body {
     position: relative;
 }
 
-/* Subscript positioning above the institution name */
+/* General Subscript Styling */
 .institution-sub {
-    position: absolute;
-    top: -12px;   /* Position the subscript above the institution name */
+    position: relative; /* Change from absolute to relative for better alignment */
+    vertical-align: super; /* Align as a superscript */
     font-size: 0.8em;
     color: #555;
 }
@@ -115,79 +115,76 @@ body {
 }
 
 
-/* Styling for the conference */
-.conference {
-    text-align: center;
-    font-size: 2em;
-    margin-top: 30px;
-    font-weight: bold;
-}
-
-/* Teaser styling */
+/* Method Overview Section Styling */
 .teaser {
-    margin-top: 30px;    /* Optional spacing */
+    margin: 50px auto; /* Center the section and add vertical spacing */
+    max-width: 1200px; /* Limit the section's width */
+    padding: 20px;     /* Add inner spacing */
+    border-radius: 10px; /* Optional: Rounded corners for the section */
 }
 
-/* Teaser image styling */
+/* Title Styling */
+.conference-name {
+    font-size: 2em;         /* Large, clear title */
+    font-weight: bold;      /* Emphasize the title */
+    color: #333;            /* Dark gray for readability */
+    text-align: center;     /* Center-align the title */
+    margin-bottom: 20px;    /* Add spacing below the title */
+}
+
+/* Image Styling */
 .teaser-image {
-    width: 100%;          /* Adjust width as needed */
-    max-width: 1000px;     /* Limit the width */
-    height: auto;         /* Keep the aspect ratio */
-    border-radius: 10px;  /* Optional rounded corners */
+    text-align: center; /* Center the image block */
     margin-bottom: 5px; /* Add spacing below the image */
 }
 
-/* Abstract Text */
-.teaser-description {
-    text-align: left;         /* Apply full justification */
+.teas-image {
+    width: 100%;          /* Make the image responsive */
+    max-width: 1000px;     /* Limit the maximum width */
+    height: auto;         /* Maintain aspect ratio */
+    border-radius: 10px;  /* Optional: Rounded corners for the image */
 }
 
-/* Abstract Text */
-.teaser-description p {
-    text-align: justify;         /* Apply full justification */
-    font-size: 1.0em;            /* Set readable font size */
-    line-height: 1.6;            /* Adjust line height for readability */
-    color: #333;                 /* Use a clean dark gray text color */
-    word-wrap: break-word;       /* Ensure long words are wrapped */
-    width: 1000px;            /* Keep text within the teaser image width */
-    margin: 0 auto;              /* Center the block horizontally */
+/* Caption Styling */
+.teaser-caption {
+    font-size: 1.0em;        /* Set readable font size */
+    width: 100%;          /* Make the image responsive */
+    line-height: 1.6;        /* Improve readability with line spacing */
+    color: #555;             /* Slightly lighter text for the caption */
+    text-align: justify;     /* Justify the caption text */
+    margin: 0 auto;          /* Center the caption within the section */
+    max-width: 1000px;        /* Match the width of the image */
 }
 
-/* Abstract Section */
+
+/* Method Overview Section Styling */
 .abstract-section {
-    display: flex;               /* Flexbox to center the section horizontally */
-    flex-direction: column;      /* Stack title and abstract text */
-    align-items: center;         /* Center the block horizontally */
-    margin: 40px auto;           /* Auto margin for horizontal centering */
-    width: 100%;         
-    max-width: 1000px;            /* Keep text within the teaser image width */
-    padding: 0 20px;             /* Add padding for better layout */
+    margin: 50px auto; /* Center the section and add vertical spacing */
+    max-width: 1200px; /* Limit the section's width */
+    padding: 20px;     /* Add inner spacing */
+    border-radius: 10px; /* Optional: Rounded corners for the section */
 }
 
-/* Abstract Title */
+/* Title Styling */
 .abstract-title {
-    font-size: 2em;            /* Slightly larger font for the title */
-    font-weight: bold;           /* Make the title bold */
-    text-align: center;          /* Keep title text centered */
-    margin-bottom: 10px;         /* Add some space below the title */
+    font-size: 2em;         /* Large, clear title */
+    font-weight: bold;      /* Emphasize the title */
+    color: #333;            /* Dark gray for readability */
+    text-align: center;     /* Center-align the title */
+    margin-bottom: 20px;    /* Add spacing below the title */
 }
 
-/* Abstract Text */
+/* Caption Styling */
 .abstract-container {
-    text-align: justify;         /* Apply full justification */
-    font-size: 1.2em;            /* Set readable font size */
-    width: 100%;         
-    width: 1000px;            /* Keep text within the teaser image width */
+    font-size: 1.2em;        /* Set readable font size */
+    width: 100%;          /* Make the image responsive */
+    line-height: 1.6;        /* Improve readability with line spacing */
+    color: #555;             /* Slightly lighter text for the caption */
+    text-align: justify;     /* Justify the caption text */
+    margin: 0 auto;          /* Center the caption within the section */
+    max-width: 1000px;        /* Match the width of the image */
 }
 
-/* Abstract Text */
-.abstract-container p {
-    text-align: justify;         /* Apply full justification */
-    line-height: 1.6;            /* Adjust line height for readability */
-    color: #333;                 /* Use a clean dark gray text color */
-    word-wrap: break-word;       /* Ensure long words are wrapped */
-    margin: 0 auto;              /* Center the block horizontally */
-}
 
 /* Method Overview Section Styling */
 .method-overview {
@@ -618,5 +615,24 @@ body {
 
 .contact-content a:hover {
     text-decoration: underline; /* Underline on hover */
+}
+
+/* Media Query for Mobile Screens */
+@media (max-width: 768px) {
+    .external-links {
+        flex-direction: column; /* Stack links vertically */
+        gap: 20px; /* Reduce space between links */
+    }
+
+    .special-link {
+        padding: 8px 15px; /* Adjust padding for smaller screens */
+        font-size: 0.9em; /* Reduce font size slightly */
+    }
+
+    .arxiv-logo {
+        width: 50px; /* Slightly smaller logo for mobile */
+    }
+
+    
 }
 
