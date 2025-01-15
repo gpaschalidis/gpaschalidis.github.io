@@ -91,9 +91,15 @@
         
         <!-- Teaser -->
         <p class="teaser">
-            <img src="teaser.png" alt="Teaser Image" class="teaser-image"> 
+            <img src="images/teaser.png" alt="Teaser Image" class="teaser-image"> 
         </p>
-        
+        <div class="teaser-description">
+            <p>We develop CWGrasp, a novel framework for synthesizing 3D whole-body grasps for an object placed on a receptacle. 
+            Our framework capitalizes on a novel combination of geometric-based reasoning and controllable data-driven synthesis 
+            methods. By adding a novel controllability in the synthesis process, we achieve realistic results at a fraction of 
+            the computational cost w.r.t. the state of the art. 
+            </p>
+        </div> 
 
         <!-- Abstract -->
         <section class="abstract-section">
@@ -120,25 +126,234 @@
             </div>
         </section>
         
+        <section class="method-overview">
+            <h2 class="method-overview-title">Method Overview</h2>
+            <p class="method-overview-image">
+                <img src="images/method_overview.png" alt="Method Overview" class="overview-image"> 
+            </p>
+            <div class="method-overview-caption">
+                <p>We first sample a plausible reaching direction from <strong>ReachingField</strong>. Next, we condition both <strong>CGrasp</strong> and
+                   <strong>CReach</strong> on this direction and obtain a hand and a body, respectively, that satisfy the sampled direction. 
+                   Finally, we include an <strong>optimization</strong> stage to resolve possible penetrations with the surrounding object, 
+                   while also making the hand and the body arm fully compatible. With our framework, we generate both <strong>left-hand 
+                   and right-hand grasps</strong>.
+                </p>
+            </div> 
+        </section>
+        
+        <section class="reachingfield">
+            <h2 class="reachingfield-title">ReachingField</h2>
+            <div class="reachingfield_animations">
+                <div class="video-container">
+                    <h3 class="video-description">ReachingField formulation for a "low-height" object</h3>
+                    <video class="reachingfield-video" controls autoplay muted loop>
+                        <source src="videos/reachingfield/reachingfield_low.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-container">
+                    <h3 class="video-description">ReachingField formulation for a "medium-height" object</h3>
+                    <video class="reachingfield-video" controls autoplay muted loop>
+                        <source src="videos/reachingfield/reachingfield_medium.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-container">
+                    <h3 class="video-description">ReachingField formulation for a "high-height" object</h3>
+                    <video class="reachingfield-video" controls autoplay muted loop>
+                        <source src="videos/reachingfield/reachingfield_high.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <!--<img class="reachingfield-gif" src="gifs/reachingfield1.gif" alt="ReachingField GIF 1">
+                <img class="reachingfield-gif" src="gifs/reachingfield2.gif" alt="ReachingField GIF 2">
+                <img class="reachingfield-gif" src="gifs/reachingfield3.gif" alt="ReachingField GIF 3">-->
+            </div>
+            <p class="reachingfield-caption">
+                Visualization of how the <strong>ReachingField</strong> is built for objects on various receptacles at different heights. First, we define a spherical grid around the object and cast rays from the center of the object to all points in the grid. We apply a series of collision tests to all the rays, and from those that pass all tests, we build a probabilistic 3D vector field, called the <strong>ReachingField</strong>.    
+            </p>  
+        </section>
+
+        <section class="cgrasp">
+            <h2 class="cgrasp-title">CGrasp (Controllable Grasp)</h2>
+            <p class="cgrasp-controllability-image">
+                <img src="images/cgrasp_controllability.png" alt="CGrasp Image" class="cgrasp-image"> 
+            </p>
+            <div class="cgrasp-caption">
+            <p>
+                Using <strong>CGrasp</strong>, we can generate grasping hands that interact plausibly with various objects while satisfying a given grasping direction. In the examples above, the blue <span style="color: blue;">hands</span> grasp the red <span style="color: red;">objects</span> realistically, following the directions indicated by the corresponding golen <span style="color: goldenrod;">arrows</span>.
+</p>
+
+            </div> 
+        </section>
+        
+        <section class="creach">
+            <h2 class="creach-title">CGrasp (Controllable Grasp)</h2>
+            <p class="creach-controllability-image">
+                <img src="images/creach_controllability.png" alt="CReach Image" class="creach-image"> 
+            </p>
+            <div class="creach-caption">
+            <p>
+                Using <strong>CReach</strong>, we can generate bodies that reach a target wrist or object location with either the <strong>left</strong> or <strong>right</strong> arm, while the arm maintains a desired direction, shown with a gray arrow in the examples above. In these examples, we demonstrate grasping hands that interact plausibly with various objects while satisfying a given grasping direction.
+            </p>
+
+            </div> 
+        </section>
+
+
+        <section class="optimization">
+            <h2 class="optimization-title">Optimization</h2>
+            <div class="optimization-visualizations">
+                <div class="video-container">
+                    <h3 class="video-title">CWGrasp Optimization</h3>
+                    <video class="optimization-video" controls autoplay muted loop>
+                        <source src="videos/optimization/cwgrasp_optimization.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-container">
+                    <h3 class="video-title">FLEX Optimization</h3>
+                    <video class="optimization-video" controls autoplay muted loop>
+                        <source src="videos/optimization/flex_optimization.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>  
+            <p class="optimization-caption">
+                We depict how the optimization process works both for <strong>CWGrasp</strong> and <strong>FLEX</strong> for the same scene. <strong>FLEX</strong> samples 500 random pairs of bodies and hands that are optimized together. In this visualization, we depict the best pair. In the first stage of the optimization, the body is far from the object and, as the optimization proceeds, approaches the object and finally grasps it. However, the final result lacks realism. Oppositely, <strong>CWGrasp</strong>, by leveraging <strong>ReachingField</strong>, samples just 1 body and hand, with the body being close to the object from the beginning. The optimization is around <strong>16x</strong> faster than FLEX and produces more realistic results.
+            </p>  
+        </section>
+
+<section class="qualitative_results">
+    <h2 class="qualitative_results-title">Qualitative results</h2>
+    <div class="grasps">
+        <h3 class="right_grasp-container">Right-Hand interactions</h3>
+            <h4 class="category-title">Low-height object</h4>
+            <div class="video-container">
+                <h5 class="method-name">CWGrasp</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/cwgrasp/cwgrasp_camera.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">FLEX</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/flex/flex_camera.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">CWGrasp</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/cwgrasp/cwgrasp_apple.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">FLEX</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/flex/flex_apple.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <h4 class="category-title">Medium-height object</h4>
+            <div class="video-container">
+                <h5 class="method-name">CWGrasp</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/cwgrasp/cwgrasp_wineglass.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">FLEX</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/flex/flex_wineglass.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">CWGrasp</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/cwgrasp/cwgrasp_waterbottle.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">FLEX</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/flex/flex_waterbottle.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <h4 class="category-title">High-height object</h4>
+            <div class="video-container">
+                <h5 class="method-name">CWGrasp</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/cwgrasp/cwgrasp_elephant.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-container">
+                <h5 class="method-name">FLEX</h5>
+                <video class="result-video" controls autoplay muted loop>
+                    <source src="videos/results/flex/flex_elephant.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+
+        <h3 class="left_grasp-container">Left-Hand interactions</h3>
+        <div class="video-container">
+            <video class="result-video" controls autoplay muted loop>
+                <source src="videos/results/cwgrasp_left/cwgrasp_left_binoculars.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-container">
+            <video class="result-video" controls autoplay muted loop>
+                <source src="videos/results/cwgrasp_left/cwgrasp_left_camera.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-container">
+            <video class="result-video" controls autoplay muted loop>
+                <source src="videos/results/cwgrasp_left/cwgrasp_left_hammer.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-container">
+            <video class="result-video" controls autoplay muted loop>
+                <source src="videos/results/cwgrasp_left/cwgrasp_left_lightbulb.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-container">
+            <video class="result-video" controls autoplay muted loop>
+                <source src="videos/results/cwgrasp_left/cwgrasp_left_wineglass.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    </div>
+</section>
+
         <!-- BibTex -->
         <section class="bibtex-section">
             <h2 class="bibtex-title">BibTex</h2>
                 <div class="bibtex-container">
-                    <pre>
-@InProceedings{paschalidis20243d,
-title={3D Whole-body Grasp Synthesis with Directional Controllability},
-author={Paschalidis, Georgios and Wilschut, Romana and Anti{\'c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
-booktitle = {International Conference on 3D Vision (3DV)},
-year={2025}}
-                    </pre>
+                <pre>@InProceedings{paschalidis20243d,<br />&nbsp; title &nbsp; &nbsp; = {3D Whole-body Grasp Synthesis with Directional Controllabi    lity},<br />&nbsp; author &nbsp; &nbsp;= {Paschalidis, Georgios and Wilschut, Romana and Anti{\'c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},<br />&nbsp; booktitle = {International Conference on 3D Vision (3DV)},<br />&nbsp; year &nbsp; &nbsp; &nbsp;= {2025}<br />&nbsp;}</pre>
                 </div>
         </section>
         <!-- Abstract -->
         <section class="contact-section">
             <h2 class="contact-title">Contact</h2>
                 <div class="contact-content">
-                    <p>For more questions, please contact <a href="mailto:gpaschalidis@uva.nl">gpaschalidis@uva.nl</a></p>
-                    <p>For commercial licensing, please contact <a href="">ps-licensing@uva.nl</a></p>
+                    <p>For more questions, please contact <a href="mailto:gpaschalidis@uva.nl">g.paschalidis@uva.nl</a></p>
+                    <p>For commercial licensing, please contact <a href="">g.paschalidis@uva.nl</a></p>
                 </div>
         </section>
     </div>
