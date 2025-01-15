@@ -118,14 +118,13 @@ body {
 /* Styling for the conference */
 .conference {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
     margin-top: 30px;
     font-weight: bold;
 }
 
 /* Teaser styling */
 .teaser {
-    text-align: center; /* Centering the content */
     margin-top: 30px;    /* Optional spacing */
 }
 
@@ -135,21 +134,39 @@ body {
     max-width: 1000px;     /* Limit the width */
     height: auto;         /* Keep the aspect ratio */
     border-radius: 10px;  /* Optional rounded corners */
-
+    margin-bottom: 5px; /* Add spacing below the image */
 }
+
+/* Abstract Text */
+.teaser-description {
+    text-align: left;         /* Apply full justification */
+}
+
+/* Abstract Text */
+.teaser-description p {
+    text-align: justify;         /* Apply full justification */
+    font-size: 1.0em;            /* Set readable font size */
+    line-height: 1.6;            /* Adjust line height for readability */
+    color: #333;                 /* Use a clean dark gray text color */
+    word-wrap: break-word;       /* Ensure long words are wrapped */
+    width: 1000px;            /* Keep text within the teaser image width */
+    margin: 0 auto;              /* Center the block horizontally */
+}
+
 /* Abstract Section */
 .abstract-section {
     display: flex;               /* Flexbox to center the section horizontally */
     flex-direction: column;      /* Stack title and abstract text */
     align-items: center;         /* Center the block horizontally */
     margin: 40px auto;           /* Auto margin for horizontal centering */
-    width: 1000px;            /* Keep text within the teaser image width */
+    width: 100%;         
+    max-width: 1000px;            /* Keep text within the teaser image width */
     padding: 0 20px;             /* Add padding for better layout */
 }
 
 /* Abstract Title */
 .abstract-title {
-    font-size: 1.5em;            /* Slightly larger font for the title */
+    font-size: 2em;            /* Slightly larger font for the title */
     font-weight: bold;           /* Make the title bold */
     text-align: center;          /* Keep title text centered */
     margin-bottom: 10px;         /* Add some space below the title */
@@ -158,27 +175,376 @@ body {
 /* Abstract Text */
 .abstract-container {
     text-align: justify;         /* Apply full justification */
+    font-size: 1.2em;            /* Set readable font size */
+    width: 100%;         
+    width: 1000px;            /* Keep text within the teaser image width */
 }
 
 /* Abstract Text */
 .abstract-container p {
     text-align: justify;         /* Apply full justification */
-    font-size: 1.1em;            /* Set readable font size */
     line-height: 1.6;            /* Adjust line height for readability */
     color: #333;                 /* Use a clean dark gray text color */
     word-wrap: break-word;       /* Ensure long words are wrapped */
-    width: 1000px;            /* Keep text within the teaser image width */
     margin: 0 auto;              /* Center the block horizontally */
 }
 
+/* Method Overview Section Styling */
+.method-overview {
+    margin: 50px auto; /* Center the section and add vertical spacing */
+    max-width: 1200px; /* Limit the section's width */
+    padding: 20px;     /* Add inner spacing */
+    border-radius: 10px; /* Optional: Rounded corners for the section */
+}
+
+/* Title Styling */
+.method-overview-title {
+    font-size: 2em;         /* Large, clear title */
+    font-weight: bold;      /* Emphasize the title */
+    color: #333;            /* Dark gray for readability */
+    text-align: center;     /* Center-align the title */
+    margin-bottom: 20px;    /* Add spacing below the title */
+}
+
+/* Image Styling */
+.method-overview-image {
+    text-align: center; /* Center the image block */
+    margin-bottom: 5px; /* Add spacing below the image */
+}
+
+.overview-image {
+    width: 100%;          /* Make the image responsive */
+    max-width: 1000px;     /* Limit the maximum width */
+    height: auto;         /* Maintain aspect ratio */
+    border-radius: 10px;  /* Optional: Rounded corners for the image */
+}
+
+/* Caption Styling */
+.method-overview-caption {
+    font-size: 1.0em;        /* Set readable font size */
+    width: 100%;          /* Make the image responsive */
+    line-height: 1.6;        /* Improve readability with line spacing */
+    color: #555;             /* Slightly lighter text for the caption */
+    text-align: justify;     /* Justify the caption text */
+    margin: 0 auto;          /* Center the caption within the section */
+    max-width: 1000px;        /* Match the width of the image */
+}
+
+/* ReachingField Section Styling with gifs
+.reachingfield{
+    margin: 50px auto;
+    max-width: 1200px; 
+    padding: 20px;     
+    border-radius: 10px; 
+}
+
+.reachingfield-title {
+    font-size: 2em;         
+    font-weight: bold;      
+    color: #333;            
+    text-align: center;    
+    margin-bottom: 20px;  
+}
+
+
+.reachingfield_animations {
+    display: flex;
+    justify-content: center;
+    gap: 20px; 
+}
+
+.reachingfield_animations img {
+    width: 320px; 
+    height: auto;
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+.reachingfield-caption {
+    font-size: 1.0em;       
+    width: 100%;      
+    line-height: 1.6;        
+    color: #555;             
+    text-align: justify;    
+    margin: 0 auto;        
+    max-width: 1000px;  
+}
+*/
+
+.reachingfield{
+    margin: 50px auto;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.reachingfield-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.reachingfield_animations {
+    display: flex;
+    flex-direction: column; /* Keep the videos stacked vertically */
+    align-items: center; /* Center the videos horizontally */
+    gap: 20px;
+}
+
+.video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align the video title to the left */
+    width: 100%;
+    max-width: 1000px; /* Limit the video container's width */
+}
+
+.video-description {
+    font-size: 1.5em;
+    text-align: center; /* Align the title to the left */
+    margin-top: 30px;
+    color: purple;
+    width: 100%; /* Ensure the title spans the full width */
+}
+
+.reachingfield-video {
+    width: 100%; /* Make sure the videos take full container width */
+    height: auto;
+    border-radius: 8px;
+}
+
+.reachingfield-caption {
+    font-size: 1.0em;
+    width: 100%;
+    line-height: 1.6;
+    color: #555;
+    text-align: justify;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+
+/* Method Overview Section Styling */
+.cgrasp {
+    margin: 50px auto; /* Center the section and add vertical spacing */
+    max-width: 1200px; /* Limit the section's width */
+    padding: 20px;     /* Add inner spacing */
+    border-radius: 10px; /* Optional: Rounded corners for the section */
+}
+
+/* Title Styling */
+.cgrasp-title {
+    font-size: 2em;         /* Large, clear title */
+    font-weight: bold;      /* Emphasize the title */
+    color: #333;            /* Dark gray for readability */
+    text-align: center;     /* Center-align the title */
+    margin-bottom: 20px;    /* Add spacing below the title */
+}
+
+/* Image Styling */
+.cgrasp-controllability-image {
+    text-align: center; /* Center the image block */
+    margin-bottom: 5px; /* Add spacing below the image */
+}
+
+.cgrasp-image {
+    width: 100%;          /* Make the image responsive */
+    max-width: 1000px;     /* Limit the maximum width */
+    height: auto;         /* Maintain aspect ratio */
+    border-radius: 10px;  /* Optional: Rounded corners for the image */
+}
+
+/* Caption Styling */
+.cgrasp-caption {
+    font-size: 1.0em;        /* Set readable font size */
+    width: 100%;          /* Make the image responsive */
+    line-height: 1.6;        /* Improve readability with line spacing */
+    color: #555;             /* Slightly lighter text for the caption */
+    text-align: justify;     /* Justify the caption text */
+    margin: 0 auto;          /* Center the caption within the section */
+    max-width: 1000px;        /* Match the width of the image */
+}
+
+/* Method Overview Section Styling */
+.creach {
+    margin: 50px auto; /* Center the section and add vertical spacing */
+    max-width: 1200px; /* Limit the section's width */
+    padding: 20px;     /* Add inner spacing */
+    border-radius: 10px; /* Optional: Rounded corners for the section */
+}
+
+/* Title Styling */
+.creach-title {
+    font-size: 2em;         /* Large, clear title */
+    font-weight: bold;      /* Emphasize the title */
+    color: #333;            /* Dark gray for readability */
+    text-align: center;     /* Center-align the title */
+    margin-bottom: 20px;    /* Add spacing below the title */
+}
+
+/* Image Styling */
+.creach-controllability-image {
+    text-align: center; /* Center the image block */
+    margin-bottom: 5px; /* Add spacing below the image */
+}
+
+.creach-image {
+    width: 100%;          /* Make the image responsive */
+    max-width: 1000px;     /* Limit the maximum width */
+    height: auto;         /* Maintain aspect ratio */
+    border-radius: 10px;  /* Optional: Rounded corners for the image */
+}
+
+/* Caption Styling */
+.creach-caption {
+    font-size: 1.0em;        /* Set readable font size */
+    width: 100%;          /* Make the image responsive */
+    line-height: 1.6;        /* Improve readability with line spacing */
+    color: #555;             /* Slightly lighter text for the caption */
+    text-align: justify;     /* Justify the caption text */
+    margin: 0 auto;          /* Center the caption within the section */
+    max-width: 1000px;        /* Match the width of the image */
+}
+
+.optimization {
+    margin: 50px auto;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.optimization-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.optimization-visualizations {
+    display: flex;
+    flex-direction: column; /* Keep the videos stacked vertically */
+    align-items: center; /* Center the videos horizontally */
+    gap: 20px;
+}
+
+.optimization-video {
+    width: 100%; /* Make sure the videos take full container width */
+    height: auto;
+    border-radius: 8px;
+}
+
+.optimization-caption {
+    font-size: 1.0em;
+    width: 100%;
+    line-height: 1.6;
+    color: #555;
+    text-align: justify;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+
+.video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align the video title to the left */
+    width: 100%;
+    max-width: 1000px; /* Limit the video container's width */
+}
+
+.video-title {
+    font-size: 1.5em;
+    color: #333;
+    text-align: left; /* Align the title to the left */
+    margin-bottom: 10px;
+    width: 100%; /* Ensure the title spans the full width */
+}
+
+/* Qualitative Results Section */
+.qualitative_results {
+    margin: 50px auto;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.qualitative_results-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Grasp container */
+.grasps {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the videos horizontally */
+    gap: 20px;
+}
+
+/* Grasp container_title */
+.right_grasp-container {
+    font-size: 1.5em;
+    color: red;
+}
+
+/* iGrasp container_title */
+.left_grasp-container {
+    font-size: 1.5em;
+    color: red;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+/* Category Titles */
+.category-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: blue;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Method name titles */
+.method-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: purple;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* Video containers */
+.video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align the video title to the left */
+    width: 100%;
+    max-width: 1000px; /* Limit the video container's width */
+}
+
+/* Video element */
+.result-video {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    border-radius: 8px;
+}
+
+
+
 /* BibTex Section */
 .bibtex-section {
-    margin: 40px auto;          /* Center the container horizontally */
+    margin: 50px auto;          /* Center the container horizontally */
     padding: 20px;
     background-color: #f9f9f9; /* Light background color */
     border-radius: 10px;       /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 900px;          /* Restrict the max width */
+    max-width: 1000px;          /* Restrict the max width */
     display: flex;
     flex-direction: column;    /* Stack children vertically */
     align-items: center;       /* Center the container horizontally */
@@ -194,19 +560,23 @@ body {
 /* BibTex Container */
 .bibtex-container {
     width: 100%;               /* Take full width of the section */
+    max-width: 100%;           /* Prevent overflow beyond the parent */
     padding: 20px;
     font-family: "Courier New", Courier, monospace; /* Monospace font for code */
     text-align: left;          /* Ensure text is aligned to the left */
     border-radius: 5px;        /* Optional: Add rounded corners */
+    overflow-x: auto;          /* Enable horizontal scrolling */
+    white-space: nowrap;       /* Prevent text from wrapping */
 }
+
 
 /* Fix for <pre> */
 .bibtex-container pre {
     margin: 0;
     padding: 0;
     text-align: left;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    white-space: pre;
+    word-wrap: normal;
     font-family: "Courier New", Courier, monospace;
     background-color: transparent; /* Or set to match container's background */
 }
@@ -219,7 +589,7 @@ body {
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
