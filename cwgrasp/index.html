@@ -15,7 +15,7 @@
 <body>
     <div class="Project_page">
         <!-- Title of the Project -->
-        <h1>3D Whole-body Grasp Synthesis with <br> Directional Controllability</h1>
+        <h1>3D Whole-Body Grasp Synthesis with <br> Directional Controllability</h1>
 
         <!-- Authors' Names with Links -->
         <p>
@@ -104,24 +104,32 @@
         <section class="abstract-section">
             <h2 class="abstract-title">Abstract</h2>
             <div class="abstract-container">
-                Synthesizing 3D whole-bodies that realistically grasp objects is useful for animation, mixed reality,
-                and robotics. This is challenging, because the hands and body need to look natural w.r.t. each other,
-                the grasped object, as well as the local scene (i.e., a receptacle supporting the object). Only recent
-                work tackles this, with a divide-and-conquer approach; it first generates a "guiding" right-hand grasp,
-                and then searches for bodies that match this. However, the guiding-hand synthesis lacks controllability
-                and receptacle awareness, so it likely has an implausible direction (i.e., a body can't match this without
-                penetrating the receptacle) and needs corrections through major post-processing. Moreover, the body search
-                needs exhaustive sampling and is expensive. These are strong limitations. We tackle these with a novel
-                method called CWGrasp. Our key idea is that performing geometry-based reasoning "early on," instead of
-                "too late," provides rich "control" signals for inference. To this end, CWGrasp first samples a plausible
-                reaching-direction vector (used later for both the arm and hand) from a probabilistic model built via
-                raycasting from the object and collision checking. Then, it generates a reaching body with a desired arm
-                direction, as well as a "guiding" grasping hand with a desired palm direction that complies with the arm's
-                one. Eventually, CWGrasp refines the body to match the "guiding" hand, while plausibly contacting the scene.
-                Notably, generating already-compatible "parts" greatly simplifies the "whole." Moreover, CWGrasp uniquely
-                tackles both right- and left-hand grasps. We evaluate on the GRAB and ReplicaGrasp datasets. CWGrasp
-                outperforms baselines, at lower runtime and budget, while all components help performance.
-
+                Synthesizing 3D whole bodies that realistically grasp objects is useful for 
+                animation, mixed reality, and robotics. This is challenging, because the hands
+                and body need to look natural w.r.t. each other, the grasped object, as well as
+                the local scene (i.e., a receptacle supporting the object). Moreover, training
+                data for this task is really scarce, while capturing new data is expensive.
+                Recent work goes beyond finite datasets via a divide-and-conquer approach; it
+                first generates a “guiding” right-hand grasp, and then searches for bodies that
+                match this. However, the guiding-hand synthesis lacks controllability and 
+                receptacle awareness, so it likely has an implausible direction (i.e., a body
+                can’t match this without penetrating the receptacle) and needs corrections
+                through major post-processing. Moreover, the body search needs exhaustive
+                sampling and is expensive. These are strong limitations. We tackle these with a
+                novel method called CWGrasp. Our key idea is that performing geometry-based
+                reasoning “early on,” instead of “too late,” provides rich “control” signals
+                for inference. To this end, CWGrasp first samples a plausible
+                reaching-direction vector (used later for both the arm and hand) from a
+                probabilistic model built via ray-casting from the object and collision
+                checking. Then, it generates a reaching body with a desired arm direction, as
+                well as a “guiding” grasping hand with a desired palm direction that complies
+                with the arm’s one. Eventually, CWGrasp refines the body to match the “guiding”
+                hand, while plausibly contacting the scene. Notably, generating
+                already-compatible “parts” greatly simplifies the “whole”. Moreover, CWGrasp
+                uniquely tackles both right and left-hand grasps. We evaluate on the GRAB and 
+                ReplicaGrasp datasets. CWGrasp outperforms baselines, at lower runtime and 
+                budget, while all components help performance. Code and models are available at
+                <a href="https://gpaschalidis.github.io/cwgrasp">https://gpaschalidis.github.io/cwgrasp</a>.
             </div>
         </section>
         
