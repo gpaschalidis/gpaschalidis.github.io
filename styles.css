@@ -331,6 +331,13 @@ body, html {
     line-height: 1.2em;
 }
 
+.links .link-content pre a {
+    outline: none;
+    border: none;
+    text-decoration: none;
+    color: inherit;
+}
+
 /* Contact Section */
 .contact-section {
     display: flex;
