@@ -533,6 +533,43 @@ body {
 }
 
 
+/* Method Overview Section Styling */
+.acknowledgments-section {
+    margin: 50px auto; /* Center the section and add vertical spacing */
+    max-width: 1200px; /* Limit the section's width */
+    padding: 20px;     /* Add inner spacing */
+    border-radius: 10px; /* Optional: Rounded corners for the section */
+}
+
+/* Title Styling */
+.acknowledgments-title {
+    font-size: 2em;         /* Large, clear title */
+    font-weight: bold;      /* Emphasize the title */
+    color: #333;            /* Dark gray for readability */
+    text-align: center;     /* Center-align the title */
+    margin-bottom: 20px;    /* Add spacing below the title */
+}
+
+/* Caption Styling */
+.acknowledgments-container {
+    font-size: 1.2em;        /* Set readable font size */
+    width: 100%;          /* Make the image responsive */
+    line-height: 1.6;        /* Improve readability with line spacing */
+    color: #555;             /* Slightly lighter text for the caption */
+    text-align: justify;     /* Justify the caption text */
+    margin: 0 auto;          /* Center the caption within the section */
+    max-width: 1000px;        /* Match the width of the image */
+}
+
+.erc_logo-image {
+    display: block;          /* centers when margin auto is used */
+    margin: 20px auto 0;     /* top spacing, centered horizontally */
+    max-width: 300px;        /* limits how large it can be */
+    width: 100%;             /* scales down on small screens */
+    height: auto;            /* keeps aspect ratio */
+    border-radius: 8px;      /* optional: rounds corners */
+}
+
 
 /* BibTex Section */
 .bibtex-section {
