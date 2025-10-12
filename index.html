@@ -83,33 +83,31 @@
                                 <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
                                 <a href="https://anticdimi.github.io/sdfit/" data-type="Project page">Project page</a> 
                                 <a href="https://arxiv.org/abs/2409.16178" data-type="Paper">Paper</a> 
-                                <a href="" data-type="Code">Code</a> 
-                                <a href="" data-type="Video">Video</a> 
+                                <a href="https://github.com/anticdimi/SDFit" data-type="Code">Code</a> 
+                                <a href="https://www.youtube.com/watch?v=27wXYvtl9DI" data-type="Video">Video</a> 
                                 <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
                                 <div class="link-content" data-index="0">
                                     <pre>
-                                        Recovering 3D object pose and shape from a single image is a challenging and
-                                        highly ill-posed problem. This is due to strong (self-)occlusions, depth
-                                        ambiguities, the vast intra- and inter-class shape variance, and lack of 3D
-                                        ground truth for natural images.  While existing methods train deep networks on
-                                        synthetic datasets to predict 3D shapes, they often struggle to generalize to
-                                        real-world scenarios, lack an explicit feedback loop for refining noisy
-                                        estimates, and primarily focus on geometry without explicitly considering pixel
-                                        alignment. To this end, we make two key observations: (1) a robust solution
-                                        requires a model that imposes a strong category-specific shape prior to
-                                        constrain the search space, and (2) foundational models embed 2D images and 3D
-                                        shapes in joint spaces; both help resolve ambiguities.  Hence, we propose SDFit,
-                                        a novel optimization framework that is built on three key innovations: First, we
-                                        use a learned morphable signed-distance-function (mSDF) model that acts as a
-                                        strong shape prior, thus constraining the shape space. Second, we use
-                                        foundational models to establish rich 2D-to-3D correspondences between image
-                                        features and the mSDF. Third, we develop a fitting pipeline that iteratively
-                                        refines both shape and pose, aligning the mSDF to the image.  We evaluate SDFit
-                                        on the Pix3D, Pascal3D+, and COMIC image datasets.  SDFit performs on par with
-                                        SotA methods, while demonstrating exceptional robustness to occlusions and
-                                        requiring no retraining for unseen images. Therefore, SDFit contributes new
-                                        insights for generalizing in the wild, paving the way for future research. Code
-                                        will be released.
+                                    Recovering 3D object pose and shape from a single image is a challenging and 
+                                    ill-posed problem. This is due to strong (self-)occlusions, depth ambiguities, 
+                                    the vast intra- and inter-class shape variance, and the lack of 3D ground truth 
+                                    for natural images. Existing deep-network methods are trained on synthetic datasets 
+                                    to predict 3D shapes, so they often struggle generalizing to real-world images. 
+                                    Moreover, they lack an explicit feedback loop for refining noisy estimates, and 
+                                    primarily focus on geometry without directly considering pixel alignment. To tackle 
+                                    these limitations, we develop a novel render-and-compare optimization framework, 
+                                    called SDFit. This has three key innovations: First, it uses a learned category-specific 
+                                    and morphable signed-distance-function (mSDF) model, and fits this to an image by 
+                                    iteratively refining both 3D pose and shape. The mSDF robustifies inference by 
+                                    constraining the search on the manifold of valid shapes, while allowing for arbitrary 
+                                    shape topologies. Second, SDFit retrieves an initial 3D shape that likely matches 
+                                    the image, by exploiting foundational models for efficient look-up into 3D shape 
+                                    databases. Third, SDFit initializes pose by establishing rich 2D-3D correspondences 
+                                    between the image and the mSDF through foundational features. We evaluate SDFit on 
+                                    three image datasets, i.e., Pix3D, Pascal3D+, and COMIC. SDFit performs on par with 
+                                    SotA feed-forward networks for unoccluded images and common poses, but is uniquely 
+                                    robust to occlusions and uncommon poses. Moreover, it requires no retraining for 
+                                    unseen images. Thus, SDFit contributes new insights for generalizing in the wild.
                                     </pre>
                                 </div>
                                 <div class="link-content" data-index="5">
