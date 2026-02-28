@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perceptual Image Quality Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f3f0;
+    --surface: #ffffff;
+    --border: #e2ddd7;
+    --text: #2c2825;
+    --text-muted: #7a7168;
+    --accent: #6d5ccd;
+    --accent-light: #ebe7fb;
+    --accent-hover: #5a48b8;
+    --success: #3d9970;
+    --success-light: #e8f5ee;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* Loading screen */
+  .loading-screen {
+    text-align: center;
+    padding: 6rem 2rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .loading-screen h2 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+  .loading-screen p { color: var(--text-muted); font-size: 0.95rem; }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-screen {
+    text-align: center; padding: 4rem 2rem;
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); display: none;
+  }
+  .error-screen h2 { color: #cc4444; margin-bottom: 0.75rem; }
+  .error-screen p { color: var(--text-muted); }
+  .error-screen code {
+    display: block; margin-top: 1rem; padding: 1rem;
+    background: #f5f0f0; border-radius: 8px; font-size: 0.85rem;
+    color: #cc4444; word-break: break-all;
+  }
+
+  /* Header */
+  .study-header {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 2.5rem; box-shadow: var(--shadow);
+    margin-bottom: 2rem; border-top: 4px solid var(--accent);
+  }
+  .study-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .study-header p { color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .study-header .criteria {
+    background: var(--accent-light); border-radius: 8px;
+    padding: 1rem 1.25rem; margin-top: 1.25rem;
+    font-size: 0.9rem; color: var(--accent-hover); font-weight: 500;
+  }
+  .meta-info {
+    display: flex; gap: 1.5rem; margin-top: 1.25rem;
+    padding-top: 1.25rem; border-top: 1px solid var(--border);
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .meta-info span::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: middle;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 1.25rem 2rem; box-shadow: var(--shadow);
+    margin-bottom: 2rem; position: sticky; top: 1rem; z-index: 100;
+  }
+  .progress-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0.6rem; font-size: 0.85rem; font-weight: 600;
+  }
+  .progress-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    border-radius: 3px; transition: width 0.4s ease; width: 0%;
+  }
+
+  /* Cards */
+  .comparison-card {
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-bottom: 2rem; overflow: hidden;
+    transition: box-shadow 0.3s, border-color 0.3s; border: 2px solid transparent;
+  }
+  .comparison-card:hover { box-shadow: var(--shadow-lg); }
+  .comparison-card.answered { border-color: var(--success); }
+
+  .card-header {
+    padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .card-header h3 { font-size: 1rem; font-weight: 600; }
+  .card-header .badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+    padding: 0.25rem 0.75rem; border-radius: 20px;
+    background: var(--border); color: var(--text-muted); font-weight: 500;
+  }
+  .card-header .badge.done { background: var(--success-light); color: var(--success); }
+
+  /* Options */
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .option {
+    padding: 1.5rem; cursor: pointer; position: relative;
+    transition: background 0.2s; border: 3px solid transparent;
+  }
+  .option:first-child { border-right: 1px solid var(--border); }
+  .option:hover { background: #faf9f7; }
+  .option.selected { background: var(--accent-light); border-color: var(--accent); }
+  .option input[type="radio"] { display: none; }
+
+  .option-label {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem;
+  }
+  .radio-visual {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--border); display: flex;
+    align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .option.selected .radio-visual { border-color: var(--accent); background: var(--accent); }
+  .radio-visual::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: white; opacity: 0; transition: opacity 0.2s;
+  }
+  .option.selected .radio-visual::after { opacity: 1; }
+
+  .option img {
+    width: 100%; aspect-ratio: 4/3; object-fit: contain;
+    border-radius: 8px; background: #1a1a1a; display: block;
+  }
+
+  .question-bar {
+    padding: 0.85rem 2rem; background: #faf9f7;
+    border-top: 1px solid var(--border);
+    font-weight: 600; font-size: 0.9rem; color: var(--text-muted);
+  }
+
+  /* Submit */
+  .submit-section { text-align: center; padding: 2rem; }
+  .btn-submit {
+    background: var(--accent); color: white; border: none;
+    padding: 1rem 3rem; font-size: 1rem; font-weight: 600;
+    border-radius: 50px; cursor: pointer; font-family: inherit;
+    transition: all 0.3s; box-shadow: 0 4px 16px rgba(109,92,205,0.3);
+  }
+  .btn-submit:hover {
+    background: var(--accent-hover); transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(109,92,205,0.4);
+  }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  .submit-note { margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); }
+
+  /* Completion */
+  .completion-screen {
+    display: none; text-align: center; padding: 4rem 2rem;
+    background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .completion-screen.show { display: block; }
+  .completion-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--success-light); display: flex;
+    align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem; font-size: 2.5rem;
+  }
+  .completion-screen h2 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .completion-screen p { color: var(--text-muted); }
+
+  @media (max-width: 640px) {
+    .container { padding: 1rem; }
+    .study-header { padding: 1.5rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .option:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .meta-info { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Loading -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="spinner"></div>
+    <h2>Loading study images...</h2>
+    <p>Fetching images from server. This may take a few seconds.</p>
+  </div>
+
+  <!-- Error -->
+  <div id="errorScreen" class="error-screen">
+    <h2>Failed to load study</h2>
+    <p>Could not fetch images from the backend. Please check the configuration.</p>
+    <code id="errorMessage"></code>
+  </div>
+
+  <!-- Study -->
+  <div id="studyContent" style="display:none;">
+    <div class="study-header" id="studyHeader"></div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-top">
+        <span id="progressLabel">0 / 0 answered</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div id="comparisonsContainer"></div>
+    <div class="submit-section" id="submitSection">
+      <button class="btn-submit" id="btnSubmit" disabled onclick="submitStudy()">Submit Responses</button>
+      <p class="submit-note" id="submitNote">Please answer all comparisons before submitting.</p>
+    </div>
+    <div class="completion-screen" id="completionScreen">
+      <div class="completion-icon">&#10003;</div>
+      <h2>Thank you!</h2>
+      <p>Your responses have been recorded successfully.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ================================================================
+//
+//   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
+//  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝
+//  ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+//  ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+//  ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+//   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
+//
+//  ✏️  EDIT THIS SECTION TO CUSTOMIZE YOUR STUDY
+//
+// ================================================================
+
+const CONFIG = {
+
+  // ── YOUR APPS SCRIPT WEB APP URL ───────────────────────────
+  // This is the URL you got when you deployed the Apps Script.
+  // It handles BOTH fetching images from Drive AND saving results.
+  backendUrl: "https://drive.google.com/drive/folders/14L187ZN1zxwsbjRPut_KV1tncKPIRmg7?usp=drive_link",
+
+
+  // ── STUDY TEXT ─────────────────────────────────────────────
+  title: "Perceptual Image Quality Study",
+
+  description: `Welcome to our perceptual study!
+
+In this experiment, you will be shown pairs of images. For each pair, please look closely and select the image that looks more realistic.
+
+Your participation is completely anonymous. The study should take about 5-10 minutes to complete.
+
+Thank you for your help!`,
+
+  // Highlighted criteria box. Set to "" to hide.
+  criteria: "Focus on natural pose, realistic hand grasp, and overall interaction quality.",
+
+  // Question shown under each comparison
+  question: "Which option looks more realistic?",
+
+  // Labels for the two choices
+  label1: "Option 1",
+  label2: "Option 2",
+};
+
+// ================================================================
+//  🛑 STOP EDITING — Everything below runs automatically
+// ================================================================
+
+let answers = {};
+let answerKey = [];
+let totalComparisons = 0;
+let imageData = [];
+
+function shuffleArray(arr) {
+  const s = [...arr];
+  for (let i = s.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [s[i], s[j]] = [s[j], s[i]];
+  }
+  return s;
+}
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ===== FETCH IMAGES FROM BACKEND =====
+async function loadImages() {
+  try {
+    const url = CONFIG.backendUrl + '?action=images';
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status !== 'success' || !data.images || data.images.length === 0) {
+      throw new Error('No matching images found in the two folders. Make sure both folders have images with the same filenames.');
+    }
+
+    imageData = data.images;
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('studyContent').style.display = 'block';
+    buildStudy();
+
+  } catch (err) {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('errorScreen').style.display = 'block';
+    document.getElementById('errorMessage').textContent = err.message;
+  }
+}
+
+// ===== BUILD THE STUDY =====
+function buildStudy() {
+  totalComparisons = imageData.length;
+  answers = {};
+  answerKey = [];
+
+  // Header
+  const header = document.getElementById('studyHeader');
+  const descPs = CONFIG.description.split('\n').filter(p => p.trim()).map(p => `<p>${escHtml(p)}</p>`).join('');
+  header.innerHTML = `
+    <h1>${escHtml(CONFIG.title)}</h1>
+    ${descPs}
+    ${CONFIG.criteria ? `<div class="criteria">${escHtml(CONFIG.criteria)}</div>` : ''}
+    <div class="meta-info">
+      <span>${imageData.length} comparisons</span>
+      <span>~${Math.max(1, Math.round(imageData.length * 0.3))}&ndash;${Math.round(imageData.length * 0.5)} minutes</span>
+      <span>Anonymous</span>
+    </div>
+  `;
+
+  // RANDOMIZATION 1: Shuffle presentation order
+  const shuffled = shuffleArray(imageData);
+
+  const container = document.getElementById('comparisonsContainer');
+  container.innerHTML = '';
+
+  shuffled.forEach((img, displayIdx) => {
+
+    // RANDOMIZATION 2: Randomly assign Method A/B to Option 1/2
+    const methodAIsOption1 = Math.random() > 0.5;
+
+    const imgSrc1 = methodAIsOption1 ? img.methodA_url : img.methodB_url;
+    const imgSrc2 = methodAIsOption1 ? img.methodB_url : img.methodA_url;
+
+    answerKey.push({
+      displayIndex: displayIdx,
+      fileName: img.fileName,
+      option1_method: methodAIsOption1 ? "Method A" : "Method B",
+      option2_method: methodAIsOption1 ? "Method B" : "Method A",
+    });
+
+    const card = document.createElement('div');
+    card.className = 'comparison-card';
+    card.id = `card-${displayIdx}`;
+    card.innerHTML = `
+      <div class="card-header">
+        <h3>Example ${displayIdx + 1}</h3>
+        <span class="badge" id="badge-${displayIdx}">Unanswered</span>
+      </div>
+      <div class="options-grid">
+        <div class="option" id="opt-${displayIdx}-1" onclick="selectOption(${displayIdx}, 1)">
+          <input type="radio" name="q${displayIdx}" value="1">
+          <div class="option-label">
+            <div class="radio-visual"></div>
+            ${escHtml(CONFIG.label1)}
+          </div>
+          <img src="${escHtml(imgSrc1)}" alt="${escHtml(CONFIG.label1)}" loading="lazy">
+        </div>
+        <div class="option" id="opt-${displayIdx}-2" onclick="selectOption(${displayIdx}, 2)">
+          <input type="radio" name="q${displayIdx}" value="2">
+          <div class="option-label">
+            <div class="radio-visual"></div>
+            ${escHtml(CONFIG.label2)}
+          </div>
+          <img src="${escHtml(imgSrc2)}" alt="${escHtml(CONFIG.label2)}" loading="lazy">
+        </div>
+      </div>
+      <div class="question-bar">${escHtml(CONFIG.question)}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function selectOption(compIdx, optionNum) {
+  answers[compIdx] = optionNum;
+  document.getElementById(`opt-${compIdx}-1`).classList.toggle('selected', optionNum === 1);
+  document.getElementById(`opt-${compIdx}-2`).classList.toggle('selected', optionNum === 2);
+  document.getElementById(`card-${compIdx}`).classList.add('answered');
+  const badge = document.getElementById(`badge-${compIdx}`);
+  badge.textContent = 'Answered';
+  badge.classList.add('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = Object.keys(answers).length;
+  const pct = totalComparisons > 0 ? Math.round((done / totalComparisons) * 100) : 0;
+  document.getElementById('progressLabel').textContent = `${done} / ${totalComparisons} answered`;
+  document.getElementById('progressPercent').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+
+  const btn = document.getElementById('btnSubmit');
+  const note = document.getElementById('submitNote');
+  if (done === totalComparisons && totalComparisons > 0) {
+    btn.disabled = false;
+    note.textContent = 'All comparisons answered. Ready to submit!';
+  } else {
+    btn.disabled = true;
+    note.textContent = `Please answer all comparisons before submitting. (${totalComparisons - done} remaining)`;
+  }
+}
+
+async function submitStudy() {
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  const results = answerKey.map(entry => {
+    const chosen = answers[entry.displayIndex];
+    return {
+      example: entry.displayIndex + 1,
+      fileName: entry.fileName,
+      option1_is: entry.option1_method,
+      option2_is: entry.option2_method,
+      chosen: chosen === 1 ? CONFIG.label1 : CONFIG.label2,
+      chosen_method: chosen === 1 ? entry.option1_method : entry.option2_method
+    };
+  });
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    studyTitle: CONFIG.title,
+    totalComparisons: totalComparisons,
+    results: results
+  };
+
+  // Send to Google Sheets via backend
+  try {
+    await fetch(CONFIG.backendUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.warn('Could not send to backend:', e);
+  }
+
+  // Also download CSV as backup
+  downloadCSV(results);
+
+  console.log('=== STUDY RESULTS ===');
+  console.log(JSON.stringify(payload, null, 2));
+
+  document.getElementById('submitSection').style.display = 'none';
+  document.getElementById('comparisonsContainer').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('completionScreen').classList.add('show');
+}
+
+function downloadCSV(results) {
+  const header = 'Example,FileName,Option1_Is,Option2_Is,Chosen,Chosen_Method\n';
+  const rows = results.map(r =>
+    `${r.example},"${r.fileName}",${r.option1_is},${r.option2_is},${r.chosen},${r.chosen_method}`
+  ).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `study_results_${Date.now()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ===== START =====
+window.addEventListener('DOMContentLoaded', loadImages);
+</script>
+
+</body>
+</html>
