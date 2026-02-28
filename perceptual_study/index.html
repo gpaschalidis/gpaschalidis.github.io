@@ -394,30 +394,12 @@ function submitStudy() {
     navigator.sendBeacon(CONFIG.resultsUrl, JSON.stringify(payload));
   }
 
-  // CSV backup
-  downloadCSV(results);
-
   document.getElementById('submitSection').style.display = 'none';
   document.getElementById('comparisonsContainer').style.display = 'none';
   document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('completionScreen').classList.add('show');
 }
 
-function downloadCSV(results) {
-  const header = 'Example,FileName,Option1_Is,Option2_Is,Chosen,Chosen_Method\n';
-  const rows = results.map(r =>
-    `${r.example},"${r.fileName}",${r.option1_is},${r.option2_is},${r.chosen},${r.chosen_method}`
-  ).join('\n');
-  const blob = new Blob([header + rows], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `study_results_${Date.now()}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
 
 window.addEventListener('DOMContentLoaded', buildStudy);
 </script>
