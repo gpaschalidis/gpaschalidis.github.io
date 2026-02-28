@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perceptual Image Quality Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f3f0; --surface: #ffffff; --border: #e2ddd7;
+    --text: #2c2825; --text-muted: #7a7168;
+    --accent: #6d5ccd; --accent-light: #ebe7fb; --accent-hover: #5a48b8;
+    --success: #3d9970; --success-light: #e8f5ee;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .study-header {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 2.5rem; box-shadow: var(--shadow);
+    margin-bottom: 2rem; border-top: 4px solid var(--accent);
+  }
+  .study-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .study-header p { color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .study-header .criteria {
+    background: var(--accent-light); border-radius: 8px;
+    padding: 1rem 1.25rem; margin-top: 1.25rem;
+    font-size: 0.9rem; color: var(--accent-hover); font-weight: 500;
+  }
+  .meta-info {
+    display: flex; gap: 1.5rem; margin-top: 1.25rem;
+    padding-top: 1.25rem; border-top: 1px solid var(--border);
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .meta-info span::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: middle;
+  }
+
+  .progress-wrap {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 1.25rem 2rem; box-shadow: var(--shadow);
+    margin-bottom: 2rem; position: sticky; top: 1rem; z-index: 100;
+  }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; font-size: 0.85rem; font-weight: 600; }
+  .progress-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-hover)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+
+  .comparison-card {
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-bottom: 2rem; overflow: hidden;
+    transition: box-shadow 0.3s, border-color 0.3s; border: 2px solid transparent;
+  }
+  .comparison-card:hover { box-shadow: var(--shadow-lg); }
+  .comparison-card.answered { border-color: var(--success); }
+  .card-header {
+    padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .card-header h3 { font-size: 1rem; font-weight: 600; }
+  .card-header .badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+    padding: 0.25rem 0.75rem; border-radius: 20px;
+    background: var(--border); color: var(--text-muted); font-weight: 500;
+  }
+  .card-header .badge.done { background: var(--success-light); color: var(--success); }
+
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .option {
+    padding: 1.5rem; cursor: pointer; position: relative;
+    transition: background 0.2s; border: 3px solid transparent;
+  }
+  .option:first-child { border-right: 1px solid var(--border); }
+  .option:hover { background: #faf9f7; }
+  .option.selected { background: var(--accent-light); border-color: var(--accent); }
+  .option input[type="radio"] { display: none; }
+  .option-label {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem;
+  }
+  .radio-visual {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--border); display: flex;
+    align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .option.selected .radio-visual { border-color: var(--accent); background: var(--accent); }
+  .radio-visual::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: white; opacity: 0; transition: opacity 0.2s;
+  }
+  .option.selected .radio-visual::after { opacity: 1; }
+  .option img {
+    width: 100%; aspect-ratio: 4/3; object-fit: contain;
+    border-radius: 8px; background: #1a1a1a; display: block;
+  }
+  .question-bar {
+    padding: 0.85rem 2rem; background: #faf9f7;
+    border-top: 1px solid var(--border);
+    font-weight: 600; font-size: 0.9rem; color: var(--text-muted);
+  }
+
+  .submit-section { text-align: center; padding: 2rem; }
+  .btn-submit {
+    background: var(--accent); color: white; border: none;
+    padding: 1rem 3rem; font-size: 1rem; font-weight: 600;
+    border-radius: 50px; cursor: pointer; font-family: inherit;
+    transition: all 0.3s; box-shadow: 0 4px 16px rgba(109,92,205,0.3);
+  }
+  .btn-submit:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(109,92,205,0.4); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  .submit-note { margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); }
+
+  .completion-screen {
+    display: none; text-align: center; padding: 4rem 2rem;
+    background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .completion-screen.show { display: block; }
+  .completion-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--success-light); display: flex;
+    align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem; font-size: 2.5rem;
+  }
+  .completion-screen h2 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .completion-screen p { color: var(--text-muted); }
+
+  @media (max-width: 640px) {
+    .container { padding: 1rem; }
+    .study-header { padding: 1.5rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .option:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .meta-info { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="studyContent">
+    <div class="study-header" id="studyHeader"></div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-top">
+        <span id="progressLabel">0 / 0 answered</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div id="comparisonsContainer"></div>
+    <div class="submit-section" id="submitSection">
+      <button class="btn-submit" id="btnSubmit" disabled onclick="submitStudy()">Submit Responses</button>
+      <p class="submit-note" id="submitNote">Please answer all comparisons before submitting.</p>
+    </div>
+    <div class="completion-screen" id="completionScreen">
+      <div class="completion-icon">&#10003;</div>
+      <h2>Thank you!</h2>
+      <p>Your responses have been recorded successfully.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+//
+//  ✏️  EDIT THIS SECTION TO CUSTOMIZE YOUR STUDY
+//
+// ================================================================
+
+const CONFIG = {
+
+  // ── STUDY TEXT ─────────────────────────────────────────────
+  title: "Perceptual Image Quality Study",
+
+  description: `Welcome to our perceptual study!
+
+In this experiment, you will be shown pairs of images. For each pair, please look closely and select the image that looks more realistic.
+
+Your participation is completely anonymous. The study should take about 5-10 minutes to complete.
+
+Thank you for your help!`,
+
+  criteria: "Focus on natural pose, realistic hand grasp, and overall interaction quality.",
+
+  question: "Which option looks more realistic?",
+
+  label1: "Option 1",
+  label2: "Option 2",
+
+
+  // ── IMAGE FOLDERS (relative paths in your GitHub repo) ─────
+  //
+  // Your repo structure:
+  //   your-repo/
+  //   ├── index.html       ← this file
+  //   ├── method_a/
+  //   │   ├── picture_1.jpg
+  //   │   ├── picture_2.jpg
+  //   │   └── ...
+  //   └── method_b/
+  //       ├── picture_1.jpg
+  //       ├── picture_2.jpg
+  //       └── ...
+  //
+  folderA: "./cwgrasp/",
+  folderB: "./flex/",
+
+
+  // ── IMAGE FILENAMES ────────────────────────────────────────
+  // Auto-generate: picture_1.jpg, picture_2.jpg, ..., picture_25.jpg
+  filenamePrefix: "picture_",
+  filenameSuffix: ".jpg",
+  startIndex: 1,
+  imageCount: 25,
+
+  // OR manual list (overrides auto-generate if not empty):
+  // manualFilenames: ["cat.jpg", "dog.jpg", "house.jpg"],
+  manualFilenames: [],
+
+
+  // ── RESULTS BACKEND ────────────────────────────────────────
+  // Your Apps Script web app URL for collecting results
+  resultsUrl: "https://script.google.com/macros/s/AKfycbydJjSg1nxIRbUzgzpWnxTcUy5xTsI2IcShUFFALU6m3XwHNkLnOvfeaxubgDnF4TYp/exec",
+};
+
+// ================================================================
+//  🛑 STOP EDITING
+// ================================================================
+
+let answers = {};
+let answerKey = [];
+let totalComparisons = 0;
+
+function getFilenames() {
+  if (CONFIG.manualFilenames && CONFIG.manualFilenames.length > 0) return [...CONFIG.manualFilenames];
+  const files = [];
+  for (let i = CONFIG.startIndex; i < CONFIG.startIndex + CONFIG.imageCount; i++) {
+    files.push(CONFIG.filenamePrefix + i + CONFIG.filenameSuffix);
+  }
+  return files;
+}
+
+function shuffleArray(arr) {
+  const s = [...arr];
+  for (let i = s.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [s[i], s[j]] = [s[j], s[i]];
+  }
+  return s;
+}
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function buildStudy() {
+  const files = getFilenames();
+  totalComparisons = files.length;
+  answers = {};
+  answerKey = [];
+
+  // Header
+  const header = document.getElementById('studyHeader');
+  const descPs = CONFIG.description.split('\n').filter(p => p.trim()).map(p => `<p>${escHtml(p)}</p>`).join('');
+  header.innerHTML = `
+    <h1>${escHtml(CONFIG.title)}</h1>
+    ${descPs}
+    ${CONFIG.criteria ? `<div class="criteria">${escHtml(CONFIG.criteria)}</div>` : ''}
+    <div class="meta-info">
+      <span>${files.length} comparisons</span>
+      <span>~${Math.max(1, Math.round(files.length * 0.3))}&ndash;${Math.round(files.length * 0.5)} minutes</span>
+      <span>Anonymous</span>
+    </div>
+  `;
+
+  // RANDOMIZATION 1: Shuffle presentation order
+  const shuffled = shuffleArray(files);
+
+  const container = document.getElementById('comparisonsContainer');
+  container.innerHTML = '';
+
+  const fA = CONFIG.folderA.replace(/\/?$/, '/');
+  const fB = CONFIG.folderB.replace(/\/?$/, '/');
+
+  shuffled.forEach((fileName, displayIdx) => {
+    // RANDOMIZATION 2: 50/50 which method is Option 1 vs Option 2
+    const methodAIsOption1 = Math.random() > 0.5;
+
+    const imgSrc1 = methodAIsOption1 ? (fA + fileName) : (fB + fileName);
+    const imgSrc2 = methodAIsOption1 ? (fB + fileName) : (fA + fileName);
+
+    answerKey.push({
+      displayIndex: displayIdx,
+      fileName: fileName,
+      option1_method: methodAIsOption1 ? "Method A" : "Method B",
+      option2_method: methodAIsOption1 ? "Method B" : "Method A",
+    });
+
+    const card = document.createElement('div');
+    card.className = 'comparison-card';
+    card.id = `card-${displayIdx}`;
+    card.innerHTML = `
+      <div class="card-header">
+        <h3>Example ${displayIdx + 1}</h3>
+        <span class="badge" id="badge-${displayIdx}">Unanswered</span>
+      </div>
+      <div class="options-grid">
+        <div class="option" id="opt-${displayIdx}-1" onclick="selectOption(${displayIdx}, 1)">
+          <input type="radio" name="q${displayIdx}" value="1">
+          <div class="option-label">
+            <div class="radio-visual"></div>
+            ${escHtml(CONFIG.label1)}
+          </div>
+          <img src="${escHtml(imgSrc1)}" alt="${escHtml(CONFIG.label1)}" loading="lazy">
+        </div>
+        <div class="option" id="opt-${displayIdx}-2" onclick="selectOption(${displayIdx}, 2)">
+          <input type="radio" name="q${displayIdx}" value="2">
+          <div class="option-label">
+            <div class="radio-visual"></div>
+            ${escHtml(CONFIG.label2)}
+          </div>
+          <img src="${escHtml(imgSrc2)}" alt="${escHtml(CONFIG.label2)}" loading="lazy">
+        </div>
+      </div>
+      <div class="question-bar">${escHtml(CONFIG.question)}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function selectOption(compIdx, optionNum) {
+  answers[compIdx] = optionNum;
+  document.getElementById(`opt-${compIdx}-1`).classList.toggle('selected', optionNum === 1);
+  document.getElementById(`opt-${compIdx}-2`).classList.toggle('selected', optionNum === 2);
+  document.getElementById(`card-${compIdx}`).classList.add('answered');
+  const badge = document.getElementById(`badge-${compIdx}`);
+  badge.textContent = 'Answered';
+  badge.classList.add('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = Object.keys(answers).length;
+  const pct = totalComparisons > 0 ? Math.round((done / totalComparisons) * 100) : 0;
+  document.getElementById('progressLabel').textContent = `${done} / ${totalComparisons} answered`;
+  document.getElementById('progressPercent').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+
+  const btn = document.getElementById('btnSubmit');
+  const note = document.getElementById('submitNote');
+  if (done === totalComparisons && totalComparisons > 0) {
+    btn.disabled = false;
+    note.textContent = 'All comparisons answered. Ready to submit!';
+  } else {
+    btn.disabled = true;
+    note.textContent = `Please answer all comparisons before submitting. (${totalComparisons - done} remaining)`;
+  }
+}
+
+function submitStudy() {
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  const results = answerKey.map(entry => {
+    const chosen = answers[entry.displayIndex];
+    return {
+      example: entry.displayIndex + 1,
+      fileName: entry.fileName,
+      option1_is: entry.option1_method,
+      option2_is: entry.option2_method,
+      chosen: chosen === 1 ? CONFIG.label1 : CONFIG.label2,
+      chosen_method: chosen === 1 ? entry.option1_method : entry.option2_method
+    };
+  });
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    studyTitle: CONFIG.title,
+    totalComparisons: totalComparisons,
+    results: results
+  };
+
+  // Send to Google Sheets
+  if (CONFIG.resultsUrl && !CONFIG.resultsUrl.includes('YOUR_DEPLOYMENT')) {
+    navigator.sendBeacon(CONFIG.resultsUrl, JSON.stringify(payload));
+  }
+
+  // CSV backup
+  downloadCSV(results);
+
+  document.getElementById('submitSection').style.display = 'none';
+  document.getElementById('comparisonsContainer').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('completionScreen').classList.add('show');
+}
+
+function downloadCSV(results) {
+  const header = 'Example,FileName,Option1_Is,Option2_Is,Chosen,Chosen_Method\n';
+  const rows = results.map(r =>
+    `${r.example},"${r.fileName}",${r.option1_is},${r.option2_is},${r.chosen},${r.chosen_method}`
+  ).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `study_results_${Date.now()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+window.addEventListener('DOMContentLoaded', buildStudy);
+</script>
+</body>
+</html>
