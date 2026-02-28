@@ -34,22 +34,16 @@
 
   .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-  /* Loading screen */
   .loading-screen {
-    text-align: center;
-    padding: 6rem 2rem;
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    text-align: center; padding: 6rem 2rem;
+    background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
   }
   .loading-screen h2 { font-size: 1.3rem; margin-bottom: 0.75rem; }
   .loading-screen p { color: var(--text-muted); font-size: 0.95rem; }
   .spinner {
     width: 40px; height: 40px;
-    border: 4px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    border: 4px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
     margin: 0 auto 1.5rem;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -67,7 +61,6 @@
     color: #cc4444; word-break: break-all;
   }
 
-  /* Header */
   .study-header {
     background: var(--surface); border-radius: var(--radius);
     padding: 2.5rem; box-shadow: var(--shadow);
@@ -90,7 +83,6 @@
     border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: middle;
   }
 
-  /* Progress */
   .progress-wrap {
     background: var(--surface); border-radius: var(--radius);
     padding: 1.25rem 2rem; box-shadow: var(--shadow);
@@ -106,7 +98,6 @@
     border-radius: 3px; transition: width 0.4s ease; width: 0%;
   }
 
-  /* Cards */
   .comparison-card {
     background: var(--surface); border-radius: var(--radius);
     box-shadow: var(--shadow); margin-bottom: 2rem; overflow: hidden;
@@ -127,7 +118,6 @@
   }
   .card-header .badge.done { background: var(--success-light); color: var(--success); }
 
-  /* Options */
   .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
   .option {
     padding: 1.5rem; cursor: pointer; position: relative;
@@ -137,7 +127,6 @@
   .option:hover { background: #faf9f7; }
   .option.selected { background: var(--accent-light); border-color: var(--accent); }
   .option input[type="radio"] { display: none; }
-
   .option-label {
     display: flex; align-items: center; gap: 0.6rem;
     margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem;
@@ -154,19 +143,16 @@
     background: white; opacity: 0; transition: opacity 0.2s;
   }
   .option.selected .radio-visual::after { opacity: 1; }
-
   .option img {
     width: 100%; aspect-ratio: 4/3; object-fit: contain;
     border-radius: 8px; background: #1a1a1a; display: block;
   }
-
   .question-bar {
     padding: 0.85rem 2rem; background: #faf9f7;
     border-top: 1px solid var(--border);
     font-weight: 600; font-size: 0.9rem; color: var(--text-muted);
   }
 
-  /* Submit */
   .submit-section { text-align: center; padding: 2rem; }
   .btn-submit {
     background: var(--accent); color: white; border: none;
@@ -181,7 +167,6 @@
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
   .submit-note { margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); }
 
-  /* Completion */
   .completion-screen {
     display: none; text-align: center; padding: 4rem 2rem;
     background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
@@ -208,22 +193,18 @@
 <body>
 
 <div class="container">
-
-  <!-- Loading -->
   <div id="loadingScreen" class="loading-screen">
     <div class="spinner"></div>
     <h2>Loading study images...</h2>
     <p>Fetching images from server. This may take a few seconds.</p>
   </div>
 
-  <!-- Error -->
   <div id="errorScreen" class="error-screen">
     <h2>Failed to load study</h2>
     <p>Could not fetch images from the backend. Please check the configuration.</p>
     <code id="errorMessage"></code>
   </div>
 
-  <!-- Study -->
   <div id="studyContent" style="display:none;">
     <div class="study-header" id="studyHeader"></div>
     <div class="progress-wrap" id="progressWrap">
@@ -246,7 +227,6 @@
       <p>Your responses have been recorded successfully.</p>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -266,10 +246,8 @@
 const CONFIG = {
 
   // ── YOUR APPS SCRIPT WEB APP URL ───────────────────────────
-  // This is the URL you got when you deployed the Apps Script.
-  // It handles BOTH fetching images from Drive AND saving results.
-  backendUrl: "https://drive.google.com/drive/folders/14L187ZN1zxwsbjRPut_KV1tncKPIRmg7?usp=drive_link",
-
+  // Paste the URL you got when deploying the Apps Script
+  backendUrl: "https://script.google.com/macros/s/AKfycbydJjSg1nxIRbUzgzpWnxTcUy5xTsI2IcShUFFALU6m3XwHNkLnOvfeaxubgDnF4TYp/exec",
 
   // ── STUDY TEXT ─────────────────────────────────────────────
   title: "Perceptual Image Quality Study",
@@ -282,25 +260,24 @@ Your participation is completely anonymous. The study should take about 5-10 min
 
 Thank you for your help!`,
 
-  // Highlighted criteria box. Set to "" to hide.
+  // Highlighted box. Set to "" to hide.
   criteria: "Focus on natural pose, realistic hand grasp, and overall interaction quality.",
 
-  // Question shown under each comparison
+  // Question under each comparison
   question: "Which option looks more realistic?",
 
-  // Labels for the two choices
+  // Labels
   label1: "Option 1",
   label2: "Option 2",
 };
 
 // ================================================================
-//  🛑 STOP EDITING — Everything below runs automatically
+//  🛑 STOP EDITING
 // ================================================================
 
 let answers = {};
 let answerKey = [];
 let totalComparisons = 0;
-let imageData = [];
 
 function shuffleArray(arr) {
   const s = [...arr];
@@ -317,36 +294,57 @@ function escHtml(str) {
   return d.innerHTML;
 }
 
-// ===== FETCH IMAGES FROM BACKEND =====
-async function loadImages() {
-  try {
-    const url = CONFIG.backendUrl + '?action=images';
-    const response = await fetch(url);
-    const data = await response.json();
+// ===== LOAD IMAGES VIA JSONP (avoids CORS) =====
+function loadImages() {
+  const callbackName = '_studyCallback_' + Date.now();
 
-    if (data.status !== 'success' || !data.images || data.images.length === 0) {
-      throw new Error('No matching images found in the two folders. Make sure both folders have images with the same filenames.');
-    }
-
-    imageData = data.images;
-    document.getElementById('loadingScreen').style.display = 'none';
-    document.getElementById('studyContent').style.display = 'block';
-    buildStudy();
-
-  } catch (err) {
+  // Set a timeout in case the script never responds
+  const timeout = setTimeout(() => {
+    delete window[callbackName];
     document.getElementById('loadingScreen').style.display = 'none';
     document.getElementById('errorScreen').style.display = 'block';
-    document.getElementById('errorMessage').textContent = err.message;
-  }
+    document.getElementById('errorMessage').textContent =
+      'Request timed out. Check that your backendUrl is correct and the Apps Script is deployed.';
+  }, 30000);
+
+  // Define the callback function
+  window[callbackName] = function(data) {
+    clearTimeout(timeout);
+    delete window[callbackName];
+
+    if (data.status !== 'success' || !data.images || data.images.length === 0) {
+      document.getElementById('loadingScreen').style.display = 'none';
+      document.getElementById('errorScreen').style.display = 'block';
+      document.getElementById('errorMessage').textContent =
+        data.message || 'No matching images found. Make sure both folders have images with the same filenames.';
+      return;
+    }
+
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('studyContent').style.display = 'block';
+    buildStudy(data.images);
+  };
+
+  // Inject a script tag (JSONP approach)
+  const script = document.createElement('script');
+  script.src = CONFIG.backendUrl + '?action=images&callback=' + callbackName;
+  script.onerror = function() {
+    clearTimeout(timeout);
+    delete window[callbackName];
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('errorScreen').style.display = 'block';
+    document.getElementById('errorMessage').textContent =
+      'Failed to connect to backend. Check that your backendUrl is correct.';
+  };
+  document.body.appendChild(script);
 }
 
-// ===== BUILD THE STUDY =====
-function buildStudy() {
-  totalComparisons = imageData.length;
+// ===== BUILD STUDY =====
+function buildStudy(images) {
+  totalComparisons = images.length;
   answers = {};
   answerKey = [];
 
-  // Header
   const header = document.getElementById('studyHeader');
   const descPs = CONFIG.description.split('\n').filter(p => p.trim()).map(p => `<p>${escHtml(p)}</p>`).join('');
   header.innerHTML = `
@@ -354,20 +352,19 @@ function buildStudy() {
     ${descPs}
     ${CONFIG.criteria ? `<div class="criteria">${escHtml(CONFIG.criteria)}</div>` : ''}
     <div class="meta-info">
-      <span>${imageData.length} comparisons</span>
-      <span>~${Math.max(1, Math.round(imageData.length * 0.3))}&ndash;${Math.round(imageData.length * 0.5)} minutes</span>
+      <span>${images.length} comparisons</span>
+      <span>~${Math.max(1, Math.round(images.length * 0.3))}&ndash;${Math.round(images.length * 0.5)} minutes</span>
       <span>Anonymous</span>
     </div>
   `;
 
   // RANDOMIZATION 1: Shuffle presentation order
-  const shuffled = shuffleArray(imageData);
+  const shuffled = shuffleArray(images);
 
   const container = document.getElementById('comparisonsContainer');
   container.innerHTML = '';
 
   shuffled.forEach((img, displayIdx) => {
-
     // RANDOMIZATION 2: Randomly assign Method A/B to Option 1/2
     const methodAIsOption1 = Math.random() > 0.5;
 
@@ -444,7 +441,8 @@ function updateProgress() {
   }
 }
 
-async function submitStudy() {
+// ===== SUBMIT RESULTS =====
+function submitStudy() {
   const btn = document.getElementById('btnSubmit');
   btn.disabled = true;
   btn.textContent = 'Submitting...';
@@ -468,19 +466,21 @@ async function submitStudy() {
     results: results
   };
 
-  // Send to Google Sheets via backend
+  // Send results via POST (no-cors mode for Apps Script)
   try {
-    await fetch(CONFIG.backendUrl, {
+    navigator.sendBeacon(CONFIG.backendUrl, JSON.stringify(payload));
+  } catch (e) {
+    // Fallback: try fetch
+    fetch(CONFIG.backendUrl, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  } catch (e) {
-    console.warn('Could not send to backend:', e);
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(() => {});
   }
 
-  // Also download CSV as backup
+  // Download CSV as backup
   downloadCSV(results);
 
   console.log('=== STUDY RESULTS ===');
