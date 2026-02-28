@@ -274,8 +274,6 @@ function buildStudy() {
     ${CONFIG.criteria ? `<div class="criteria">${escHtml(CONFIG.criteria)}</div>` : ''}
     <div class="meta-info">
       <span>${files.length} comparisons</span>
-      <span>~${Math.max(1, Math.round(files.length * 0.3))}&ndash;${Math.round(files.length * 0.5)} minutes</span>
-      <span>Anonymous</span>
     </div>
   `;
 
