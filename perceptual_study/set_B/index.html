@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-title>Perceptual Image Quality Study Set B</title>
+<title>Perceptual Image Quality Study</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -211,7 +211,7 @@ title>Perceptual Image Quality Study Set B</title>
 const CONFIG = {
 
   // ── STUDY TEXT ─────────────────────────────────────────────
-  title: "Perceptual Image Quality Study set B",
+  title: "Perceptual Image Quality Study",
 
   description: `Welcome to our perceptual study!
 
@@ -436,18 +436,71 @@ function submitStudy() {
     results: results
   };
 
-  // Send to Google Sheets
+  // Send to Google Sheets via hidden form POST
   if (CONFIG.resultsUrl && !CONFIG.resultsUrl.includes('YOUR_DEPLOYMENT')) {
-    navigator.sendBeacon(CONFIG.resultsUrl, JSON.stringify(payload));
+    // Method 1: fetch with no-cors
+    fetch(CONFIG.resultsUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+
+    // Method 2: hidden iframe form POST (most reliable for Apps Script)
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.name = 'submitFrame';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = CONFIG.resultsUrl;
+      form.target = 'submitFrame';
+
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      input.value = JSON.stringify(payload);
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (e) {
+      console.warn('Form submit fallback failed:', e);
+    }
   }
 
   document.getElementById('submitSection').style.display = 'none';
   document.getElementById('comparisonsContainer').style.display = 'none';
   document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('completionScreen').classList.add('show');
+
+  // Mark as completed so they can't redo it
+  document.cookie = 'study_done_' + CONFIG.title.replace(/\s+/g, '_') + '=1; max-age=31536000; path=/';
 }
 
-window.addEventListener('DOMContentLoaded', buildStudy);
+// Check if already completed
+function checkAlreadyDone() {
+  const key = 'study_done_' + CONFIG.title.replace(/\s+/g, '_');
+  if (document.cookie.includes(key + '=1')) {
+    document.getElementById('studyContent').innerHTML = `
+      <div style="text-align:center; padding:4rem 2rem; background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow);">
+        <div style="width:80px;height:80px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.5rem;">&#10003;</div>
+        <h2 style="font-size:1.5rem;margin-bottom:0.75rem;">You have already completed this study</h2>
+        <p style="color:var(--text-muted);">Thank you for your participation. Each person can only submit once.</p>
+      </div>
+    `;
+    return true;
+  }
+  return false;
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  if (!checkAlreadyDone()) {
+    buildStudy();
+  }
+});
 </script>
 </body>
 </html>
