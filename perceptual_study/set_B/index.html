@@ -211,7 +211,7 @@ title>Perceptual Image Quality Study Set B</title>
 const CONFIG = {
 
   // ── STUDY TEXT ─────────────────────────────────────────────
-  title: "Perceptual Image Quality Study",
+  title: "Perceptual Image Quality Study set B",
 
   description: `Welcome to our perceptual study!
 
@@ -248,8 +248,8 @@ Thank you for your help!`,
   //       └── ...
   //
   folderTarget: "./input_images/",
-  folderA: "./method_a/",
-  folderB: "./method_b/",
+  folderA: "./method_A/",
+  folderB: "./method_B/",
 
 
   // ── IMAGE FILENAMES ────────────────────────────────────────
@@ -264,7 +264,7 @@ Thank you for your help!`,
 
 
   // ── RESULTS BACKEND ────────────────────────────────────────
-  resultsUrl: https://script.google.com/macros/s/AKfycbxVvQMkLgS5sk_PY8B5uCVDdcfizLjYIjeVudG0dZR8YrUQOfZxnoo5lPhAou_z1vaK/exec",
+  resultsUrl: "https://script.google.com/macros/s/AKfycbxVvQMkLgS5sk_PY8B5uCVDdcfizLjYIjeVudG0dZR8YrUQOfZxnoo5lPhAou_z1vaK/exec",
 };
 
 // ================================================================
@@ -314,8 +314,6 @@ function buildStudy() {
     ${CONFIG.criteria ? `<div class="criteria">${escHtml(CONFIG.criteria)}</div>` : ''}
     <div class="meta-info">
       <span>${files.length} comparisons</span>
-      <span>~${Math.max(1, Math.round(files.length * 0.3))}&ndash;${Math.round(files.length * 0.5)} minutes</span>
-      <span>Anonymous</span>
     </div>
   `;
 
