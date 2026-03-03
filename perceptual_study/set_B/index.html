@@ -211,21 +211,25 @@
 const CONFIG = {
 
   // ── STUDY TEXT ─────────────────────────────────────────────
-  title: "Perceptual Image Quality Study",
+  title: "Reconstruction of Human Object Interactions from a Single Image",
 
   description: `Welcome to our perceptual study!
 
-In this experiment, you will be shown 30 sets of images. Each set contains a target image on the left, and two reconstructions on the right.
+Introduction:
+We compare two methods that reconstruct 3D human–object interactions from a single image. Each method takes a single RGB image as input and reconstructs a 3D human body (shown in blue) and the object of interaction (shown in brown).
 
-Please select which reconstruction (Option 1 or Option 2) better matches the target image.
+Criteria:
+The 3D body should have a natural pose, and the 3D object should have a plausible shape. Moreover, the interaction between these entities should resemble the interaction depicted in the target image.
 
-Your participation is completely anonymous. The study should take about 5-10 minutes to complete.
+Your task:
+The study comprises 30 examples. For each example, you will see two rotating videos side by side, and you will have to choose between Option 1 and Option 2 by answering the following question:
 
+Which reconstruction (Option 1 or Option 2) better matches the target image?
+
+Your participation is completely anonymous. The study should take about 5–10 minutes to complete.
 Thank you for your help!`,
 
   criteria: "For each example, compare the two options to the target image and select the one that reconstructs it more faithfully.",
-
-  question: "Which option better reconstructs the target image?",
 
   label1: "Option 1",
   label2: "Option 2",
@@ -247,14 +251,14 @@ Thank you for your help!`,
   //       ├── image_0.jpg
   //       └── ...
   //
-  folderTarget: "./input_images/",
+  folderTarget: "./target_images/",
   folderA: "./method_A/",
   folderB: "./method_B/",
 
 
   // ── IMAGE FILENAMES ────────────────────────────────────────
   // Auto-generate: image_0.jpg, image_1.jpg, ..., image_29.jpg
-  filenamePrefix: "image_",
+  filenamePrefix: "example_",
   filenameSuffix: ".jpg",
   startIndex: 0,
   imageCount: 30,
@@ -331,9 +335,12 @@ function buildStudy() {
     // RANDOMIZATION 2: 50/50 which method is Option 1 vs Option 2
     const methodAIsOption1 = Math.random() > 0.5;
 
-    const targetSrc = fT + fileName;
-    const optSrc1 = methodAIsOption1 ? (fA + fileName) : (fB + fileName);
-    const optSrc2 = methodAIsOption1 ? (fB + fileName) : (fA + fileName);
+// Strip the extension off the filename, then manually add the correct ones
+    const baseName = fileName.replace(/\.[^/.]+$/, ""); 
+    
+    const targetSrc = fT + baseName + ".jpg"; // Target is JPG
+    const optSrc1 = methodAIsOption1 ? (fA + baseName + ".gif") : (fB + baseName + ".gif"); // Methods are GIFs
+    const optSrc2 = methodAIsOption1 ? (fB + baseName + ".gif") : (fA + baseName + ".gif"); // Methods are GIFs
 
     answerKey.push({
       displayIndex: displayIdx,
