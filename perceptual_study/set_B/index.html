@@ -207,7 +207,6 @@
 //  ✏️  EDIT THIS SECTION TO CUSTOMIZE YOUR STUDY
 //
 // ================================================================
-
 const CONFIG = {
 
   // ── STUDY TEXT ─────────────────────────────────────────────
@@ -257,9 +256,10 @@ Thank you for your help!`,
 
 
   // ── IMAGE FILENAMES ────────────────────────────────────────
-  // Auto-generate: image_0.jpg, image_1.jpg, ..., image_29.jpg
+  // Auto-generate: image_0, image_1, ..., image_29
   filenamePrefix: "example_",
-  filenameSuffix: ".jpg",
+  targetSuffix: ".jpg",        // extension for target images
+  comparisonSuffix: ".gif",    // extension for method_a and method_b (can be .jpg, .gif, .png, etc.)
   startIndex: 0,
   imageCount: 30,
 
@@ -267,8 +267,26 @@ Thank you for your help!`,
   manualFilenames: [],
 
 
+  // ── CATCH TRIALS (attention checks) ────────────────────────
+  // List filenames (without extension) where the correct answer is OBVIOUS.
+  // For each, specify which method is clearly better.
+  // Participants who fail too many catch trials are flagged as unreliable.
+  //
+  // Example: if image_3 has a clearly better result from Method A,
+  //          and image_15 from Method B:
+  //
+  catchTrials: [
+    { file: "example_10", correctMethod: "Method A" },
+    { file: "example_19", correctMethod: "Method A" },
+    { file: "example_24", correctMethod: "Method A" },
+    { file: "example_26", correctMethod: "Method A" },
+  ],
+  // How many catch trials can they get wrong before being flagged?
+  maxCatchFails: 2,
+
+
   // ── RESULTS BACKEND ────────────────────────────────────────
-  resultsUrl: "https://script.google.com/macros/s/AKfycbxVvQMkLgS5sk_PY8B5uCVDdcfizLjYIjeVudG0dZR8YrUQOfZxnoo5lPhAou_z1vaK/exec",
+    resultsUrl: "https://script.google.com/macros/s/AKfycbx4r4P76g7mHLgZ6GDtYnkRvr7IdSZPyxeTR3Mau88DZwNAXGjRIE844nVL6eRTMVUV/exec",
 };
 
 // ================================================================
@@ -283,7 +301,7 @@ function getFilenames() {
   if (CONFIG.manualFilenames && CONFIG.manualFilenames.length > 0) return [...CONFIG.manualFilenames];
   const files = [];
   for (let i = CONFIG.startIndex; i < CONFIG.startIndex + CONFIG.imageCount; i++) {
-    files.push(CONFIG.filenamePrefix + i + CONFIG.filenameSuffix);
+    files.push(CONFIG.filenamePrefix + i);
   }
   return files;
 }
@@ -335,12 +353,9 @@ function buildStudy() {
     // RANDOMIZATION 2: 50/50 which method is Option 1 vs Option 2
     const methodAIsOption1 = Math.random() > 0.5;
 
-// Strip the extension off the filename, then manually add the correct ones
-    const baseName = fileName.replace(/\.[^/.]+$/, ""); 
-    
-    const targetSrc = fT + baseName + ".jpg"; // Target is JPG
-    const optSrc1 = methodAIsOption1 ? (fA + baseName + ".gif") : (fB + baseName + ".gif"); // Methods are GIFs
-    const optSrc2 = methodAIsOption1 ? (fB + baseName + ".gif") : (fA + baseName + ".gif"); // Methods are GIFs
+    const targetSrc = fT + fileName + CONFIG.targetSuffix;
+    const optSrc1 = methodAIsOption1 ? (fA + fileName + CONFIG.comparisonSuffix) : (fB + fileName + CONFIG.comparisonSuffix);
+    const optSrc2 = methodAIsOption1 ? (fB + fileName + CONFIG.comparisonSuffix) : (fA + fileName + CONFIG.comparisonSuffix);
 
     answerKey.push({
       displayIndex: displayIdx,
@@ -436,11 +451,42 @@ function submitStudy() {
     };
   });
 
+  // Score catch trials
+  let catchPassed = 0;
+  let catchFailed = 0;
+  const catchDetails = [];
+
+  if (CONFIG.catchTrials && CONFIG.catchTrials.length > 0) {
+    for (const ct of CONFIG.catchTrials) {
+      const result = results.find(r => r.fileName === ct.file);
+      if (result) {
+        const correct = result.chosen_method === ct.correctMethod;
+        if (correct) { catchPassed++; } else { catchFailed++; }
+        catchDetails.push({
+          file: ct.file,
+          expected: ct.correctMethod,
+          actual: result.chosen_method,
+          correct: correct
+        });
+      }
+    }
+  }
+
+  const totalCatch = catchPassed + catchFailed;
+  const reliable = catchFailed <= (CONFIG.maxCatchFails || 1);
+
   const payload = {
     timestamp: new Date().toISOString(),
     studyTitle: CONFIG.title,
     totalComparisons: totalComparisons,
-    results: results
+    results: results,
+    catchTrials: {
+      total: totalCatch,
+      passed: catchPassed,
+      failed: catchFailed,
+      reliable: reliable,
+      details: catchDetails
+    }
   };
 
   // Send to Google Sheets via hidden form POST
