@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perceptual Image Quality Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f3f0;--surface:#fff;--border:#e2ddd7;--text:#2c2825;--text-muted:#7a7168;--accent:#6d5ccd;--accent-light:#ebe7fb;--accent-hover:#5a48b8;--success:#3d9970;--success-light:#e8f5ee;--target-accent:#d97706;--target-light:#fef3c7;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06);--shadow-lg:0 8px 32px rgba(0,0,0,.1)}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+.study-header{background:var(--surface);border-radius:var(--radius);padding:2.5rem;box-shadow:var(--shadow);margin-bottom:2rem;border-top:4px solid var(--accent)}
+.study-header h1{font-size:1.75rem;font-weight:700;margin-bottom:1rem;letter-spacing:-.02em}
+.study-header p{color:var(--text-muted);margin-bottom:.75rem;font-size:.95rem}
+.study-header .criteria{background:var(--accent-light);border-radius:8px;padding:1rem 1.25rem;margin-top:1.25rem;font-size:.9rem;color:var(--accent-hover);font-weight:500}
+.meta-info{display:flex;gap:1.5rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:.85rem;color:var(--text-muted)}
+.meta-info span::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle}
+.progress-wrap{background:var(--surface);border-radius:var(--radius);padding:1.25rem 2rem;box-shadow:var(--shadow);margin-bottom:2rem;position:sticky;top:1rem;z-index:100}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.85rem;font-weight:600}
+.progress-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-hover));border-radius:3px;transition:width .4s;width:0%}
+.comparison-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:2rem;overflow:hidden;transition:box-shadow .3s,border-color .3s;border:2px solid transparent}
+.comparison-card:hover{box-shadow:var(--shadow-lg)}
+.comparison-card.answered{border-color:var(--success)}
+.card-header{padding:1.25rem 2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-header h3{font-size:1rem;font-weight:600}
+.card-header .badge{font-family:'IBM Plex Mono',monospace;font-size:.75rem;padding:.25rem .75rem;border-radius:20px;background:var(--border);color:var(--text-muted);font-weight:500}
+.card-header .badge.done{background:var(--success-light);color:var(--success)}
+.three-col-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+.target-col{padding:1.5rem;background:var(--target-light);border-right:2px solid var(--target-accent);display:flex;flex-direction:column}
+.target-label{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-weight:700;font-size:.9rem;color:var(--target-accent)}
+.target-dot{width:10px;height:10px;border-radius:50%;background:var(--target-accent);flex-shrink:0}
+.target-col img{width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:8px;background:#1a1a1a;display:block}
+.option{padding:1.5rem;cursor:pointer;position:relative;transition:background .2s;border:3px solid transparent}
+.option+.option{border-left:1px solid var(--border)}
+.option:hover{background:#faf9f7}
+.option.selected{background:var(--accent-light);border-color:var(--accent)}
+.option input[type="radio"]{display:none}
+.option-label{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;font-weight:600;font-size:.9rem}
+.radio-visual{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.option.selected .radio-visual{border-color:var(--accent);background:var(--accent)}
+.radio-visual::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff;opacity:0;transition:opacity .2s}
+.option.selected .radio-visual::after{opacity:1}
+.option img,.option video{width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:8px;background:#1a1a1a;display:block}
+.question-bar{padding:.85rem 2rem;background:#faf9f7;border-top:1px solid var(--border);font-weight:600;font-size:.9rem;color:var(--text-muted)}
+.pause-bar{padding:.6rem 2rem;background:#f0eeeb;border-top:1px solid var(--border);text-align:center}
+.pause-btn{background:none;border:1px solid var(--border);padding:.4rem 1.2rem;border-radius:20px;font-family:inherit;font-size:.8rem;color:var(--text-muted);cursor:pointer;transition:all .2s}
+.pause-btn:hover{background:var(--surface);border-color:var(--accent);color:var(--accent)}
+.submit-section{text-align:center;padding:2rem}
+.btn-submit{background:var(--accent);color:#fff;border:none;padding:1rem 3rem;font-size:1rem;font-weight:600;border-radius:50px;cursor:pointer;font-family:inherit;transition:all .3s;box-shadow:0 4px 16px rgba(109,92,205,.3)}
+.btn-submit:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 6px 24px rgba(109,92,205,.4)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-note{margin-top:.75rem;font-size:.85rem;color:var(--text-muted)}
+.completion-screen{display:none;text-align:center;padding:4rem 2rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
+.completion-screen.show{display:block}
+.completion-icon{width:80px;height:80px;border-radius:50%;background:var(--success-light);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.5rem}
+.completion-screen h2{font-size:1.5rem;margin-bottom:.75rem}
+.completion-screen p{color:var(--text-muted)}
+@media(max-width:768px){.container{padding:1rem}.study-header{padding:1.5rem}.three-col-grid{grid-template-columns:1fr}.target-col{border-right:none;border-bottom:2px solid var(--target-accent)}.option+.option{border-left:none;border-top:1px solid var(--border)}.meta-info{flex-direction:column;gap:.5rem}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="studyContent">
+    <div class="study-header" id="studyHeader"></div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-top">
+        <span id="progressLabel">0 / 0 answered</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    </div>
+    <div id="comparisonsContainer"></div>
+    <div class="submit-section" id="submitSection">
+      <button class="btn-submit" id="btnSubmit" disabled onclick="submitStudy()">Submit Responses</button>
+      <p class="submit-note" id="submitNote">Please answer all comparisons before submitting.</p>
+    </div>
+    <div class="completion-screen" id="completionScreen">
+      <div class="completion-icon">&#10003;</div>
+      <h2>Thank you!</h2>
+      <p>Your responses have been recorded successfully.</p>
+    </div>
+  </div>
+</div>
+<script>
+// ================================================================
+//  EDIT THIS SECTION TO CUSTOMIZE YOUR STUDY
+// ================================================================
+const CONFIG = {
+  title: "Reconstruction of Human Object Interactions from a Single Image",
+
+  description: `Welcome to our perceptual study!
+
+**Introduction:** We compare two methods that reconstruct 3D human–object interactions from a single image. Each method takes a single RGB image as input and reconstructs a 3D human body (shown in blue) and the object of interaction (shown in brown).
+
+**Criteria:** The 3D body should have a natural pose, and the 3D object should have a plausible shape. Moreover, the interaction between these entities should resemble the interaction depicted in the target image.
+
+**Your task:** The study comprises 60 examples. For each example, you will see two rotating videos side by side, and you will have to choose between Option 1 and Option 2 by answering the following question:
+
+**Which reconstruction (Option 1 or Option 2) better matches the target image?**
+
+Your participation is completely anonymous. The study should take about 5–10 minutes to complete.
+Thank you for your help!`,
+
+  criteria: "For each example, compare the two options to the target image and select the one that reconstructs it more faithfully.",
+
+  label1: "Option 1",
+  label2: "Option 2",
+
+  // ── SETS ───────────────────────────────────────────────────
+  // Examples from ALL sets are shuffled together randomly.
+  // The participant sees no difference between sets.
+  sets: [
+    {
+      name: "Set A",
+      folderTarget: "./set_A/target_images/",
+      folderA: "./set_A/method_A/",
+      folderB: "./set_A/method_B/",
+      filenamePrefix: "example_",
+      targetSuffix: ".jpg",
+      comparisonSuffix: ".mp4",
+      startIndex: 0,
+      imageCount: 30,
+      catchTrials: [
+        { file: "example_0", correctMethod: "Method B" },
+        { file: "example_2", correctMethod: "Method A" },
+        { file: "example_14", correctMethod: "Method A" },
+      ],
+    },
+    {
+      name: "Set B",
+      folderTarget: "./set_B/target_images/",
+      folderA: "./set_B/method_A/",
+      folderB: "./set_B/method_B/",
+      filenamePrefix: "example_",
+      targetSuffix: ".jpg",
+      comparisonSuffix: ".mp4",
+      startIndex: 0,
+      imageCount: 30,
+      catchTrials: [
+        { file: "example_12", correctMethod: "Method B" },
+        { file: "example_15", correctMethod: "Method A" },
+        { file: "example_17", correctMethod: "Method A" },
+      ],
+    },
+  ],
+
+  // true = fail any set catch trials -> unreliable for ALL sets
+  // false = fail Set A catch trials -> unreliable only for Set A
+  globalExclusion: true,
+  maxCatchFails: 3,
+
+  resultsUrl: "https://script.google.com/macros/s/AKfycbwFAH-88N9khud0iJzVqtnNnWBJ9kbjI3WxVEpTzU800WMaqbFQ1IN1TXOUN2OuMd01/exec",
+};
+// ================================================================
+//  STOP EDITING
+// ================================================================
+let answers={},answerKey=[],totalComparisons=0;
+function shuffleArray(a){const s=[...a];for(let i=s.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[s[i],s[j]]=[s[j],s[i]]}return s}
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function buildStudy(){
+  let allExamples=[];
+  for(const set of CONFIG.sets){
+    const fT=set.folderTarget.replace(/\/?$/,'/');
+    const fA=set.folderA.replace(/\/?$/,'/');
+    const fB=set.folderB.replace(/\/?$/,'/');
+    for(let i=set.startIndex;i<set.startIndex+set.imageCount;i++){
+      const base=set.filenamePrefix+i;
+      allExamples.push({
+        setName:set.name,baseName:base,
+        targetSrc:fT+base+set.targetSuffix,
+        aSrc:fA+base+set.comparisonSuffix,
+        bSrc:fB+base+set.comparisonSuffix,
+        isVideo:['.mp4','.webm','.mov'].includes(set.comparisonSuffix.toLowerCase()),
+      });
+    }
+  }
+  totalComparisons=allExamples.length;
+  answers={};answerKey=[];
+
+  const header=document.getElementById('studyHeader');
+  const descPs=CONFIG.description.split('\n').filter(p=>p.trim()).map(p=>'<p>'+escHtml(p).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')+'</p>').join('');
+  header.innerHTML='<h1>'+escHtml(CONFIG.title)+'</h1>'+descPs+(CONFIG.criteria?'<div class="criteria">'+escHtml(CONFIG.criteria)+'</div>':'');
+
+  const shuffled=shuffleArray(allExamples);
+  const container=document.getElementById('comparisonsContainer');
+  container.innerHTML='';
+
+  shuffled.forEach((ex,idx)=>{
+    const aFirst=Math.random()>0.5;
+    const src1=aFirst?ex.aSrc:ex.bSrc;
+    const src2=aFirst?ex.bSrc:ex.aSrc;
+    answerKey.push({displayIndex:idx,setName:ex.setName,fileName:ex.baseName,option1_method:aFirst?"Method A":"Method B",option2_method:aFirst?"Method B":"Method A"});
+
+    let m1,m2;
+    if(ex.isVideo){
+      m1='<video src="'+escHtml(src1)+'" autoplay loop muted playsinline></video>';
+      m2='<video src="'+escHtml(src2)+'" autoplay loop muted playsinline></video>';
+    }else{
+      m1='<img src="'+escHtml(src1)+'" alt="'+escHtml(CONFIG.label1)+'" loading="lazy">';
+      m2='<img src="'+escHtml(src2)+'" alt="'+escHtml(CONFIG.label2)+'" loading="lazy">';
+    }
+
+    const pauseBtn=ex.isVideo?'<div class="pause-bar"><button class="pause-btn" onclick="toggleVideos('+idx+',event)" id="pausebtn-'+idx+'">&#10074;&#10074; Pause both videos</button></div>':'';
+
+    const card=document.createElement('div');
+    card.className='comparison-card';card.id='card-'+idx;
+    card.innerHTML='<div class="card-header"><h3>Example '+(idx+1)+'</h3><span class="badge" id="badge-'+idx+'">Unanswered</span></div><div class="three-col-grid"><div class="target-col"><div class="target-label"><div class="target-dot"></div>Target</div><img src="'+escHtml(ex.targetSrc)+'" alt="Target" loading="lazy"></div><div class="option" id="opt-'+idx+'-1" onclick="selectOption('+idx+',1)"><input type="radio" name="q'+idx+'" value="1"><div class="option-label"><div class="radio-visual"></div>'+escHtml(CONFIG.label1)+'</div>'+m1+'</div><div class="option" id="opt-'+idx+'-2" onclick="selectOption('+idx+',2)"><input type="radio" name="q'+idx+'" value="2"><div class="option-label"><div class="radio-visual"></div>'+escHtml(CONFIG.label2)+'</div>'+m2+'</div></div>'+pauseBtn+'<div class="question-bar">'+escHtml(CONFIG.question)+'</div>';
+    container.appendChild(card);
+  });
+  updateProgress();
+}
+
+function selectOption(i,n){
+  answers[i]=n;
+  document.getElementById('opt-'+i+'-1').classList.toggle('selected',n===1);
+  document.getElementById('opt-'+i+'-2').classList.toggle('selected',n===2);
+  document.getElementById('card-'+i).classList.add('answered');
+  const b=document.getElementById('badge-'+i);b.textContent='Answered';b.classList.add('done');
+  updateProgress();
+}
+
+function toggleVideos(idx,event){
+  event.stopPropagation();
+  const card=document.getElementById('card-'+idx);
+  const videos=card.querySelectorAll('video');
+  const btn=document.getElementById('pausebtn-'+idx);
+  if(videos.length===0)return;
+  const paused=videos[0].paused;
+  videos.forEach(function(v){if(paused)v.play();else v.pause();});
+  btn.innerHTML=paused?'&#10074;&#10074; Pause both videos':'&#9654; Play both videos';
+}
+
+function updateProgress(){
+  const done=Object.keys(answers).length;
+  const pct=totalComparisons>0?Math.round(done/totalComparisons*100):0;
+  document.getElementById('progressLabel').textContent=done+' / '+totalComparisons+' answered';
+  document.getElementById('progressPercent').textContent=pct+'%';
+  document.getElementById('progressFill').style.width=pct+'%';
+  const btn=document.getElementById('btnSubmit'),note=document.getElementById('submitNote');
+  if(done===totalComparisons&&totalComparisons>0){btn.disabled=false;note.textContent='All comparisons answered. Ready to submit!';}
+  else{btn.disabled=true;note.textContent='Please answer all comparisons before submitting. ('+(totalComparisons-done)+' remaining)';}
+}
+
+function submitStudy(){
+  const btn=document.getElementById('btnSubmit');btn.disabled=true;btn.textContent='Submitting...';
+  const results=answerKey.map(e=>{const c=answers[e.displayIndex];return{example:e.displayIndex+1,setName:e.setName,fileName:e.fileName,option1_is:e.option1_method,option2_is:e.option2_method,chosen:c===1?CONFIG.label1:CONFIG.label2,chosen_method:c===1?e.option1_method:e.option2_method};});
+
+  // Score catch trials per set
+  const catchResults={};
+  for(const set of CONFIG.sets){
+    catchResults[set.name]={passed:0,failed:0,total:0,details:[]};
+    if(!set.catchTrials)continue;
+    for(const ct of set.catchTrials){
+      const r=results.find(x=>x.setName===set.name&&x.fileName===ct.file);
+      if(r){const ok=r.chosen_method===ct.correctMethod;catchResults[set.name].total++;if(ok)catchResults[set.name].passed++;else catchResults[set.name].failed++;catchResults[set.name].details.push({file:ct.file,expected:ct.correctMethod,actual:r.chosen_method,correct:ok});}
+    }
+  }
+  const maxF=CONFIG.maxCatchFails||3;let anyFail=false;
+  for(const sn in catchResults){catchResults[sn].reliable=catchResults[sn].failed<=maxF;if(!catchResults[sn].reliable)anyFail=true;}
+  if(CONFIG.globalExclusion&&anyFail){for(const sn in catchResults)catchResults[sn].reliable=false;}
+
+  const payload={timestamp:new Date().toISOString(),studyTitle:CONFIG.title,totalComparisons:totalComparisons,globalExclusion:CONFIG.globalExclusion,results:results,catchTrials:catchResults};
+
+  if(CONFIG.resultsUrl&&!CONFIG.resultsUrl.includes('YOUR_DEPLOYMENT')){
+    fetch(CONFIG.resultsUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)}).catch(()=>{});
+    try{const iframe=document.createElement('iframe');iframe.name='sf';iframe.style.display='none';document.body.appendChild(iframe);const form=document.createElement('form');form.method='POST';form.action=CONFIG.resultsUrl;form.target='sf';const inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(payload);form.appendChild(inp);document.body.appendChild(form);form.submit();}catch(e){}
+  }
+
+  document.cookie='study_done_'+CONFIG.title.replace(/\s+/g,'_')+'=1;max-age=31536000;path=/';
+  document.getElementById('submitSection').style.display='none';
+  document.getElementById('comparisonsContainer').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('completionScreen').classList.add('show');
+}
+
+function checkAlreadyDone(){
+  const k='study_done_'+CONFIG.title.replace(/\s+/g,'_');
+  if(document.cookie.includes(k+'=1')){
+    document.getElementById('studyContent').innerHTML='<div style="text-align:center;padding:4rem 2rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)"><div style="width:80px;height:80px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.5rem">&#10003;</div><h2 style="font-size:1.5rem;margin-bottom:.75rem">You have already completed this study</h2><p style="color:var(--text-muted)">Thank you for your participation. Each person can only submit once.</p></div>';
+    return true;
+  }return false;
+}
+window.addEventListener('DOMContentLoaded',function(){if(!checkAlreadyDone())buildStudy();});
+</script>
+</body>
+</html>
