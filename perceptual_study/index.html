@@ -98,12 +98,11 @@ const CONFIG = {
 
 **Your task:** The study comprises 60 examples. For each example, you will see two rotating videos side by side, and you will have to choose between Option 1 and Option 2 by answering the following question:
 
-**Which reconstruction (Option 1 or Option 2) better matches the target image?**
+**Which reconstruction (Option 1 or Option 2) better matches the target image and is more physically plausible?**
+**You may pause the videos to observe details more carefully.**
 
-Your participation is completely anonymous. The study should take about 5–10 minutes to complete.
+Your participation is completely anonymous. The study should take about 10 minutes to complete.
 Thank you for your help!`,
-
-  criteria: "For each example, compare the two options to the target image and select the one that reconstructs it more faithfully.",
 
   label1: "Option 1",
   label2: "Option 2",
@@ -124,8 +123,9 @@ Thank you for your help!`,
       imageCount: 30,
       catchTrials: [
         { file: "example_0", correctMethod: "Method B" },
-        { file: "example_2", correctMethod: "Method A" },
         { file: "example_14", correctMethod: "Method A" },
+        { file: "example_18", correctMethod: "Method A" },
+        { file: "example_19", correctMethod: "Method A" },
       ],
     },
     {
@@ -142,6 +142,7 @@ Thank you for your help!`,
         { file: "example_12", correctMethod: "Method B" },
         { file: "example_15", correctMethod: "Method A" },
         { file: "example_17", correctMethod: "Method A" },
+        { file: "example_24", correctMethod: "Method A" },
       ],
     },
   ],
@@ -149,7 +150,7 @@ Thank you for your help!`,
   // true = fail any set catch trials -> unreliable for ALL sets
   // false = fail Set A catch trials -> unreliable only for Set A
   globalExclusion: true,
-  maxCatchFails: 3,
+  maxCatchFails: 2,
 
   resultsUrl: "https://script.google.com/macros/s/AKfycbwIrr6GqGxoCo7lVQh0-SIQB-qJ9WbTHjK9EcijJgVuFSEn4lmbqWJEj_Iz3CM63XG2/exec",
 };
@@ -258,9 +259,13 @@ function submitStudy(){
       if(r){const ok=r.chosen_method===ct.correctMethod;catchResults[set.name].total++;if(ok)catchResults[set.name].passed++;else catchResults[set.name].failed++;catchResults[set.name].details.push({file:ct.file,expected:ct.correctMethod,actual:r.chosen_method,correct:ok});}
     }
   }
-  const maxF=CONFIG.maxCatchFails||3;let anyFail=false;
-  for(const sn in catchResults){catchResults[sn].reliable=catchResults[sn].failed<=maxF;if(!catchResults[sn].reliable)anyFail=true;}
-  if(CONFIG.globalExclusion&&anyFail){for(const sn in catchResults)catchResults[sn].reliable=false;}
+  
+  const maxF=CONFIG.maxCatchFails||3;
+let totalCatchFailed=0;
+for(const sn in catchResults){totalCatchFailed+=catchResults[sn].failed;}
+const isReliable=totalCatchFailed<=maxF;
+for(const sn in catchResults){catchResults[sn].reliable=isReliable;}
+catchResults._global={totalFailed:totalCatchFailed,maxAllowed:maxF,reliable:isReliable};
 
   const payload={timestamp:new Date().toISOString(),studyTitle:CONFIG.title,totalComparisons:totalComparisons,globalExclusion:CONFIG.globalExclusion,results:results,catchTrials:catchResults};
 
