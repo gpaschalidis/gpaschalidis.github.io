@@ -62,6 +62,139 @@
                 <h2>Publications</h2>
                     <div class="publication">
                         <div class="image">
+                            <img src="lexis/lexis_teaser.png" alt="" />
+                        </div>
+                        <div class="publication-info">
+                            <div class="paper-title">
+                                <a href="">LEXIS: LatEnt ProXimal Interaction Signatures for 3D HOI from an Image</a>
+                            </div>
+                            <div class="conference">
+                                Preprint - ArXiv
+                            </div>
+                            <div class="authors">
+                                <a href="https://anticdimi.github.io/" class="author">Dimitrije Antić</a>, 
+                                <a href="https://alvaro-budria.github.io/" class="author">Alvaro Budria*</a>, 
+                                <strong class="author">Georgios Paschalidis*</strong>, 
+                                <a href="https://saidwivedi.in/" class="author">Sai Kumar Dwivedi</a>, 
+                                <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
+                            </div>
+                            <strong class="author">*Equal contribution</strong> 
+                            <div class="links">
+                                <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
+                                <a href="https://anticdimi.github.io/lexis/" data-type="Project page">Project page</a> 
+                                <a href="https://arxiv.org/abs/2604.20800" data-type="Paper">Paper</a> 
+                                <a href="https://github.com/anticdimi/LEXIS" data-type="Code">Code</a> 
+                                <a href="https://anticdimi.github.io/lexis/deck/" data-type="Video">Video</a> 
+                                <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
+                                <div class="link-content" data-index="0">
+                                    <pre>
+                                    Reconstructing 3D Human-Object Interaction from an RGB image is essential for
+                                    perceptive systems. Yet, this remains challenging as it requires capturing the
+                                    subtle physical coupling between the body and objects. While current methods rely on
+                                    sparse, binary contact cues, these fail to model the continuous proximity and dense
+                                    spatial relationships that characterize natural interactions. We address this
+                                    limitation via InterFields, a representation that encodes dense,
+                                    continuous proximity across the entire body and object surfaces. However, inferring
+                                    these fields from single images is inherently ill-posed. To tackle this, our
+                                    intuition is that interaction patterns are characteristically structured by the action
+                                    and object geometry. We capture this structure in LEXIS, a novel discrete
+                                    manifold of interaction signatures learned via a VQ-VAE. We then develop LEXIS-Flow, a
+                                    diffusion framework that leverages LEXIS signatures to estimate human and object
+                                    meshes alongside their InterFields. Notably, these InterFields help in a guided
+                                    refinement that ensures physically-plausible, proximity-aware
+                                    reconstructions without requiring post-hoc optimization. Evaluation on Open3DHOI and
+                                    BEHAVE shows that LEXIS-Flow significantly outperforms existing SotA baselines in
+                                    reconstruction, contact, and proximity quality. Our approach not only improves
+                                    generalization but also yields reconstructions perceived as more
+                                    realistic, moving us closer to holistic 3D scene understanding. Code & models will be
+                                    public at https://anticdimi.github.io/lexis/.
+                                    </pre>
+                                </div>
+                                <div class="link-content" data-index="5">
+                                    <pre>
+                                    @article{antic2026lexis,
+                                        title   = {{LEXIS}: {LatEnt} {ProXimal} Interaction Signatures for {3D} {HOI} from an Image},
+                                        author  = {Anti\'{c}, Dimitrije and Budria, Alvaro and Paschalidis, Georgios and Dwivedi, Sai Kumar and Tzionas, Dimitrios},
+                                        journal = {arXiv preprint arXiv:2604.20800},
+                                        year    = {2026},
+                                    }
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="publication">
+                        <div class="image">
+                            <img src="rhino/rhino_teaser.png" alt="" />
+                        </div>
+                        <div class="publication-info">
+                            <div class="paper-title">
+                                <a href="">SDFit: 3D Object Pose and Shape by Fitting a Morphable SDF to a Single Image</a>
+                            </div>
+                            <div class="conference">
+                                Computer Vision and Pattern Recognition (CVPR), 2026
+                            </div>
+                            <div class="authors">
+                                <a href="https://lxxue.github.io/" class="author">Lixin Xue</a>, 
+                                <a href="https://chengwei-zheng.github.io/" class="author">Chengwei Zheng</a>, 
+                                <strong class="author">Georgios Paschalidis</strong>, 
+                                <a href="https://moygcc.github.io/" class="author">Chen Guo</a>, 
+                                <a href="https://manuelkaufmann.ch/" class="author">Manuel Kaufmann</a>, 
+                                <a href="https://ait.ethz.ch/people/jzarate" class="author">Juan Zarate</a>, 
+                                <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
+                            </div>
+                            <div class="links">
+                                <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
+                                <a href="https://lxxue.github.io/RHINO/" data-type="Project page">Project page</a> 
+                                <a href="https://files.ait.ethz.ch/projects/rhino/rhino_main.pdf" data-type="Paper">Paper</a> 
+                                <a href="https://lxxue.github.io/RHINO/" data-type="Code">Code</a> 
+                                <a href="https://lxxue.github.io/RHINO/" data-type="Video">Video</a> 
+                                <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
+                                <div class="link-content" data-index="0">
+                                    <pre>
+                                        Reconstructing people, objects, and their interactions in 3D is a long-standing and
+                                        fundamental goal for intelligent systems. Often the input is RGB video from a moving
+                                        camera, making the task ill-posed; depth is ambiguous, humans and objects occlude each
+                                        other, and camera and object motion entangle to create apparent motion. Most
+                                        prior work addresses humans or objects in isolation, ignoring their interplay, or
+                                        assumes known 3D shapes or cameras, which is impractical for real-world applications.
+                                        We develop RHINO (Reconstructing Human Interactions with Novel Objects), a novel
+                                        three-step framework that recovers in 3D a human, novel (unseen) manipulated object,
+                                        and static scene in a common world frame from a monocular RGB video. First, we
+                                        leverage 3D-aware foundation models to obtain cues that stabilize
+                                        Structure-from-Motion (SfM) even for low-texture regions; this yields a coarse
+                                        shape and apparent motion of a manipulated object from foreground pixels, and a coarse
+                                        scene shape and camera motion from background pixels. Second, we estimate a
+                                        human in the camera frame via an off-the-shelf method, and subtract the
+                                        camera motion from apparent motion to extract the object motion; this registers
+                                        the human, object, and coarse scene shapes into a common world frame. Third, we refine
+                                        shapes using a compositional neural field with per-component signed-distance fields.
+                                        The latter further enables differentiable contact priors that attract surfaces while
+                                        penalizing interpenetration, improving the physical plausibility of the final
+                                        reconstruction. For evaluation, we capture a new dataset of handheld monocular videos
+                                        synchronized with a volumetric 4D capture stage, providing ground-truth shape and
+                                        camera motion. RHINO outperforms state-of-the-art baselines on novel-view
+                                        synthesis and 4D reconstruction. Ablations show that each stage contributes
+                                        substantially.
+                                    </pre>
+                                </div>
+                                <div class="link-content" data-index="5">
+                                    <pre>
+                                    @inproceedings{xue2026rhino,
+                                           title = {RHINO: Reconstructing Human Interactions with Novel Objects from Monocular Videos},
+                                           author = {Xue, Lixin and Zheng, Chengwei and Paschalidis, Georgios and Guo, Chen and Kaufmann, Manuel and Zarate, Juan and Tzionas, Dimitrios},
+                                           booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+                                           year = {2026}
+}
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="publication">
+                        <div class="image">
                             <img src="sdfit/sdfit_teaser.png" alt="" />
                         </div>
                         <div class="publication-info">
@@ -76,7 +209,7 @@
                                 <strong class="author">Georgios Paschalidis</strong>, 
                                 <a href="https://sha2nkt.github.io/" class="author">Shashank Tripathi</a>, 
                                 <a href="https://staff.science.uva.nl/th.gevers/" class="author">Theo Gevers</a>, 
-                                <a href="https://saidwivedi.in/" class="author">Sai KUmar Dwivedi</a>, 
+                                <a href="https://saidwivedi.in/" class="author">Sai Kumar Dwivedi</a>, 
                                 <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
                             </div>
                             <div class="links">
