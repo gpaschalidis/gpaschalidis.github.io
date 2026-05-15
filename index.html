@@ -1,468 +1,378 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="auto">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>George Paschalidis</title>
+    <title>Georgios Paschalidis</title>
+
+    <!-- SEO -->
+    <meta name="author" content="Georgios Paschalidis">
+    <meta name="description" content="Georgios Paschalidis is an ELLIS PhD student at the University of Amsterdam Computer Vision Lab, working on 3D Human-Object Interaction synthesis and 4D reconstruction.">
+    <meta name="keywords" content="Georgios Paschalidis, 3D Human-Object Interaction, computer vision, PhD, University of Amsterdam, HOI, 4D reconstruction">
+    <link rel="canonical" href="https://gpaschalidis.github.io/">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Georgios Paschalidis">
+    <meta property="og:description" content="ELLIS PhD student at the University of Amsterdam — 3D Human-Object Interaction synthesis & 4D reconstruction.">
+    <meta property="og:url" content="https://gpaschalidis.github.io/">
+    <meta property="og:image" content="https://gpaschalidis.github.io/george.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Georgios Paschalidis">
+    <meta name="twitter:description" content="ELLIS PhD student at the University of Amsterdam — 3D Human-Object Interaction synthesis & 4D reconstruction.">
+    <meta name="twitter:image" content="https://gpaschalidis.github.io/george.jpg">
+
+    <!-- Inline SVG favicon: monogram "GP" -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%234169E1'/%3E%3Ctext x='50' y='50' dy='.36em' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='46' font-weight='700' fill='white'%3EGP%3C/text%3E%3C/svg%3E">
+
+    <!-- Theme color (light/dark aware) -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+
     <!-- Font Awesome for general icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Academicons for Google Scholar -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Set theme before paint to avoid a flash of the wrong theme -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem("theme");
+                if (stored === "dark" || stored === "light") {
+                    document.documentElement.setAttribute("data-theme", stored);
+                }
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body>
-    <div class="main-container">
-        <!-- Header with Navigation Bar -->
-        <header>
-            <nav aria-label="Main Navigation">
-                <ul>
-                    <li><a href="https://gpaschalidis.github.io/" class="site-name">Georgios Paschalidis</a></li>
-                    <li><a href="#home" id="home-nav-button" class="nav-link">Home</a></li>
-                    <li><a href="#publications" id="publications-nav-button" class="nav-link">Publications</a></li>
-                    <li><a href="#contact" id="contact-nav-button" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
+    <a class="skip-link" href="#home">Skip to content</a>
 
+    <!-- Header with Navigation Bar -->
+    <header>
+        <nav class="nav" aria-label="Main Navigation">
+            <a href="#home" class="site-name">Georgios Paschalidis</a>
 
-        <section id="home">
-        <!-- Personal information section -->
-        <div class="profile-container">
-            
-            <div class="image-links-container">
-                <img src="george.jpg" alt="Profile Image of Georgios Paschalidis" class="profile-image">
-            
-                <div class="social-links">
-                    <a href="mailto:g.paschalidis@uva.nl" target="_blank" aria-label="Send email to g.paschalidis@uva.nl"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
-                    <a href="https://github.com/gpaschalidis" target="_blank" aria-label="Visit my GitHub profile"><i class="fa-brands fa-github fa-2x" aria-hidden="true"></i></a>
-                    <a href="https://x.com/gkpaschalidis" target="_blank" aria-label="Visit my Twitter profile" ><i class="fa-brands fa-twitter fa-2x" aria-hidden="true"></i></a>
-                    <a href="https://www.linkedin.com/in/george-paschalidis-59bb06264/" target="_blank" aria-label="Visit my LinkedIn profile"><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a>
-                    <a href="https://scholar.google.com/citations?user=dYhRJjwAAAAJ&hl=en" target="_blank" aria-label="Visit my Google Scholar profile"><i class="ai ai-google-scholar ai-2x" aria-hidden="true"></i></a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#publications" class="nav-link">Publications</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section id="home" class="hero">
+            <div class="profile-container">
+                <div class="image-links-container">
+                    <img src="george.jpg" alt="Portrait of Georgios Paschalidis" class="profile-image" width="270" height="270">
+
+                    <div class="social-links">
+                        <a href="mailto:g.paschalidis@uva.nl" aria-label="Email Georgios Paschalidis"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                        <a href="https://github.com/gpaschalidis" target="_blank" rel="noopener" aria-label="GitHub profile"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+                        <a href="https://x.com/gkpaschalidis" target="_blank" rel="noopener" aria-label="X / Twitter profile"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/in/george-paschalidis-59bb06264/" target="_blank" rel="noopener" aria-label="LinkedIn profile"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                        <a href="https://scholar.google.com/citations?user=dYhRJjwAAAAJ&hl=en" target="_blank" rel="noopener" aria-label="Google Scholar profile"><i class="ai ai-google-scholar" aria-hidden="true"></i></a>
+                    </div>
                 </div>
-            <!-- You can add more links here if you want -->
-            </div>
 
-            <div class="biography-note">
-            <p>I am an ELLIS PhD student in the <a href="https://ivi.fnwi.uva.nl/cv" target="_blank">Computer Vision Lab</a> at 
-               the <a href="https://www.uva.nl" target="_blank">University of Amsterdam</a>,
-               advised by <a href="https://dtzionas.com" target="_blank">Prof. Dimitris Tzionas</a> and <a href="https://staff.fnwi.uva.nl/th.gevers/" target="_blank">Prof. Theo Gevers</a>. My research focus on 3D Human 
-               Object Interaction (HOI) synthesis, while I am also interested in reconstructing 4D HOIs from videos. Before 
-               joining UvA I had the great opportunity to spend 4 months as a research intern at <a href="https://www.sfu.ca/" target="_blank">Simon Fraser University</a> 
-               working together with <a href="https://msavva.github.io/" target="_blank">Prof. Manolis Savva</a>. Prior to that
-               I completed my Master at the <a href="https://www.upatras.gr/en/" target="_blank">University of Patras</a> 
-               collaborating with Prof. Emmanouil Psarakis, while also working as a Lead Quality Assurance Enginner 
-               at <a href="https://www.haf.gr/en/" target="_blank">Hellenic Air Force</a>. I am also a passionate 
-               windsurfer. However, when the sea and wind are not there I enjoy spending my time running or going to the gym.</p>
+                <div class="biography-note">
+                    <h1>Georgios Paschalidis</h1>
+                    <p class="tagline">ELLIS PhD Student · 3D Human-Object Interaction</p>
+                    <p>I am an ELLIS PhD student in the <a href="https://ivi.fnwi.uva.nl/cv" target="_blank" rel="noopener">Computer Vision Lab</a> at
+                       the <a href="https://www.uva.nl" target="_blank" rel="noopener">University of Amsterdam</a>,
+                       advised by <a href="https://dtzionas.com" target="_blank" rel="noopener">Prof. Dimitris Tzionas</a> and <a href="https://staff.fnwi.uva.nl/th.gevers/" target="_blank" rel="noopener">Prof. Theo Gevers</a>. My research focuses on 3D Human-Object
+                       Interaction (HOI) synthesis, and I am also interested in reconstructing 4D HOIs from videos. Before
+                       joining UvA I had the great opportunity to spend 4 months as a research intern at <a href="https://www.sfu.ca/" target="_blank" rel="noopener">Simon Fraser University</a>,
+                       working with <a href="https://msavva.github.io/" target="_blank" rel="noopener">Prof. Manolis Savva</a>. Prior to that
+                       I completed my Master's at the <a href="https://www.upatras.gr/en/" target="_blank" rel="noopener">University of Patras</a>,
+                       collaborating with Prof. Emmanouil Psarakis, while also working as a Lead Quality Assurance Engineer
+                       at the <a href="https://www.haf.gr/en/" target="_blank" rel="noopener">Hellenic Air Force</a>. I am also a passionate
+                       windsurfer; when the sea and wind are not there, I enjoy running or going to the gym.</p>
+                </div>
             </div>
-        </div>
         </section>
-        
+
         <section id="publications" class="publications-section">
             <div class="publications-content">
-                <h2>Publications</h2>
-                    <div class="publication">
-                        <div class="image">
-                            <img src="lexis/lexis_teaser.png" alt="" />
-                        </div>
-                        <div class="publication-info">
-                            <div class="paper-title">
-                                <a href="">LEXIS: LatEnt ProXimal Interaction Signatures for 3D HOI from an Image</a>
-                            </div>
-                            <div class="conference">
-                                Preprint - ArXiv
-                            </div>
-                            <div class="authors">
-                                <a href="https://anticdimi.github.io/" class="author">Dimitrije Antić</a>, 
-                                <a href="https://alvaro-budria.github.io/" class="author">Alvaro Budria*</a>, 
-                                <strong class="author">Georgios Paschalidis*</strong>, 
-                                <a href="https://saidwivedi.in/" class="author">Sai Kumar Dwivedi</a>, 
-                                <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
-                            </div>
-                            <strong class="author">*Equal contribution</strong> 
-                            <div class="links">
-                                <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
-                                <a href="https://anticdimi.github.io/lexis/" data-type="Project page">Project page</a> 
-                                <a href="https://arxiv.org/abs/2604.20800" data-type="Paper">Paper</a> 
-                                <a href="https://github.com/anticdimi/LEXIS" data-type="Code">Code</a> 
-                                <a href="https://anticdimi.github.io/lexis/deck/" data-type="Video">Video</a> 
-                                <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
-                                <div class="link-content" data-index="0">
-                                    <pre>
-                                    Reconstructing 3D Human-Object Interaction from an RGB image is essential for
-                                    perceptive systems. Yet, this remains challenging as it requires capturing the
-                                    subtle physical coupling between the body and objects. While current methods rely on
-                                    sparse, binary contact cues, these fail to model the continuous proximity and dense
-                                    spatial relationships that characterize natural interactions. We address this
-                                    limitation via InterFields, a representation that encodes dense,
-                                    continuous proximity across the entire body and object surfaces. However, inferring
-                                    these fields from single images is inherently ill-posed. To tackle this, our
-                                    intuition is that interaction patterns are characteristically structured by the action
-                                    and object geometry. We capture this structure in LEXIS, a novel discrete
-                                    manifold of interaction signatures learned via a VQ-VAE. We then develop LEXIS-Flow, a
-                                    diffusion framework that leverages LEXIS signatures to estimate human and object
-                                    meshes alongside their InterFields. Notably, these InterFields help in a guided
-                                    refinement that ensures physically-plausible, proximity-aware
-                                    reconstructions without requiring post-hoc optimization. Evaluation on Open3DHOI and
-                                    BEHAVE shows that LEXIS-Flow significantly outperforms existing SotA baselines in
-                                    reconstruction, contact, and proximity quality. Our approach not only improves
-                                    generalization but also yields reconstructions perceived as more
-                                    realistic, moving us closer to holistic 3D scene understanding. Code & models will be
-                                    public at https://anticdimi.github.io/lexis/.
-                                    </pre>
-                                </div>
-                                <div class="link-content" data-index="5">
-                                    <pre>
-                                    @article{antic2026lexis,
-                                        title   = {{LEXIS}: {LatEnt} {ProXimal} Interaction Signatures for {3D} {HOI} from an Image},
-                                        author  = {Anti\'{c}, Dimitrije and Budria, Alvaro and Paschalidis, Georgios and Dwivedi, Sai Kumar and Tzionas, Dimitrios},
-                                        journal = {arXiv preprint arXiv:2604.20800},
-                                        year    = {2026},
-                                    }
-                                    </pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                <h2 class="section-title">Publications</h2>
 
-                    <div class="publication">
-                        <div class="image">
-                            <img src="rhino/rhino_teaser.png" alt="" />
+                <article class="publication">
+                    <div class="pub-thumb">
+                        <img src="lexis/lexis_teaser.png" alt="LEXIS teaser figure" loading="lazy" decoding="async">
+                    </div>
+                    <div class="publication-info">
+                        <h3 class="paper-title">
+                            <a href="https://anticdimi.github.io/lexis/" target="_blank" rel="noopener">LEXIS: LatEnt ProXimal Interaction Signatures for 3D HOI from an Image</a>
+                        </h3>
+                        <div class="conference">Preprint — arXiv</div>
+                        <div class="authors">
+                            <a href="https://anticdimi.github.io/" class="author" target="_blank" rel="noopener">Dimitrije Antić</a>,
+                            <a href="https://alvaro-budria.github.io/" class="author" target="_blank" rel="noopener">Alvaro Budria*</a>,
+                            <strong class="author">Georgios Paschalidis*</strong>,
+                            <a href="https://saidwivedi.in/" class="author" target="_blank" rel="noopener">Sai Kumar Dwivedi</a>,
+                            <a href="https://dtzionas.com/" class="author" target="_blank" rel="noopener">Dimitrios Tzionas</a>
                         </div>
-                        <div class="publication-info">
-                            <div class="paper-title">
-                                <a href="">RHINO: Reconstructing Human Interactions with Novel Objects from Monocular Videos</a>
+                        <div class="equal-contrib">*Equal contribution</div>
+                        <div class="links">
+                            <a href="#" class="badge" data-type="Abstract" data-index="0">Abstract</a>
+                            <a href="https://anticdimi.github.io/lexis/" class="badge" target="_blank" rel="noopener" data-type="Project page">Project page</a>
+                            <a href="https://arxiv.org/abs/2604.20800" class="badge" target="_blank" rel="noopener" data-type="Paper">Paper</a>
+                            <a href="https://github.com/anticdimi/LEXIS" class="badge" target="_blank" rel="noopener" data-type="Code">Code</a>
+                            <a href="https://anticdimi.github.io/lexis/deck/" class="badge" target="_blank" rel="noopener" data-type="Video">Video</a>
+                            <a href="#" class="badge" data-type="Bibtex" data-index="5">Bibtex</a>
+                            <div class="link-content" data-index="0">
+                                <p>Reconstructing 3D Human-Object Interaction from an RGB image is essential for perceptive systems. Yet, this remains challenging as it requires capturing the subtle physical coupling between the body and objects. While current methods rely on sparse, binary contact cues, these fail to model the continuous proximity and dense spatial relationships that characterize natural interactions. We address this limitation via InterFields, a representation that encodes dense, continuous proximity across the entire body and object surfaces. However, inferring these fields from single images is inherently ill-posed. To tackle this, our intuition is that interaction patterns are characteristically structured by the action and object geometry. We capture this structure in LEXIS, a novel discrete manifold of interaction signatures learned via a VQ-VAE. We then develop LEXIS-Flow, a diffusion framework that leverages LEXIS signatures to estimate human and object meshes alongside their InterFields. Notably, these InterFields help in a guided refinement that ensures physically-plausible, proximity-aware reconstructions without requiring post-hoc optimization. Evaluation on Open3DHOI and BEHAVE shows that LEXIS-Flow significantly outperforms existing SotA baselines in reconstruction, contact, and proximity quality. Our approach not only improves generalization but also yields reconstructions perceived as more realistic, moving us closer to holistic 3D scene understanding.</p>
                             </div>
-                            <div class="conference">
-                                Computer Vision and Pattern Recognition (CVPR), 2026
-                            </div>
-                            <div class="authors">
-                                <a href="https://lxxue.github.io/" class="author">Lixin Xue</a>, 
-                                <a href="https://chengwei-zheng.github.io/" class="author">Chengwei Zheng</a>, 
-                                <strong class="author">Georgios Paschalidis</strong>, 
-                                <a href="https://moygcc.github.io/" class="author">Chen Guo</a>, 
-                                <a href="https://manuelkaufmann.ch/" class="author">Manuel Kaufmann</a>, 
-                                <a href="https://ait.ethz.ch/people/jzarate" class="author">Juan Zarate</a>, 
-                                <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
-                            </div>
-                            <div class="links">
-                                <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
-                                <a href="https://lxxue.github.io/RHINO/" data-type="Project page">Project page</a> 
-                                <a href="https://files.ait.ethz.ch/projects/rhino/rhino_main.pdf" data-type="Paper">Paper</a> 
-                                <a href="https://lxxue.github.io/RHINO/" data-type="Code">Code</a> 
-                                <a href="https://lxxue.github.io/RHINO/" data-type="Video">Video</a> 
-                                <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
-                                <div class="link-content" data-index="0">
-                                    <pre>
-                                        Reconstructing people, objects, and their interactions in 3D is a long-standing and
-                                        fundamental goal for intelligent systems. Often the input is RGB video from a moving
-                                        camera, making the task ill-posed; depth is ambiguous, humans and objects occlude each
-                                        other, and camera and object motion entangle to create apparent motion. Most
-                                        prior work addresses humans or objects in isolation, ignoring their interplay, or
-                                        assumes known 3D shapes or cameras, which is impractical for real-world applications.
-                                        We develop RHINO (Reconstructing Human Interactions with Novel Objects), a novel
-                                        three-step framework that recovers in 3D a human, novel (unseen) manipulated object,
-                                        and static scene in a common world frame from a monocular RGB video. First, we
-                                        leverage 3D-aware foundation models to obtain cues that stabilize
-                                        Structure-from-Motion (SfM) even for low-texture regions; this yields a coarse
-                                        shape and apparent motion of a manipulated object from foreground pixels, and a coarse
-                                        scene shape and camera motion from background pixels. Second, we estimate a
-                                        human in the camera frame via an off-the-shelf method, and subtract the
-                                        camera motion from apparent motion to extract the object motion; this registers
-                                        the human, object, and coarse scene shapes into a common world frame. Third, we refine
-                                        shapes using a compositional neural field with per-component signed-distance fields.
-                                        The latter further enables differentiable contact priors that attract surfaces while
-                                        penalizing interpenetration, improving the physical plausibility of the final
-                                        reconstruction. For evaluation, we capture a new dataset of handheld monocular videos
-                                        synchronized with a volumetric 4D capture stage, providing ground-truth shape and
-                                        camera motion. RHINO outperforms state-of-the-art baselines on novel-view
-                                        synthesis and 4D reconstruction. Ablations show that each stage contributes
-                                        substantially.
-                                    </pre>
-                                </div>
-                                <div class="link-content" data-index="5">
-                                    <pre>
-                                    @inproceedings{xue2026rhino,
-                                           title = {RHINO: Reconstructing Human Interactions with Novel Objects from Monocular Videos},
-                                           author = {Xue, Lixin and Zheng, Chengwei and Paschalidis, Georgios and Guo, Chen and Kaufmann, Manuel and Zarate, Juan and Tzionas, Dimitrios},
-                                           booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-                                           year = {2026}
-}
-                                    </pre>
-                                </div>
+                            <div class="link-content" data-index="5">
+                                <pre>@article{antic2026lexis,
+    title   = {{LEXIS}: {LatEnt} {ProXimal} Interaction Signatures for {3D} {HOI} from an Image},
+    author  = {Anti\'{c}, Dimitrije and Budria, Alvaro and Paschalidis, Georgios and Dwivedi, Sai Kumar and Tzionas, Dimitrios},
+    journal = {arXiv preprint arXiv:2604.20800},
+    year    = {2026},
+}</pre>
                             </div>
                         </div>
                     </div>
-                    <div class="publication">
-                        <div class="image">
-                            <img src="sdfit/sdfit_teaser.png" alt="" />
-                        </div>
-                        <div class="publication-info">
-                            <div class="paper-title">
-                                <a href="">SDFit: 3D Object Pose and Shape by Fitting a Morphable SDF to a Single Image</a>
-                            </div>
-                            <div class="conference">
-                                International Conference on Computer Vision (ICCV), 2025
-                            </div>
-                            <div class="authors">
-                                <a href="https://anticdimi.github.io/" class="author">Dimitrije Antić</a>, 
-                                <strong class="author">Georgios Paschalidis</strong>, 
-                                <a href="https://sha2nkt.github.io/" class="author">Shashank Tripathi</a>, 
-                                <a href="https://staff.science.uva.nl/th.gevers/" class="author">Theo Gevers</a>, 
-                                <a href="https://saidwivedi.in/" class="author">Sai Kumar Dwivedi</a>, 
-                                <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
-                            </div>
-                            <div class="links">
-                                <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
-                                <a href="https://anticdimi.github.io/sdfit/" data-type="Project page">Project page</a> 
-                                <a href="https://arxiv.org/abs/2409.16178" data-type="Paper">Paper</a> 
-                                <a href="https://github.com/anticdimi/SDFit" data-type="Code">Code</a> 
-                                <a href="https://www.youtube.com/watch?v=27wXYvtl9DI" data-type="Video">Video</a> 
-                                <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
-                                <div class="link-content" data-index="0">
-                                    <pre>
-                                    Recovering 3D object pose and shape from a single image is a challenging and 
-                                    ill-posed problem. This is due to strong (self-)occlusions, depth ambiguities, 
-                                    the vast intra- and inter-class shape variance, and the lack of 3D ground truth 
-                                    for natural images. Existing deep-network methods are trained on synthetic datasets 
-                                    to predict 3D shapes, so they often struggle generalizing to real-world images. 
-                                    Moreover, they lack an explicit feedback loop for refining noisy estimates, and 
-                                    primarily focus on geometry without directly considering pixel alignment. To tackle 
-                                    these limitations, we develop a novel render-and-compare optimization framework, 
-                                    called SDFit. This has three key innovations: First, it uses a learned category-specific 
-                                    and morphable signed-distance-function (mSDF) model, and fits this to an image by 
-                                    iteratively refining both 3D pose and shape. The mSDF robustifies inference by 
-                                    constraining the search on the manifold of valid shapes, while allowing for arbitrary 
-                                    shape topologies. Second, SDFit retrieves an initial 3D shape that likely matches 
-                                    the image, by exploiting foundational models for efficient look-up into 3D shape 
-                                    databases. Third, SDFit initializes pose by establishing rich 2D-3D correspondences 
-                                    between the image and the mSDF through foundational features. We evaluate SDFit on 
-                                    three image datasets, i.e., Pix3D, Pascal3D+, and COMIC. SDFit performs on par with 
-                                    SotA feed-forward networks for unoccluded images and common poses, but is uniquely 
-                                    robust to occlusions and uncommon poses. Moreover, it requires no retraining for 
-                                    unseen images. Thus, SDFit contributes new insights for generalizing in the wild.
-                                    </pre>
-                                </div>
-                                <div class="link-content" data-index="5">
-                                    <pre>
-                                        @inproceedings{antic2025sdfit,
-                                          title     = {{SDFit}: {3D} Object Pose and Shape by Fitting a Morphable {SDF} to a Single Image},
-                                          author    = {Anti\'{c}, Dimitrije and Paschalidis, Georgios and Tripathi, Shashank and Gevers, Theo and Dwivedi, Sai Kumar and Tzionas, Dimitrios},
-                                          booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-                                          month     = {October},
-                                          year      = {2025},
-                                        }
-                                    </pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="publication">
-                        <div class="image">
-                            <img src="cwgrasp/images/teaser.png" alt="3D Whole-Body Grasp Synthesis with Directional Controllability" />
-                        </div>
-                        <div class="publication-info">
-                            <div class="paper-title">
-                                <a href="http://gpaschalidis.github.io/cwgrasp">3D Whole-Body Grasp Synthesis with Directional Controllability</a>
-                            </div>
-                            <div class="conference">
-                                International Conference on 3D Vision (3DV), 2025
-                            </div>
-                            <div class="authors">
-                                <strong class="author">Georgios Paschalidis</strong>, 
-                                <a href="https://www.linkedin.com/in/romana-wilschut-766381197/" class="author">Romana Wilschut</a>, 
-                                <a href="https://anticdimi.github.io/" class="author">Dimitrije Antić</a>, 
-                                <a href="https://otaheri.github.io/" class="author">Omid Taheri</a>, 
-                                <a href="https://dtzionas.com/" class="author">Dimitrios Tzionas</a>, 
-                            </div>
-                            <div class="links">
-                                <a href="#" data-type="Abstract" data-index="0">Abstract</a> 
-                                <a href="https://gpaschalidis.github.io/cwgrasp" data-type="Project page">Project page</a> 
-                                <a href="https://arxiv.org/abs/2408.16770" data-type="Paper">Paper</a> 
-                                <a href="https://github.com/gpaschalidis/CWGrasp" data-type="Code">Code</a> 
-                                <a href="https://www.youtube.com/watch?v=d9a4C2GHIv0" data-type="Video">Video</a> 
-                                <a href="#" data-type="Bibtex" data-index="5">Bibtex</a>
-                                <div class="link-content" data-index="0">
-                                    <pre>
-                                        Synthesizing 3D whole bodies that realistically grasp objects is useful for
-                                        animation, mixed reality, and robotics. This is challenging, because the hands
-                                        and body need to look natural w.r.t. each other, the grasped object, as well as
-                                        the local scene (i.e., a receptacle supporting the object). Moreover, training
-                                        data for this task is really scarce, while capturing new data is expensive.
-                                        Recent work goes beyond finite datasets via a divide-and-conquer approach; it
-                                        first generates a “guiding” right-hand grasp, and then searches for bodies that
-                                        match this. However, the guiding-hand synthesis lacks controllability and
-                                        receptacle awareness, so it likely has an implausible direction (i.e., a body
-                                        can’t match this without penetrating the receptacle) and needs corrections
-                                        through major post-processing. Moreover, the body search needs exhaustive
-                                        sampling and is expensive. These are strong limitations. We tackle these with a
-                                        novel method called CWGrasp. Our key idea is that performing geometry-based
-                                        reasoning “early on,” instead of “too late,” provides rich “control” signals
-                                        for inference. To this end, CWGrasp first samples a plausible
-                                        reaching-direction vector (used later for both the arm and hand) from a
-                                        probabilistic model built via ray-casting from the object and collision
-                                        checking. Then, it generates a reaching body with a desired arm direction, as
-                                        well as a “guiding” grasping hand with a desired palm direction that complies
-                                        with the arm’s one. Eventually, CWGrasp refines the body to match the “guiding”
-                                        hand, while plausibly contacting the scene. Notably, generating
-                                        already-compatible “parts” greatly simplifies the “whole”. Moreover, CWGrasp
-                                        uniquely tackles both right and left-hand grasps. We evaluate on the GRAB and
-                                        ReplicaGrasp datasets. CWGrasp outperforms baselines, at lower runtime and
-                                        budget, while all components help performance. Code and models are available for
-                                        for research.
-                                    </pre>
-                                </div>
-                                <div class="link-content" data-index="5">
-                                    <pre>
-                                        @inproceedings{paschalidis2025cwgrasp,
-                                        title={{3D} {W}hole-Body Grasp Synthesis with Directional Controllability},
-                                        author={Paschalidis, Georgios and Wilschut, Romana and Anti\'{c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
-                                        booktitle = {{International Conference on 3D Vision (3DV)}},
-                                        year={2025}
-                                        }
-                                    </pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
+                </article>
 
+                <article class="publication">
+                    <div class="pub-thumb">
+                        <img src="rhino/rhino_teaser.png" alt="RHINO teaser figure" loading="lazy" decoding="async">
+                    </div>
+                    <div class="publication-info">
+                        <h3 class="paper-title">
+                            <a href="https://lxxue.github.io/RHINO/" target="_blank" rel="noopener">RHINO: Reconstructing Human Interactions with Novel Objects from Monocular Videos</a>
+                        </h3>
+                        <div class="conference">Computer Vision and Pattern Recognition (CVPR), 2026</div>
+                        <div class="authors">
+                            <a href="https://lxxue.github.io/" class="author" target="_blank" rel="noopener">Lixin Xue</a>,
+                            <a href="https://chengwei-zheng.github.io/" class="author" target="_blank" rel="noopener">Chengwei Zheng</a>,
+                            <strong class="author">Georgios Paschalidis</strong>,
+                            <a href="https://moygcc.github.io/" class="author" target="_blank" rel="noopener">Chen Guo</a>,
+                            <a href="https://manuelkaufmann.ch/" class="author" target="_blank" rel="noopener">Manuel Kaufmann</a>,
+                            <a href="https://ait.ethz.ch/people/jzarate" class="author" target="_blank" rel="noopener">Juan Zarate</a>,
+                            <a href="https://dtzionas.com/" class="author" target="_blank" rel="noopener">Dimitrios Tzionas</a>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="badge" data-type="Abstract" data-index="0">Abstract</a>
+                            <a href="https://lxxue.github.io/RHINO/" class="badge" target="_blank" rel="noopener" data-type="Project page">Project page</a>
+                            <a href="https://files.ait.ethz.ch/projects/rhino/rhino_main.pdf" class="badge" target="_blank" rel="noopener" data-type="Paper">Paper</a>
+                            <a href="https://lxxue.github.io/RHINO/" class="badge" target="_blank" rel="noopener" data-type="Code">Code</a>
+                            <a href="https://lxxue.github.io/RHINO/" class="badge" target="_blank" rel="noopener" data-type="Video">Video</a>
+                            <a href="#" class="badge" data-type="Bibtex" data-index="5">Bibtex</a>
+                            <div class="link-content" data-index="0">
+                                <p>Reconstructing people, objects, and their interactions in 3D is a long-standing and fundamental goal for intelligent systems. Often the input is RGB video from a moving camera, making the task ill-posed; depth is ambiguous, humans and objects occlude each other, and camera and object motion entangle to create apparent motion. Most prior work addresses humans or objects in isolation, ignoring their interplay, or assumes known 3D shapes or cameras, which is impractical for real-world applications. We develop RHINO (Reconstructing Human Interactions with Novel Objects), a novel three-step framework that recovers in 3D a human, novel (unseen) manipulated object, and static scene in a common world frame from a monocular RGB video. First, we leverage 3D-aware foundation models to obtain cues that stabilize Structure-from-Motion (SfM) even for low-texture regions; this yields a coarse shape and apparent motion of a manipulated object from foreground pixels, and a coarse scene shape and camera motion from background pixels. Second, we estimate a human in the camera frame via an off-the-shelf method, and subtract the camera motion from apparent motion to extract the object motion; this registers the human, object, and coarse scene shapes into a common world frame. Third, we refine shapes using a compositional neural field with per-component signed-distance fields. The latter further enables differentiable contact priors that attract surfaces while penalizing interpenetration, improving the physical plausibility of the final reconstruction. For evaluation, we capture a new dataset of handheld monocular videos synchronized with a volumetric 4D capture stage, providing ground-truth shape and camera motion. RHINO outperforms state-of-the-art baselines on novel-view synthesis and 4D reconstruction. Ablations show that each stage contributes substantially.</p>
+                            </div>
+                            <div class="link-content" data-index="5">
+                                <pre>@inproceedings{xue2026rhino,
+    title     = {RHINO: Reconstructing Human Interactions with Novel Objects from Monocular Videos},
+    author    = {Xue, Lixin and Zheng, Chengwei and Paschalidis, Georgios and Guo, Chen and Kaufmann, Manuel and Zarate, Juan and Tzionas, Dimitrios},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year      = {2026}
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-thumb">
+                        <img src="sdfit/sdfit_teaser.png" alt="SDFit teaser figure" loading="lazy" decoding="async">
+                    </div>
+                    <div class="publication-info">
+                        <h3 class="paper-title">
+                            <a href="https://anticdimi.github.io/sdfit/" target="_blank" rel="noopener">SDFit: 3D Object Pose and Shape by Fitting a Morphable SDF to a Single Image</a>
+                        </h3>
+                        <div class="conference">International Conference on Computer Vision (ICCV), 2025</div>
+                        <div class="authors">
+                            <a href="https://anticdimi.github.io/" class="author" target="_blank" rel="noopener">Dimitrije Antić</a>,
+                            <strong class="author">Georgios Paschalidis</strong>,
+                            <a href="https://sha2nkt.github.io/" class="author" target="_blank" rel="noopener">Shashank Tripathi</a>,
+                            <a href="https://staff.science.uva.nl/th.gevers/" class="author" target="_blank" rel="noopener">Theo Gevers</a>,
+                            <a href="https://saidwivedi.in/" class="author" target="_blank" rel="noopener">Sai Kumar Dwivedi</a>,
+                            <a href="https://dtzionas.com/" class="author" target="_blank" rel="noopener">Dimitrios Tzionas</a>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="badge" data-type="Abstract" data-index="0">Abstract</a>
+                            <a href="https://anticdimi.github.io/sdfit/" class="badge" target="_blank" rel="noopener" data-type="Project page">Project page</a>
+                            <a href="https://arxiv.org/abs/2409.16178" class="badge" target="_blank" rel="noopener" data-type="Paper">Paper</a>
+                            <a href="https://github.com/anticdimi/SDFit" class="badge" target="_blank" rel="noopener" data-type="Code">Code</a>
+                            <a href="https://www.youtube.com/watch?v=27wXYvtl9DI" class="badge" target="_blank" rel="noopener" data-type="Video">Video</a>
+                            <a href="#" class="badge" data-type="Bibtex" data-index="5">Bibtex</a>
+                            <div class="link-content" data-index="0">
+                                <p>Recovering 3D object pose and shape from a single image is a challenging and ill-posed problem. This is due to strong (self-)occlusions, depth ambiguities, the vast intra- and inter-class shape variance, and the lack of 3D ground truth for natural images. Existing deep-network methods are trained on synthetic datasets to predict 3D shapes, so they often struggle generalizing to real-world images. Moreover, they lack an explicit feedback loop for refining noisy estimates, and primarily focus on geometry without directly considering pixel alignment. To tackle these limitations, we develop a novel render-and-compare optimization framework, called SDFit. This has three key innovations: First, it uses a learned category-specific and morphable signed-distance-function (mSDF) model, and fits this to an image by iteratively refining both 3D pose and shape. The mSDF robustifies inference by constraining the search on the manifold of valid shapes, while allowing for arbitrary shape topologies. Second, SDFit retrieves an initial 3D shape that likely matches the image, by exploiting foundational models for efficient look-up into 3D shape databases. Third, SDFit initializes pose by establishing rich 2D-3D correspondences between the image and the mSDF through foundational features. We evaluate SDFit on three image datasets, i.e., Pix3D, Pascal3D+, and COMIC. SDFit performs on par with SotA feed-forward networks for unoccluded images and common poses, but is uniquely robust to occlusions and uncommon poses. Moreover, it requires no retraining for unseen images. Thus, SDFit contributes new insights for generalizing in the wild.</p>
+                            </div>
+                            <div class="link-content" data-index="5">
+                                <pre>@inproceedings{antic2025sdfit,
+    title     = {{SDFit}: {3D} Object Pose and Shape by Fitting a Morphable {SDF} to a Single Image},
+    author    = {Anti\'{c}, Dimitrije and Paschalidis, Georgios and Tripathi, Shashank and Gevers, Theo and Dwivedi, Sai Kumar and Tzionas, Dimitrios},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2025},
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-thumb">
+                        <img src="cwgrasp/images/teaser.png" alt="CWGrasp teaser: 3D whole-body grasp synthesis with directional controllability" loading="lazy" decoding="async">
+                    </div>
+                    <div class="publication-info">
+                        <h3 class="paper-title">
+                            <a href="https://gpaschalidis.github.io/cwgrasp" target="_blank" rel="noopener">3D Whole-Body Grasp Synthesis with Directional Controllability</a>
+                        </h3>
+                        <div class="conference">International Conference on 3D Vision (3DV), 2025</div>
+                        <div class="authors">
+                            <strong class="author">Georgios Paschalidis</strong>,
+                            <a href="https://www.linkedin.com/in/romana-wilschut-766381197/" class="author" target="_blank" rel="noopener">Romana Wilschut</a>,
+                            <a href="https://anticdimi.github.io/" class="author" target="_blank" rel="noopener">Dimitrije Antić</a>,
+                            <a href="https://otaheri.github.io/" class="author" target="_blank" rel="noopener">Omid Taheri</a>,
+                            <a href="https://dtzionas.com/" class="author" target="_blank" rel="noopener">Dimitrios Tzionas</a>
+                        </div>
+                        <div class="links">
+                            <a href="#" class="badge" data-type="Abstract" data-index="0">Abstract</a>
+                            <a href="https://gpaschalidis.github.io/cwgrasp" class="badge" target="_blank" rel="noopener" data-type="Project page">Project page</a>
+                            <a href="https://arxiv.org/abs/2408.16770" class="badge" target="_blank" rel="noopener" data-type="Paper">Paper</a>
+                            <a href="https://github.com/gpaschalidis/CWGrasp" class="badge" target="_blank" rel="noopener" data-type="Code">Code</a>
+                            <a href="https://www.youtube.com/watch?v=d9a4C2GHIv0" class="badge" target="_blank" rel="noopener" data-type="Video">Video</a>
+                            <a href="#" class="badge" data-type="Bibtex" data-index="5">Bibtex</a>
+                            <div class="link-content" data-index="0">
+                                <p>Synthesizing 3D whole bodies that realistically grasp objects is useful for animation, mixed reality, and robotics. This is challenging, because the hands and body need to look natural w.r.t. each other, the grasped object, as well as the local scene (i.e., a receptacle supporting the object). Moreover, training data for this task is really scarce, while capturing new data is expensive. Recent work goes beyond finite datasets via a divide-and-conquer approach; it first generates a "guiding" right-hand grasp, and then searches for bodies that match this. However, the guiding-hand synthesis lacks controllability and receptacle awareness, so it likely has an implausible direction (i.e., a body can't match this without penetrating the receptacle) and needs corrections through major post-processing. Moreover, the body search needs exhaustive sampling and is expensive. These are strong limitations. We tackle these with a novel method called CWGrasp. Our key idea is that performing geometry-based reasoning "early on," instead of "too late," provides rich "control" signals for inference. To this end, CWGrasp first samples a plausible reaching-direction vector (used later for both the arm and hand) from a probabilistic model built via ray-casting from the object and collision checking. Then, it generates a reaching body with a desired arm direction, as well as a "guiding" grasping hand with a desired palm direction that complies with the arm's one. Eventually, CWGrasp refines the body to match the "guiding" hand, while plausibly contacting the scene. Notably, generating already-compatible "parts" greatly simplifies the "whole". Moreover, CWGrasp uniquely tackles both right and left-hand grasps. We evaluate on the GRAB and ReplicaGrasp datasets. CWGrasp outperforms baselines, at lower runtime and budget, while all components help performance. Code and models are available for research.</p>
+                            </div>
+                            <div class="link-content" data-index="5">
+                                <pre>@inproceedings{paschalidis2025cwgrasp,
+    title     = {{3D} {W}hole-Body Grasp Synthesis with Directional Controllability},
+    author    = {Paschalidis, Georgios and Wilschut, Romana and Anti\'{c}, Dimitrije and Taheri, Omid and Tzionas, Dimitrios},
+    booktitle = {{International Conference on 3D Vision (3DV)}},
+    year      = {2025}
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </article>
             </div>
         </section>
 
         <section id="contact" class="contact-section">
-            <h2>Contact</h2>
-                <div class="contact-info">
-                    <!-- Envelope Icon using Font Awesome -->
-                    <div class="envelope-icon">
-                        <a target="_blank"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <!-- Mail Link -->
-                    <a href="mailto:g.paschalidis@uva.nl" class="mail-link">g.paschalidis@uva.nl</a>
-                </div>
+            <h2 class="section-title">Contact</h2>
+            <p class="contact-lead">Feel free to reach out — I'm always happy to discuss research.</p>
+            <a href="mailto:g.paschalidis@uva.nl" class="contact-card">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>g.paschalidis@uva.nl</span>
+            </a>
         </section>
-    
-<!--Java script for removing leading spaces and Tabs inside <pre> --> 
-    <script> 
-        document.querySelectorAll('.link-content pre').forEach(function(pre) {
-            // Remove leading whitespace from each line of the <pre> content
-            pre.innerHTML = pre.innerHTML
-                .replace(/^\s+/g, '') // Remove leading whitespace on each line
-                .replace(/\n\s+/g, '\n'); // Remove spaces after line breaks (if any)
-        });
-    </script>
+    </main>
 
-<!--Java script for handling the contents of the Links Abstract and BibTex --> 
-    <script type="text/javascript">
-        document.querySelectorAll(".links").forEach(function (p) {
-            p.addEventListener("click", function (ev) {
-                if (ev.target.nodeName != "A") {
-                    return;
-                }
-                var i = ev.target.dataset["index"];
-                if (i == undefined) {
-                    return;
-                }
-                Array.prototype.forEach.call(ev.target.parentNode.children, function (sibling) {
-                    if (sibling.nodeName != "DIV") {
-                        return;
-                    }
-                    if (sibling.dataset["index"] != i) {
-                        sibling.style.display = "none";
-                    } else {
-                        sibling.style.display = sibling.style.display != "block" ? "block" : "none";
-                    }
-                });
-                ev.preventDefault();
-            });
-        });
-    </script>
-
-
+    <footer class="site-footer">
+        <p>&copy; <span id="year"></span> Georgios Paschalidis</p>
+    </footer>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll(".nav-link");
-    let currentSection = "home"; // Default to the Home section
-    let isScrolling = false; // Flag to prevent conflicts during smooth scrolling
-    let scrollTimeout; // Timeout to handle scroll completion
+    (function () {
+        "use strict";
 
-    // Get the header height once
-    const headerHeight = document.querySelector('header').offsetHeight;
+        // ---- Footer year ----
+        document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Initialize the active link
-    navLinks.forEach((link) => link.classList.remove("active"));
-    document.querySelector('.nav-link[href="#home"]').classList.add("active");
-    // Smooth scrolling and updating the active link logic
-    navLinks.forEach((link) => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault(); // Prevent default anchor behavior
-            const targetId = link.getAttribute("href").substring(1);
-            const targetSection = document.getElementById(targetId);
-
-
-            if (targetSection) { 
-                // Prevent scroll conflict 
-                isScrolling = true; 
-
-                // Calculate the position considering the header offset
-                const targetPosition = targetSection.offsetTop - headerHeight; 
-
-                // Smooth scroll to the section (adjusted by headerHeight)
-                window.scrollTo({ 
-                    top: targetPosition, 
-                    behavior: "smooth", 
-                }); 
-
-                // Temporarily set active link manually 
-
-                navLinks.forEach((l) => l.classList.remove("active")); 
-                link.classList.add("active"); 
-
-                // Allow the scroll event to resume after a delay
-                clearTimeout(scrollTimeout); 
-                scrollTimeout = setTimeout(() => { 
-                    isScrolling = false; 
-                }, 800); // Ensure this matches or exceeds the smooth scroll duration 
-            } 
-        }); 
-    });
-
-
-    window.addEventListener("scroll", () => {
-        if (isScrolling) return; // Prevent updates during smooth scrolling
-        let newSection = "";
-        // Handle scroll to top explicitly
-        if (window.scrollY === 0) {
-            newSection = "home";
-        } else {
-            // Iterate through sections to determine the active section
-            sections.forEach((section) => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                if (window.scrollY >= sectionTop - sectionHeight / 3 &&
-                    window.scrollY < sectionTop + sectionHeight - sectionHeight / 3) {
-                    newSection = section.getAttribute("id");
-                }
+        // ---- Dedent <pre> / abstract text blocks ----
+        document.querySelectorAll(".link-content pre").forEach(function (pre) {
+            var lines = pre.textContent.replace(/\t/g, "    ").split("\n");
+            while (lines.length && lines[0].trim() === "") lines.shift();
+            while (lines.length && lines[lines.length - 1].trim() === "") lines.pop();
+            var indent = Infinity;
+            lines.forEach(function (l) {
+                if (l.trim() === "") return;
+                indent = Math.min(indent, l.match(/^ */)[0].length);
             });
-            // Special handling for the last section
-            const lastSection = sections[sections.length - 1];
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
-                newSection = lastSection.getAttribute("id");
+            if (!isFinite(indent)) indent = 0;
+            pre.textContent = lines.map(function (l) { return l.slice(indent); }).join("\n");
+        });
+
+        // ---- Abstract / Bibtex toggle ----
+        document.querySelectorAll(".links").forEach(function (container) {
+            container.addEventListener("click", function (ev) {
+                var trigger = ev.target.closest("a[data-index]");
+                if (!trigger || !container.contains(trigger)) return;
+                ev.preventDefault();
+                var idx = trigger.dataset.index;
+                container.querySelectorAll(".link-content").forEach(function (panel) {
+                    if (panel.dataset.index === idx) {
+                        panel.classList.toggle("open");
+                    } else {
+                        panel.classList.remove("open");
+                    }
+                });
+            });
+        });
+
+        // ---- Mobile nav toggle ----
+        var navToggle = document.getElementById("nav-toggle");
+        var navMenu = document.getElementById("nav-menu");
+        navToggle.addEventListener("click", function () {
+            var open = navMenu.classList.toggle("open");
+            navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        navMenu.addEventListener("click", function (ev) {
+            if (ev.target.closest(".nav-link")) {
+                navMenu.classList.remove("open");
+                navToggle.setAttribute("aria-expanded", "false");
             }
+        });
+
+        // ---- Theme toggle ----
+        var themeToggle = document.getElementById("theme-toggle");
+        var icon = themeToggle.querySelector("i");
+        function currentTheme() {
+            var attr = document.documentElement.getAttribute("data-theme");
+            if (attr === "dark" || attr === "light") return attr;
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         }
-        // Update active link if the section changes
-        if (newSection !== currentSection && newSection !== "") {
-            navLinks.forEach((link) => link.classList.remove("active"));
-            const newLink = document.querySelector(`.nav-link[href="#${newSection}"]`);
-            if (newLink) newLink.classList.add("active");
-            currentSection = newSection;
+        function syncIcon() {
+            var dark = currentTheme() === "dark";
+            icon.className = dark ? "fa-solid fa-sun" : "fa-solid fa-moon";
         }
-    });
-});
+        syncIcon();
+        themeToggle.addEventListener("click", function () {
+            var next = currentTheme() === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            try { localStorage.setItem("theme", next); } catch (e) {}
+            syncIcon();
+        });
+
+        // ---- Scroll-spy: highlight the active nav link ----
+        var sections = document.querySelectorAll("main section[id]");
+        var navLinks = document.querySelectorAll(".nav-link");
+        function setActive(id) {
+            navLinks.forEach(function (l) {
+                l.classList.toggle("active", l.getAttribute("href") === "#" + id);
+            });
+        }
+        if ("IntersectionObserver" in window) {
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) setActive(entry.target.id);
+                });
+            }, { rootMargin: "-45% 0px -50% 0px" });
+            sections.forEach(function (s) { observer.observe(s); });
+        }
+        setActive("home");
+    })();
     </script>
 </body>
 </html>
