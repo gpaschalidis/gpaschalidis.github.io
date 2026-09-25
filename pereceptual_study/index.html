@@ -238,15 +238,15 @@ function buildStudy(){
 
     let body='';
     if(ex.hands)body+='<div class="row-title">'+escHtml(CONFIG.bodyRowTitle)+'</div>';
-    body+=row('body',src1,src2)+'<div class="question-bar">'+escHtml(CONFIG.question)+'</div>';
+    const pauseBar=(part)=>ex.isVideo?'<div class="pause-bar"><button class="pause-btn" onclick="toggleVideos('+idx+',\''+part+'\',event)" id="pausebtn-'+idx+'-'+part+'">&#10074;&#10074; Pause both videos</button></div>':'';
+    body+=row('body',src1,src2)+pauseBar('body')+'<div class="question-bar">'+escHtml(CONFIG.question)+'</div>';
     if(ex.hands){
-      body+='<div class="row-title">'+escHtml(CONFIG.handsRowTitle)+'</div>'+row('hands',handSrc(src1),handSrc(src2))+'<div class="question-bar">'+escHtml(CONFIG.questionHands)+'</div>';
+      body+='<div class="row-title">'+escHtml(CONFIG.handsRowTitle)+'</div>'+row('hands',handSrc(src1),handSrc(src2))+pauseBar('hands')+'<div class="question-bar">'+escHtml(CONFIG.questionHands)+'</div>';
     }
-    const pauseBtn=ex.isVideo?'<div class="pause-bar"><button class="pause-btn" onclick="toggleVideos('+idx+',event)" id="pausebtn-'+idx+'">&#10074;&#10074; Pause all videos</button></div>':'';
 
     const card=document.createElement('div');
     card.className='comparison-card';card.id='card-'+idx;
-    card.innerHTML='<div class="card-header"><h3>Example '+(idx+1)+(CONFIG.reviewMode?' &middot; '+escHtml(ex.setName)+' / '+escHtml(ex.baseName)+' (Option 1 = Method A = ours, Option 2 = Method B = baseline)':'')+'</h3><span class="badge" id="badge-'+idx+'">Unanswered</span></div>'+body+pauseBtn;
+    card.innerHTML='<div class="card-header"><h3>Example '+(idx+1)+(CONFIG.reviewMode?' &middot; '+escHtml(ex.setName)+' / '+escHtml(ex.baseName)+' (Option 1 = Method A = ours, Option 2 = Method B = baseline)':'')+'</h3><span class="badge" id="badge-'+idx+'">Unanswered</span></div>'+body;
     container.appendChild(card);
     if(ex.hands){
       // a missing hand video drops the hands row (and its vote) for this example
@@ -259,9 +259,10 @@ function buildStudy(){
 function dropHandsRow(idx){
   const row=document.getElementById('row-'+idx+'-hands');
   if(!row)return;
-  const title=row.previousElementSibling,q=row.nextElementSibling;
+  const title=row.previousElementSibling,pb=row.nextElementSibling,q=pb&&pb.nextElementSibling;
   if(title&&title.classList.contains('row-title'))title.remove();
   if(q&&q.classList.contains('question-bar'))q.remove();
+  if(pb&&pb.classList.contains('pause-bar'))pb.remove();
   row.remove();
   const k=answerKey[idx];k.parts=k.parts.filter(p=>p!=='hands');
   votes=votes.filter(v=>v!==idx+'_hands');delete answers[idx+'_hands'];
@@ -285,15 +286,15 @@ function refreshCard(i){
   else{card.classList.remove('answered');b.textContent=done+' / '+k.parts.length+' answered';b.classList.remove('done');}
 }
 
-function toggleVideos(idx,event){
+function toggleVideos(idx,part,event){
   event.stopPropagation();
-  const card=document.getElementById('card-'+idx);
-  const videos=card.querySelectorAll('video');
-  const btn=document.getElementById('pausebtn-'+idx);
+  const row=document.getElementById('row-'+idx+'-'+part);
+  const videos=row.querySelectorAll('video');
+  const btn=document.getElementById('pausebtn-'+idx+'-'+part);
   if(videos.length===0)return;
   const paused=videos[0].paused;
   videos.forEach(function(v){if(paused)v.play();else v.pause();});
-  btn.innerHTML=paused?'&#10074;&#10074; Pause all videos':'&#9654; Play all videos';
+  btn.innerHTML=paused?'&#10074;&#10074; Pause both videos':'&#9654; Play both videos';
 }
 
 function updateProgress(){
