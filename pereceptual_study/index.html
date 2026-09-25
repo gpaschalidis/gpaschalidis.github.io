@@ -13,6 +13,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .study-header{background:var(--surface);border-radius:var(--radius);padding:2.5rem;box-shadow:var(--shadow);margin-bottom:2rem;border-top:4px solid var(--accent)}
 .study-header h1{font-size:1.75rem;font-weight:700;margin-bottom:1rem;letter-spacing:-.02em}
 .study-header p{color:var(--text-muted);margin-bottom:.75rem;font-size:.95rem}
+.part{display:none}
+.part.active{display:block}
+.part-header{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);margin:0 0 2rem;padding:1.75rem 2rem;border-left:6px solid var(--accent)}
+.part-header h2{font-size:1.3rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.01em}
+.part-header p{color:var(--text-muted);font-size:.95rem}
+.part-header .part-count{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--text-muted);margin-top:.5rem}
 .progress-wrap{background:var(--surface);border-radius:var(--radius);padding:1.25rem 2rem;box-shadow:var(--shadow);margin-bottom:2rem;position:sticky;top:1rem;z-index:100}
 .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.85rem;font-weight:600}
 .progress-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
@@ -58,18 +64,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <div class="container">
   <div id="studyContent">
     <div class="study-header" id="studyHeader"></div>
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-top">
-        <span id="progressLabel">0 / 0 answered</span>
-        <span id="progressPercent">0%</span>
-      </div>
-      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
-    </div>
-    <div id="comparisonsContainer"></div>
-    <div class="submit-section" id="submitSection">
-      <button class="btn-submit" id="btnSubmit" disabled onclick="submitStudy()">Submit Responses</button>
-      <p class="submit-note" id="submitNote">Please answer all comparisons before submitting.</p>
-    </div>
+    <div id="partsContainer"></div>
     <div class="completion-screen" id="completionScreen">
       <div class="completion-icon">&#10003;</div>
       <h2>Thank you!</h2>
@@ -86,18 +81,18 @@ const CONFIG = {
 
   description: `Welcome to our perceptual study!
 
-**Introduction:** We compare methods that generate 3D human–object interactions. Each method produces a 3D human body (shown in blue) interacting with one or more objects (shown in orange), for the same objects and the same type of interaction.
+**Introduction:** We compare methods that generate 3D human–object interactions with multiple objects. Each method produces a 3D human body (shown in blue) interacting with several objects (shown in orange), for the same objects and the same type of interaction.
 
 **Criteria:** The body should have a natural pose, the objects should be placed and held plausibly, and body and objects should touch where the interaction requires it, without floating apart or passing through each other.
 
-**Your task:** The study comprises 110 examples. For each example, you will see two rotating videos of the full body side by side, and you will have to choose between Option 1 and Option 2 by answering the following question:
+**Your task:** The study has two parts (70 examples in total); each part compares two methods and is shown on its own page. For each example, you will see two rotating videos of the full body side by side, and you will have to choose between Option 1 and Option 2 by answering the following question:
 
 **Which interaction (Option 1 or Option 2) looks more natural and physically plausible?**
 
-For many examples a second row shows a close-up of the hands with the objects, from the same two methods. That row gets its own, separate answer: judge only the hands and the objects there.
+Most examples also show a second row with a close-up of the hands and the objects, from the same two methods. That row gets its own, separate answer: judge only the hands and the objects there. For some examples there is no hand close-up, and only the full-body answer is needed. An example counts as answered when all its rows are answered.
 **You may pause the videos to observe details more carefully.**
 
-Your participation is completely anonymous. The study should take about 20 minutes to complete.
+Your participation is completely anonymous. The study should take about 15 minutes to complete.
 Thank you for your help!`,
 
   question: "Which interaction looks more natural and physically plausible?",
@@ -108,9 +103,10 @@ Thank you for your help!`,
   label1: "Option 1",
   label2: "Option 2",
 
-  // ── SETS ───────────────────────────────────────────────────
-  // Examples from ALL sets are shuffled together randomly; the participant sees no
-  // difference between sets. Each set folder holds method_A/ and method_B/ with
+  // ── SETS / PARTS ───────────────────────────────────────────
+  // Each set is one PART of the study, on its own page, in this order (partTitle /
+  // partDescription); the examples are shuffled within the part and the option order
+  // is random per example. Each set folder holds method_A/ and method_B/ with
   // example_<i>.mp4 (full body) and, for the examples listed in `handExamples`,
   // example_<i>_hands.mp4 (hand close-up). method_A = ours (COMPACT) in every set;
   // method_B = the set's baseline (see website_mapping_v2.json in the study folder).
@@ -120,32 +116,37 @@ Thank you for your help!`,
   //
   // catchTrials: { file, correctMethod, part } with part "body" (default) or "hands".
   sets: [
-    {
-      name: "Set A",                       // study60b: GRAB + BEHAVE, ours vs TriDi
-      folderA: "./set_A/method_A/",
-      folderB: "./set_A/method_B/",
-      filenamePrefix: "example_",
-      comparisonSuffix: ".mp4",
-      startIndex: 0,
-      imageCount: 40,
-      handExamples: [1, 2, 9, 11, 13, 14, 17, 20, 21, 22, 23, 24, 25, 30, 31, 33, 37, 38],                    // filled from website_mapping_v2.json (GRAB 101/111 only)
-      catchTrials: [                         // page numbers 1, 3, 4, 21 (Example N = example_(N-1))
-        { file: "example_0", correctMethod: "Method B" },
-        { file: "example_2", correctMethod: "Method B", part: "body" },
-        { file: "example_3", correctMethod: "Method A" },
-        { file: "example_20", correctMethod: "Method A", part: "hands" },
-      ],
-    },
+    // Set A (study60b: GRAB + BEHAVE single-object, ours vs TriDi) is NOT part of this study.
+    // {
+    //   name: "Set A",
+    //   partTitle: "Part 1 of 3",
+    //   partDescription: "A person interacting with a single object. Two methods generated each interaction: vote for the option you think is best.",
+    //   folderA: "./set_A/method_A/",
+    //   folderB: "./set_A/method_B/",
+    //   filenamePrefix: "example_",
+    //   comparisonSuffix: ".mp4",
+    //   startIndex: 0,
+    //   imageCount: 40,
+    //   handExamples: [1, 2, 9, 11, 13, 14, 17, 20, 21, 22, 23, 24, 25, 30, 31, 33, 37, 38],
+    //   catchTrials: [                         // page numbers 1, 3, 4, 21 (Example N = example_(N-1))
+    //     { file: "example_0", correctMethod: "Method B" },
+    //     { file: "example_2", correctMethod: "Method B", part: "body" },
+    //     { file: "example_3", correctMethod: "Method A" },
+    //     { file: "example_20", correctMethod: "Method A", part: "hands" },
+    //   ],
+    // },
     {
       name: "Set B",                       // HIMO set A, ours vs mTriDi
+      partTitle: "Part 1 of 2",
+      partDescription: "A person interacting with one or more objects, often with both hands. Most examples also show a hand close-up row with its own vote. Vote for the option you think is best.",
       folderA: "./set_B/method_A/",
       folderB: "./set_B/method_B/",
       filenamePrefix: "example_",
       comparisonSuffix: ".mp4",
       startIndex: 0,
       imageCount: 40,
-      handExamples: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],                    // filled from website_mapping_v2.json (modes 101/111)
-      catchTrials: [                         // page numbers 52, 55, 55, 63 (Set B starts at Example 41)
+      handExamples: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+      catchTrials: [                         // page numbers 52, 55, 55, 63 of the old three-part page (Set B started at Example 41)
         { file: "example_11", correctMethod: "Method A" },
         { file: "example_14", correctMethod: "Method A", part: "body" },
         { file: "example_14", correctMethod: "Method A", part: "hands" },
@@ -154,6 +155,8 @@ Thank you for your help!`,
     },
     {
       name: "Set C",                       // HIMO set B (mode 101), ours vs mTriDi + IK (LLM masks)
+      partTitle: "Part 2 of 2",
+      partDescription: "A person interacting with one or more objects; every example has a hand close-up row with its own vote. Vote for the option you think is best.",
       folderA: "./set_C/method_A/",
       folderB: "./set_C/method_B/",
       filenamePrefix: "example_",
@@ -161,7 +164,7 @@ Thank you for your help!`,
       startIndex: 0,
       imageCount: 30,
       handExamples: "all",
-      catchTrials: [                         // page numbers 91, 104, 106, 95 (Set C starts at Example 81)
+      catchTrials: [                         // page numbers 91, 104, 106, 95 of the old three-part page (Set C started at Example 81)
         { file: "example_10", correctMethod: "Method A", part: "body" },
         { file: "example_23", correctMethod: "Method A", part: "body" },
         { file: "example_25", correctMethod: "Method A", part: "body" },
@@ -170,10 +173,10 @@ Thank you for your help!`,
     },
   ],
 
-  // true = fail any set catch trials -> unreliable for ALL sets
-  // false = fail Set A catch trials -> unreliable only for Set A
-  globalExclusion: true,
-  maxCatchFails: 2,
+  // true  = catch-trial failures are counted over the whole study; more than maxCatchFails -> unreliable for ALL parts
+  // false = counted per part (set); more than maxCatchFails failures in a part -> unreliable for THAT part only
+  globalExclusion: false,
+  maxCatchFails: 1,                      // per part: 4 catch trials each, 2 or more wrong -> that part unreliable
 
   // REVIEW MODE (for picking catch trials): true = no shuffling, Method A always
   // shown as Option 1, and each card header names the set and file. Set to false
@@ -182,78 +185,96 @@ Thank you for your help!`,
 
   handSuffix: "_hands",
 
-  // bump when the study changes: the "already completed" cookie is keyed on it, so
-  // people who took an earlier version can take this one
-  studyVersion: "v2",
+  // bump when the study changes: the "already completed" cookies (one per part, plus the
+  // participant id shared by the parts) are keyed on it, so people who took an earlier
+  // version can take this one
+  studyVersion: "v3",
 
-  resultsUrl: "https://script.google.com/macros/s/AKfycbw37e55WplR24buQm3BektomYmc53im7GpSVosf606O4K5azPwOqKmfzmcyEKelqxFikw/exec",
+  resultsUrl: "https://script.google.com/macros/s/AKfycbwsfLbnby8DkwZe8BYfpaIssJNOr1ST13lAPQUbcpjLQLPtrgIjlNHQk3sphxw-bS-o1Q/exec",
 };
 // ================================================================
 //  STOP EDITING
 // ================================================================
-let answers={},answerKey=[],votes=[];
+let answers={},answerKey=[],currentPart=0,submitted={};
+function cookieKey(sfx){return 'study_done_'+CONFIG.title.replace(/\s+/g,'_')+'_'+(CONFIG.studyVersion||'v1')+sfx;}
+function getCookie(k){const m=document.cookie.match(new RegExp('(?:^|; )'+k+'=([^;]*)'));return m?decodeURIComponent(m[1]):null;}
+function setCookie(k,v){document.cookie=k+'='+encodeURIComponent(v)+';max-age=31536000;path=/';}
+function participantId(){let id=getCookie(cookieKey('_pid'));if(!id){id='P'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,6).toUpperCase();setCookie(cookieKey('_pid'),id);}return id;}
 function shuffleArray(a){const s=[...a];for(let i=s.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[s[i],s[j]]=[s[j],s[i]]}return s}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function hasHands(set,i){const h=set.handExamples;if(h==='all')return true;if(!h||h==='none')return false;return h.includes(i);}
 function handSrc(src){return src.replace(/(\.[a-z0-9]+)$/i,CONFIG.handSuffix+'$1');}
 
 function buildStudy(){
-  let allExamples=[];
-  for(const set of CONFIG.sets){
-    const fA=set.folderA.replace(/\/?$/,'/');
-    const fB=set.folderB.replace(/\/?$/,'/');
-    for(let i=set.startIndex;i<set.startIndex+set.imageCount;i++){
-      const base=set.filenamePrefix+i;
-      allExamples.push({
-        setName:set.name,baseName:base,
-        aSrc:fA+base+set.comparisonSuffix,
-        bSrc:fB+base+set.comparisonSuffix,
-        hands:hasHands(set,i),
-        isVideo:['.mp4','.webm','.mov'].includes(set.comparisonSuffix.toLowerCase()),
-      });
-    }
-  }
-  answers={};answerKey=[];votes=[];
-
+  answers={};answerKey=[];currentPart=0;
   const header=document.getElementById('studyHeader');
   const descPs=CONFIG.description.split('\n').filter(p=>p.trim()).map(p=>'<p>'+escHtml(p).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')+'</p>').join('');
   header.innerHTML='<h1>'+escHtml(CONFIG.title)+'</h1>'+descPs;
 
-  const shuffled=CONFIG.reviewMode?allExamples:shuffleArray(allExamples);
-  const container=document.getElementById('comparisonsContainer');
+  const container=document.getElementById('partsContainer');
   container.innerHTML='';
-
-  shuffled.forEach((ex,idx)=>{
-    const aFirst=CONFIG.reviewMode?true:Math.random()>0.5;      // the same option order for both rows
-    const src1=aFirst?ex.aSrc:ex.bSrc;
-    const src2=aFirst?ex.bSrc:ex.aSrc;
-    const parts=ex.hands?['body','hands']:['body'];
-    answerKey.push({displayIndex:idx,setName:ex.setName,fileName:ex.baseName,parts:parts,option1_method:aFirst?"Method A":"Method B",option2_method:aFirst?"Method B":"Method A"});
-    for(const p of parts)votes.push(idx+'_'+p);
-
-    const media=(src,alt)=>ex.isVideo?'<video src="'+escHtml(src)+'" autoplay loop muted playsinline></video>':'<img src="'+escHtml(src)+'" alt="'+escHtml(alt)+'" loading="lazy">';
-    const row=(part,s1,s2)=>'<div class="two-col-grid" id="row-'+idx+'-'+part+'">'
-      +'<div class="option" id="opt-'+idx+'-'+part+'-1" onclick="selectOption('+idx+',\''+part+'\',1)"><input type="radio" name="q'+idx+part+'" value="1"><div class="option-label"><div class="radio-visual"></div>'+escHtml(CONFIG.label1)+'</div>'+media(s1,CONFIG.label1)+'</div>'
-      +'<div class="option" id="opt-'+idx+'-'+part+'-2" onclick="selectOption('+idx+',\''+part+'\',2)"><input type="radio" name="q'+idx+part+'" value="2"><div class="option-label"><div class="radio-visual"></div>'+escHtml(CONFIG.label2)+'</div>'+media(s2,CONFIG.label2)+'</div></div>';
-
-    let body='';
-    if(ex.hands)body+='<div class="row-title">'+escHtml(CONFIG.bodyRowTitle)+'</div>';
-    const pauseBar=(part)=>ex.isVideo?'<div class="pause-bar"><button class="pause-btn" onclick="toggleVideos('+idx+',\''+part+'\',event)" id="pausebtn-'+idx+'-'+part+'">&#10074;&#10074; Pause both videos</button></div>':'';
-    body+=row('body',src1,src2)+pauseBar('body')+'<div class="question-bar">'+escHtml(CONFIG.question)+'</div>';
-    if(ex.hands){
-      body+='<div class="row-title">'+escHtml(CONFIG.handsRowTitle)+'</div>'+row('hands',handSrc(src1),handSrc(src2))+pauseBar('hands')+'<div class="question-bar">'+escHtml(CONFIG.questionHands)+'</div>';
+  let idx=0;
+  CONFIG.sets.forEach((set,p)=>{
+    const fA=set.folderA.replace(/\/?$/,'/');
+    const fB=set.folderB.replace(/\/?$/,'/');
+    let group=[];
+    for(let i=set.startIndex;i<set.startIndex+set.imageCount;i++){
+      const base=set.filenamePrefix+i;
+      group.push({setName:set.name,baseName:base,aSrc:fA+base+set.comparisonSuffix,bSrc:fB+base+set.comparisonSuffix,hands:hasHands(set,i),
+        isVideo:['.mp4','.webm','.mov'].includes(set.comparisonSuffix.toLowerCase())});
     }
+    const ordered=CONFIG.reviewMode?group:shuffleArray(group);
+    const last=p===CONFIG.sets.length-1;
 
-    const card=document.createElement('div');
-    card.className='comparison-card';card.id='card-'+idx;
-    card.innerHTML='<div class="card-header"><h3>Example '+(idx+1)+(CONFIG.reviewMode?' &middot; '+escHtml(ex.setName)+' / '+escHtml(ex.baseName)+' (Option 1 = Method A = ours, Option 2 = Method B = baseline)':'')+'</h3><span class="badge" id="badge-'+idx+'">Unanswered</span></div>'+body;
-    container.appendChild(card);
-    if(ex.hands){
-      // a missing hand video drops the hands row (and its vote) for this example
-      card.querySelectorAll('#row-'+idx+'-hands video').forEach(v=>{v.onerror=function(){dropHandsRow(idx);};});
-    }
+    const part=document.createElement('div');
+    part.className='part'+(p===0?' active':'');part.id='part-'+p;
+    part.innerHTML='<div class="part-header"><h2>'+escHtml(set.partTitle||set.name)+'</h2>'+(set.partDescription?'<p>'+escHtml(set.partDescription)+'</p>':'')+'<div class="part-count">'+ordered.length+' examples</div></div>'
+      +'<div class="progress-wrap"><div class="progress-top"><span id="progressLabel-'+p+'">0 / '+ordered.length+' examples answered</span><span id="progressPercent-'+p+'">0%</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill-'+p+'"></div></div></div>'
+      +'<div id="cards-'+p+'"></div>'
+      +'<div class="submit-section"><button class="btn-submit" id="btnSubmit-'+p+'" disabled onclick="submitPart('+p+')">Submit '+escHtml(set.partTitle||set.name)+'</button>'
+      +(last?'':' <button class="btn-submit" id="btnNext-'+p+'" disabled onclick="nextPart('+(p+1)+')" style="margin-left:1rem">Continue to '+escHtml(CONFIG.sets[p+1].partTitle||CONFIG.sets[p+1].name)+'</button>')
+      +'<p class="submit-note" id="submitNote-'+p+'"></p></div>';
+    container.appendChild(part);
+    const cards=part.querySelector('#cards-'+p);
+
+    ordered.forEach((ex,k)=>{
+      const aFirst=CONFIG.reviewMode?true:Math.random()>0.5;      // the same option order for both rows
+      const src1=aFirst?ex.aSrc:ex.bSrc;
+      const src2=aFirst?ex.bSrc:ex.aSrc;
+      const parts=ex.hands?['body','hands']:['body'];
+      answerKey.push({displayIndex:idx,partIndex:p,numberInPart:k+1,setName:ex.setName,fileName:ex.baseName,parts:parts,option1_method:aFirst?"Method A":"Method B",option2_method:aFirst?"Method B":"Method A"});
+
+      const media=(src,alt)=>ex.isVideo?'<video src="'+escHtml(src)+'" autoplay loop muted playsinline></video>':'<img src="'+escHtml(src)+'" alt="'+escHtml(alt)+'" loading="lazy">';
+      const row=(part,s1,s2)=>'<div class="two-col-grid" id="row-'+idx+'-'+part+'">'
+        +'<div class="option" id="opt-'+idx+'-'+part+'-1" onclick="selectOption('+idx+',\''+part+'\',1)"><input type="radio" name="q'+idx+part+'" value="1"><div class="option-label"><div class="radio-visual"></div>'+escHtml(CONFIG.label1)+'</div>'+media(s1,CONFIG.label1)+'</div>'
+        +'<div class="option" id="opt-'+idx+'-'+part+'-2" onclick="selectOption('+idx+',\''+part+'\',2)"><input type="radio" name="q'+idx+part+'" value="2"><div class="option-label"><div class="radio-visual"></div>'+escHtml(CONFIG.label2)+'</div>'+media(s2,CONFIG.label2)+'</div></div>';
+      const pauseBar=(part)=>ex.isVideo?'<div class="pause-bar"><button class="pause-btn" onclick="toggleVideos('+idx+',\''+part+'\',event)" id="pausebtn-'+idx+'-'+part+'">&#10074;&#10074; Pause both videos</button></div>':'';
+
+      let body='';
+      if(ex.hands)body+='<div class="row-title">'+escHtml(CONFIG.bodyRowTitle)+'</div>';
+      body+=row('body',src1,src2)+pauseBar('body')+'<div class="question-bar">'+escHtml(CONFIG.question)+'</div>';
+      if(ex.hands){
+        body+='<div class="row-title">'+escHtml(CONFIG.handsRowTitle)+'</div>'+row('hands',handSrc(src1),handSrc(src2))+pauseBar('hands')+'<div class="question-bar">'+escHtml(CONFIG.questionHands)+'</div>';
+      }
+      const card=document.createElement('div');
+      card.className='comparison-card';card.id='card-'+idx;
+      card.innerHTML='<div class="card-header"><h3>Example '+(k+1)+(CONFIG.reviewMode?' &middot; '+escHtml(ex.setName)+' / '+escHtml(ex.baseName)+' (Option 1 = Method A = ours, Option 2 = Method B = baseline)':'')+'</h3><span class="badge" id="badge-'+idx+'">Unanswered</span></div>'+body;
+      cards.appendChild(card);
+      if(ex.hands){
+        const i=idx;
+        card.querySelectorAll('#row-'+idx+'-hands video').forEach(v=>{v.onerror=function(){dropHandsRow(i);};});
+      }
+      idx++;
+    });
+    updateProgress(p);
   });
-  updateProgress();
+}
+
+function nextPart(p){
+  document.getElementById('part-'+(p-1)).classList.remove('active');
+  document.getElementById('part-'+p).classList.add('active');
+  currentPart=p;
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function dropHandsRow(idx){
@@ -265,9 +286,9 @@ function dropHandsRow(idx){
   if(pb&&pb.classList.contains('pause-bar'))pb.remove();
   row.remove();
   const k=answerKey[idx];k.parts=k.parts.filter(p=>p!=='hands');
-  votes=votes.filter(v=>v!==idx+'_hands');delete answers[idx+'_hands'];
+  delete answers[idx+'_hands'];
   const bt=document.querySelector('#card-'+idx+' .row-title');if(bt)bt.remove();
-  refreshCard(idx);updateProgress();
+  refreshCard(idx);updateProgress(k.partIndex);
 }
 
 function selectOption(i,part,n){
@@ -275,8 +296,10 @@ function selectOption(i,part,n){
   document.getElementById('opt-'+i+'-'+part+'-1').classList.toggle('selected',n===1);
   document.getElementById('opt-'+i+'-'+part+'-2').classList.toggle('selected',n===2);
   refreshCard(i);
-  updateProgress();
+  updateProgress(answerKey[i].partIndex);
 }
+
+function exampleDone(k){return k.parts.every(p=>answers[k.displayIndex+'_'+p]!==undefined);}
 
 function refreshCard(i){
   const k=answerKey[i];
@@ -297,70 +320,80 @@ function toggleVideos(idx,part,event){
   btn.innerHTML=paused?'&#10074;&#10074; Pause both videos':'&#9654; Play both videos';
 }
 
-function updateProgress(){
-  const total=votes.length;
-  const done=votes.filter(v=>answers[v]!==undefined).length;
+function updateProgress(p){
+  const keys=answerKey.filter(k=>k.partIndex===p);
+  const total=keys.length;
+  const done=keys.filter(exampleDone).length;
   const pct=total>0?Math.round(done/total*100):0;
-  document.getElementById('progressLabel').textContent=done+' / '+total+' answered';
-  document.getElementById('progressPercent').textContent=pct+'%';
-  document.getElementById('progressFill').style.width=pct+'%';
-  const btn=document.getElementById('btnSubmit'),note=document.getElementById('submitNote');
-  if(done===total&&total>0){btn.disabled=false;note.textContent='All comparisons answered. Ready to submit!';}
-  else{btn.disabled=true;note.textContent='Please answer all comparisons before submitting. ('+(total-done)+' remaining)';}
+  document.getElementById('progressLabel-'+p).textContent=done+' / '+total+' examples answered';
+  document.getElementById('progressPercent-'+p).textContent=pct+'%';
+  document.getElementById('progressFill-'+p).style.width=pct+'%';
+  const btn=document.getElementById('btnSubmit-'+p),note=document.getElementById('submitNote-'+p);
+  if(submitted[p])return;
+  if(done===total&&total>0){btn.disabled=false;note.textContent='All examples of this part answered. Submit this part'+(p<CONFIG.sets.length-1?', then continue to the next part.':'.');}
+  else{btn.disabled=true;note.textContent='Please answer all examples of this part before submitting. ('+(total-done)+' remaining)';}
 }
 
-function submitStudy(){
-  const btn=document.getElementById('btnSubmit');btn.disabled=true;btn.textContent='Submitting...';
-  // one result row per vote: part = "body" or "hands"
+function submitPart(p){
+  const set=CONFIG.sets[p],last=p===CONFIG.sets.length-1;
+  const btn=document.getElementById('btnSubmit-'+p);btn.disabled=true;btn.textContent='Submitting...';
+  // one result row per vote of this part: part = "body" or "hands"
   const results=[];
   for(const e of answerKey){
+    if(e.partIndex!==p)continue;
     for(const part of e.parts){
       const c=answers[e.displayIndex+'_'+part];
-      results.push({example:e.displayIndex+1,setName:e.setName,fileName:e.fileName,part:part,option1_is:e.option1_method,option2_is:e.option2_method,chosen:c===1?CONFIG.label1:CONFIG.label2,chosen_method:c===1?e.option1_method:e.option2_method});
+      results.push({example:e.numberInPart,setName:e.setName,fileName:e.fileName,part:part,option1_is:e.option1_method,option2_is:e.option2_method,chosen:c===1?CONFIG.label1:CONFIG.label2,chosen_method:c===1?e.option1_method:e.option2_method});
     }
   }
-
-  // Score catch trials per set (on the body vote unless the trial names part: "hands")
+  // Score this part's catch trials (on the body vote unless the trial names part: "hands")
   const catchResults={};
-  for(const set of CONFIG.sets){
-    catchResults[set.name]={passed:0,failed:0,total:0,details:[]};
-    if(!set.catchTrials)continue;
-    for(const ct of set.catchTrials){
-      const part=ct.part||'body';
-      const r=results.find(x=>x.setName===set.name&&x.fileName===ct.file&&x.part===part);
-      if(r){const ok=r.chosen_method===ct.correctMethod;catchResults[set.name].total++;if(ok)catchResults[set.name].passed++;else catchResults[set.name].failed++;catchResults[set.name].details.push({file:ct.file,part:part,expected:ct.correctMethod,actual:r.chosen_method,correct:ok});}
-    }
+  catchResults[set.name]={passed:0,failed:0,total:0,details:[]};
+  for(const ct of (set.catchTrials||[])){
+    const part=ct.part||'body';
+    const r=results.find(x=>x.fileName===ct.file&&x.part===part);
+    if(r){const ok=r.chosen_method===ct.correctMethod;catchResults[set.name].total++;if(ok)catchResults[set.name].passed++;else catchResults[set.name].failed++;catchResults[set.name].details.push({file:ct.file,part:part,expected:ct.correctMethod,actual:r.chosen_method,correct:ok});}
   }
-
   const maxF=CONFIG.maxCatchFails||3;
-  let totalCatchFailed=0;
-  for(const sn in catchResults){totalCatchFailed+=catchResults[sn].failed;}
-  const isReliable=totalCatchFailed<=maxF;
-  for(const sn in catchResults){catchResults[sn].reliable=isReliable;}
-  catchResults._global={totalFailed:totalCatchFailed,maxAllowed:maxF,reliable:isReliable};
+  catchResults[set.name].reliable=catchResults[set.name].failed<=maxF;
 
-  const payload={timestamp:new Date().toISOString(),studyTitle:CONFIG.title,totalComparisons:answerKey.length,totalVotes:results.length,globalExclusion:CONFIG.globalExclusion,results:results,catchTrials:catchResults};
+  const payload={timestamp:new Date().toISOString(),studyTitle:CONFIG.title,participantId:participantId(),partName:set.partTitle||set.name,setName:set.name,totalComparisons:results.filter(r=>r.part==='body').length,totalVotes:results.length,globalExclusion:CONFIG.globalExclusion,results:results,catchTrials:catchResults};
 
   if(CONFIG.resultsUrl&&!CONFIG.resultsUrl.includes('YOUR_DEPLOYMENT')){
     fetch(CONFIG.resultsUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)}).catch(()=>{});
-    try{const iframe=document.createElement('iframe');iframe.name='sf';iframe.style.display='none';document.body.appendChild(iframe);const form=document.createElement('form');form.method='POST';form.action=CONFIG.resultsUrl;form.target='sf';const inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(payload);form.appendChild(inp);document.body.appendChild(form);form.submit();}catch(e){}
+    try{const iframe=document.createElement('iframe');iframe.name='sf'+p;iframe.style.display='none';document.body.appendChild(iframe);const form=document.createElement('form');form.method='POST';form.action=CONFIG.resultsUrl;form.target='sf'+p;const inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(payload);form.appendChild(inp);document.body.appendChild(form);form.submit();}catch(e){}
   }
 
-  document.cookie='study_done_'+CONFIG.title.replace(/\s+/g,'_')+'_'+(CONFIG.studyVersion||'v1')+'=1;max-age=31536000;path=/';
-  document.getElementById('submitSection').style.display='none';
-  document.getElementById('comparisonsContainer').style.display='none';
-  document.getElementById('progressWrap').style.display='none';
-  document.getElementById('completionScreen').classList.add('show');
+  submitted[p]=true;
+  setCookie(cookieKey('_part'+p),'1');
+  btn.textContent='Submitted';
+  const note=document.getElementById('submitNote-'+p);
+  if(last){
+    document.getElementById('partsContainer').style.display='none';
+    document.getElementById('completionScreen').classList.add('show');
+  }else{
+    note.textContent='Part submitted. Thank you! Please continue to the next part.';
+    document.getElementById('btnNext-'+p).disabled=false;
+  }
 }
 
 function checkAlreadyDone(){
-  const k='study_done_'+CONFIG.title.replace(/\s+/g,'_')+'_'+(CONFIG.studyVersion||'v1');
-  if(document.cookie.includes(k+'=1')){
+  const done=CONFIG.sets.map((_,p)=>getCookie(cookieKey('_part'+p))==='1');
+  if(done.every(x=>x)){
     document.getElementById('studyContent').innerHTML='<div style="text-align:center;padding:4rem 2rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)"><div style="width:80px;height:80px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.5rem">&#10003;</div><h2 style="font-size:1.5rem;margin-bottom:.75rem">You have already completed this study</h2><p style="color:var(--text-muted)">Thank you for your participation. Each person can only submit once.</p></div>';
     return true;
-  }return false;
+  }
+  return false;
 }
-window.addEventListener('DOMContentLoaded',function(){if(!checkAlreadyDone())buildStudy();});
+function resumeParts(){
+  // parts already submitted from this browser are skipped; the study resumes at the first open part
+  let first=0;
+  for(let p=0;p<CONFIG.sets.length;p++){
+    if(getCookie(cookieKey('_part'+p))==='1'){submitted[p]=true;first=p+1;}else break;
+  }
+  if(first>0&&first<CONFIG.sets.length){document.getElementById('part-0').classList.remove('active');document.getElementById('part-'+first).classList.add('active');currentPart=first;}
+}
+window.addEventListener('DOMContentLoaded',function(){if(!checkAlreadyDone()){buildStudy();resumeParts();}});
 </script>
 </body>
 </html>
